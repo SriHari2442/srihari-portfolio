@@ -51,47 +51,47 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ onOpenResume, onDownlo
   };
 
   return (
-    <section id="home" className="relative pt-24 sm:pt-32 pb-12 sm:pb-20 overflow-hidden min-h-[85vh] lg:min-h-[88vh] flex items-center">
+    <section id="home" className="relative pt-28 sm:pt-32 lg:pt-36 pb-16 sm:pb-24 lg:pb-28 overflow-hidden min-h-[90vh] lg:min-h-[92vh] flex items-center">
       {/* Background Ambient Glowing Blobs with Soft Motion */}
       <motion.div
         animate={
           shouldReduceMotion
             ? {}
             : {
-                y: [0, -12, 0],
-                x: [0, 8, 0],
+                y: [0, -14, 0],
+                x: [0, 10, 0],
               }
         }
         transition={{ repeat: Infinity, duration: 9, ease: 'easeInOut' }}
-        className="absolute top-12 left-10 w-72 h-72 sm:w-96 sm:h-96 bg-blue-300/30 rounded-full blur-3xl pointer-events-none"
+        className="absolute top-10 left-6 w-80 h-80 sm:w-[32rem] sm:h-[32rem] bg-blue-300/35 rounded-full blur-3xl pointer-events-none"
       />
       <motion.div
         animate={
           shouldReduceMotion
             ? {}
             : {
-                y: [0, 14, 0],
-                x: [0, -10, 0],
+                y: [0, 16, 0],
+                x: [0, -12, 0],
               }
         }
         transition={{ repeat: Infinity, duration: 11, ease: 'easeInOut' }}
-        className="absolute top-32 right-12 w-80 h-80 sm:w-[28rem] sm:h-[28rem] bg-indigo-300/25 rounded-full blur-3xl pointer-events-none"
+        className="absolute top-16 right-2 w-96 h-96 sm:w-[38rem] sm:h-[38rem] bg-indigo-300/35 rounded-full blur-3xl pointer-events-none"
       />
-      <div className="absolute bottom-10 left-1/3 w-64 h-64 bg-pink-200/20 rounded-full blur-3xl pointer-events-none" />
+      <div className="absolute bottom-8 left-1/3 w-80 h-80 bg-pink-200/30 rounded-full blur-3xl pointer-events-none" />
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 w-full">
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-5 xl:gap-6 items-center">
           
-          {/* Main Hero Column (Left side on Desktop) */}
+          {/* Main Hero Column (40% width on Desktop: lg:col-span-5) */}
           <motion.div
             variants={containerVariants}
             initial="hidden"
             animate="visible"
-            className="lg:col-span-7 flex flex-col items-center lg:items-start text-center lg:text-left space-y-6 sm:space-y-8"
+            className="lg:col-span-5 flex flex-col items-center lg:items-start text-center lg:text-left space-y-6 sm:space-y-7 lg:space-y-8"
           >
             
-            {/* 1. Header & Name Block */}
-            <div className="order-1 space-y-3 sm:space-y-4 w-full">
+            {/* 1. Header, Name & Role Block */}
+            <div className="order-1 space-y-3.5 sm:space-y-4 w-full">
               {/* Location Pill */}
               <motion.div variants={itemVariants} className="inline-block">
                 <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full aurora-glass border border-indigo-200/60 shadow-xs">
@@ -103,34 +103,34 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ onOpenResume, onDownlo
               </motion.div>
 
               {/* Headline */}
-              <div className="space-y-1.5 sm:space-y-2">
+              <div className="space-y-2 sm:space-y-2.5">
                 <motion.p variants={itemVariants} className="text-xl sm:text-2xl font-extrabold text-slate-800 tracking-tight">
                   Hi, I'm
                 </motion.p>
 
-                <motion.h1 variants={itemVariants} className="text-4xl sm:text-6xl lg:text-7xl font-black tracking-tight leading-none">
+                <motion.h1 variants={itemVariants} className="text-4xl sm:text-5xl lg:text-6xl xl:text-7xl font-black tracking-tight leading-none">
                   <span className="bg-gradient-to-r from-blue-600 via-violet-600 to-pink-500 bg-clip-text text-transparent">
                     {PERSONAL_INFO.name}
                   </span>
                 </motion.h1>
 
-                <motion.h2 variants={itemVariants} className="text-2xl sm:text-4xl font-extrabold text-slate-900 tracking-tight">
+                <motion.h2 variants={itemVariants} className="text-2xl sm:text-3xl lg:text-4xl font-extrabold text-slate-900 tracking-tight">
                   {PERSONAL_INFO.role}
                 </motion.h2>
               </div>
             </div>
 
-            {/* 2. Mobile Video Player Placement */}
-            <motion.div variants={videoVariants} className="order-2 w-full lg:hidden my-2">
-              <VideoPlayer />
-            </motion.div>
-
-            {/* 3. Hero Description */}
-            <motion.p variants={itemVariants} className="order-3 text-base sm:text-lg text-slate-600 max-w-2xl leading-relaxed font-normal">
+            {/* 2. Professional Summary (Order 2 on Mobile) */}
+            <motion.p variants={itemVariants} className="order-2 text-base sm:text-lg text-slate-600 max-w-xl leading-relaxed font-normal">
               {PERSONAL_INFO.heroDescription}
             </motion.p>
 
-            {/* 4. Action CTA Buttons with Motion */}
+            {/* 3. AI Avatar Video Player Placement on Mobile (Order 3 on Mobile) */}
+            <motion.div variants={videoVariants} className="order-3 w-full lg:hidden my-2">
+              <VideoPlayer shouldReduceMotion={shouldReduceMotion ?? false} />
+            </motion.div>
+
+            {/* 4. Action CTA Buttons with Motion (Order 4 on Mobile) */}
             <motion.div variants={itemVariants} className="order-4 flex flex-col sm:flex-row items-stretch sm:items-center justify-center lg:justify-start gap-3.5 w-full sm:w-auto pt-1">
               <motion.a
                 href="#projects"
@@ -154,8 +154,8 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ onOpenResume, onDownlo
               </motion.button>
             </motion.div>
 
-            {/* 5. Technology Badges */}
-            <motion.div variants={itemVariants} className="order-5 pt-2 w-full">
+            {/* 5. Technology Badges (Order 5 on Mobile) */}
+            <motion.div variants={itemVariants} className="order-5 pt-1 w-full">
               <div className="flex flex-wrap items-center justify-center lg:justify-start gap-2.5">
                 {techBadges.map((badge) => (
                   <motion.div
@@ -172,14 +172,14 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ onOpenResume, onDownlo
 
           </motion.div>
 
-          {/* Right Hero Column for Desktop Layout (AI Avatar Video) with Entrance Motion */}
+          {/* Right Hero Column for Desktop Layout (60% width on Desktop: lg:col-span-7) */}
           <motion.div
             variants={videoVariants}
             initial="hidden"
             animate="visible"
-            className="hidden lg:flex lg:col-span-5 justify-center items-center"
+            className="hidden lg:flex lg:col-span-7 justify-center items-center w-full"
           >
-            <VideoPlayer />
+            <VideoPlayer shouldReduceMotion={shouldReduceMotion ?? false} />
           </motion.div>
 
         </div>

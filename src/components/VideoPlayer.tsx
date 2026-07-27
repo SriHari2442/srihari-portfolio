@@ -1,8 +1,11 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { Play, Pause, Volume2, VolumeX, Maximize, RotateCcw, Sparkles } from 'lucide-react';
-import { PERSONAL_INFO } from '../data/portfolioData';
+import { Play, Pause, Volume2, VolumeX, Maximize, RotateCcw, Sparkles, Briefcase, Building2, Code2, Layers, Eye } from 'lucide-react';
 
-export const VideoPlayer: React.FC = () => {
+interface VideoPlayerProps {
+  shouldReduceMotion?: boolean;
+}
+
+export const VideoPlayer: React.FC<VideoPlayerProps> = ({ shouldReduceMotion = false }) => {
   const videoRef = useRef<HTMLVideoElement | null>(null);
   const containerRef = useRef<HTMLDivElement | null>(null);
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
@@ -11,7 +14,25 @@ export const VideoPlayer: React.FC = () => {
   const [currentTime, setCurrentTime] = useState(0);
   const [isMuted, setIsMuted] = useState(true); // Autoplay policy compliant default: muted
   const [posterUrl, setPosterUrl] = useState<string>('');
+  const [tilt, setTilt] = useState({ x: 0, y: 0 });
   const duration = 25; // 25 sec introduction as requested
+
+  // Subtle 3D tilt interaction
+  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
+    if (shouldReduceMotion) return;
+    const rect = e.currentTarget.getBoundingClientRect();
+    const x = e.clientX - rect.left;
+    const y = e.clientY - rect.top;
+    const centerX = rect.width / 2;
+    const centerY = rect.height / 2;
+    const rotateX = ((y - centerY) / centerY) * -3;
+    const rotateY = ((x - centerX) / centerX) * 3;
+    setTilt({ x: rotateX, y: rotateY });
+  };
+
+  const handleMouseLeave = () => {
+    setTilt({ x: 0, y: 0 });
+  };
 
   // Generate high-resolution poster image on canvas at mount
   useEffect(() => {
@@ -329,155 +350,190 @@ export const VideoPlayer: React.FC = () => {
 
   const progressPercent = (currentTime / duration) * 100;
 
+  const trustHighlights = [
+    { label: '3+ Years Experience', icon: Briefcase, color: 'text-indigo-600 bg-indigo-50/80 border-indigo-200/60' },
+    { label: 'Enterprise Banking', icon: Building2, color: 'text-blue-600 bg-blue-50/80 border-blue-200/60' },
+    { label: 'React & TS Specialist', icon: Code2, color: 'text-purple-600 bg-purple-50/80 border-purple-200/60' },
+    { label: 'Product Builder', icon: Layers, color: 'text-pink-600 bg-pink-50/80 border-pink-200/60' },
+    { label: 'Accessibility Focused', icon: Eye, color: 'text-emerald-600 bg-emerald-50/80 border-emerald-200/60' },
+  ];
+
   return (
-    <div className="relative group w-full max-w-xl mx-auto flex flex-col items-center">
-      {/* Subtle Blue, Cyan, and Violet Glow halo around frame */}
-      <div className="absolute -inset-2 bg-gradient-to-r from-blue-500 via-cyan-400 to-violet-600 rounded-[2.5rem] blur-xl opacity-50 group-hover:opacity-75 transition duration-500 pointer-events-none" />
+    <div className="w-full flex flex-col items-center">
+      
+      {/* Top Badge: "Meet Sri Hari — 25 sec" */}
+      <div className="w-full flex items-center justify-center mb-3">
+        <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-slate-900/95 text-white text-xs sm:text-sm font-bold border border-white/30 shadow-lg backdrop-blur-md">
+          <span className="w-2.5 h-2.5 rounded-full bg-emerald-400 animate-pulse" />
+          <span>Meet Sri Hari — 25 sec</span>
+        </div>
+      </div>
 
-      {/* Main Video Frame Container */}
+      {/* Main Video Frame Outer Wrapper with Floating & Subtle 3D Tilt (Apple VisionOS Elevated Feel) */}
       <div
-        ref={containerRef}
-        className="relative w-full rounded-3xl sm:rounded-[2rem] overflow-hidden bg-slate-900/90 border border-white/60 backdrop-blur-md shadow-2xl transition-all duration-300"
+        onMouseMove={handleMouseMove}
+        onMouseLeave={handleMouseLeave}
+        style={{
+          transform: `perspective(1000px) rotateX(${tilt.x}deg) rotateY(${tilt.y}deg)`,
+          transition: 'transform 200ms ease-out',
+        }}
+        className="relative group w-full max-w-none lg:scale-[1.04] transition-transform duration-300"
       >
-        {/* Top Floating Badge Label: "Meet Sri Hari — 25 sec" */}
-        <div className="absolute top-3 sm:top-4 left-3 sm:left-4 z-30">
-          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-slate-950/80 backdrop-blur-md border border-white/20 text-white text-xs font-bold shadow-lg">
-            <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
-            <span>Meet Sri Hari — 25 sec</span>
-          </div>
-        </div>
+        {/* Cinematic Glowing Ambient Halo (Soft Blue, Cyan and Violet) */}
+        <div className="absolute -inset-3.5 bg-gradient-to-r from-blue-600 via-cyan-400 to-violet-600 rounded-[32px] blur-3xl opacity-50 group-hover:opacity-75 transition duration-500 pointer-events-none" />
 
-        {/* Real HTML5 <video> Element */}
-        <div className="relative aspect-[16/10] sm:aspect-[16/9] w-full bg-slate-950 flex items-center justify-center overflow-hidden">
-          <video
-            ref={videoRef}
-            poster={posterUrl}
-            playsInline
-            muted={isMuted}
-            onClick={togglePlay}
-            className="w-full h-full object-cover cursor-pointer"
-            aria-label="Video introduction by Sri Hari Mada"
-            title="Video introduction by Sri Hari Mada"
-          />
-
-          {/* Center Overlay Play Button when paused */}
-          {!isPlaying && (
-            <button
-              onClick={togglePlay}
-              className="absolute z-20 w-16 h-16 sm:w-20 sm:h-20 rounded-full bg-gradient-to-r from-blue-600 to-indigo-600 text-white flex items-center justify-center shadow-2xl hover:scale-110 active:scale-95 transition-all cursor-pointer border-2 border-white/40 group/btn focus-visible:ring-2 focus-visible:ring-indigo-400 focus-visible:outline-none"
-              aria-label="Play AI Avatar Video"
-            >
-              <Play className="w-7 h-7 sm:w-8 sm:h-8 fill-current translate-x-0.5 group-hover/btn:scale-110 transition-transform" />
-            </button>
-          )}
-
-          {/* Bottom Player Controls Bar */}
-          <div className="absolute bottom-0 left-0 right-0 p-3 sm:p-4 bg-gradient-to-t from-slate-950 via-slate-900/90 to-transparent z-30 flex flex-col gap-2">
-            {/* Interactive Progress Bar */}
-            <div
-              role="slider"
-              tabIndex={0}
-              aria-label="Video progress timeline slider"
-              aria-valuemin={0}
-              aria-valuemax={duration}
-              aria-valuenow={Math.round(currentTime)}
-              aria-valuetext={`${formatTime(currentTime)} of ${formatTime(duration)}`}
-              onKeyDown={(e) => {
-                if (e.key === 'ArrowRight' || e.key === 'ArrowUp') {
-                  e.preventDefault();
-                  const next = Math.min(currentTime + 2, duration);
-                  setCurrentTime(next);
-                  if (videoRef.current) videoRef.current.currentTime = next;
-                } else if (e.key === 'ArrowLeft' || e.key === 'ArrowDown') {
-                  e.preventDefault();
-                  const prev = Math.max(currentTime - 2, 0);
-                  setCurrentTime(prev);
-                  if (videoRef.current) videoRef.current.currentTime = prev;
-                }
-              }}
-              onClick={(e) => {
-                const rect = e.currentTarget.getBoundingClientRect();
-                const clickX = e.clientX - rect.left;
-                const newPercent = clickX / rect.width;
-                const newTime = newPercent * duration;
-                setCurrentTime(newTime);
-                if (videoRef.current) videoRef.current.currentTime = newTime;
-              }}
-              className="w-full h-1.5 bg-slate-700/80 hover:h-2.5 rounded-full cursor-pointer relative overflow-hidden transition-all group/bar focus-visible:ring-2 focus-visible:ring-indigo-400 focus-visible:outline-none"
-            >
-              <div
-                className="h-full bg-gradient-to-r from-blue-500 via-cyan-400 to-indigo-500 rounded-full relative"
-                style={{ width: `${Math.min(progressPercent, 100)}%` }}
-              >
-                <div className="absolute right-0 top-1/2 -translate-y-1/2 w-3 h-3 bg-white rounded-full shadow opacity-0 group-hover/bar:opacity-100 transition-opacity" />
-              </div>
-            </div>
-
-            {/* Controls Row */}
-            <div className="flex items-center justify-between text-white text-xs pt-1">
-              <div className="flex items-center gap-3">
-                <button
-                  onClick={togglePlay}
-                  className="p-1.5 rounded-lg hover:bg-white/10 text-white transition-colors cursor-pointer focus-visible:ring-2 focus-visible:ring-indigo-400 focus-visible:outline-none"
-                  aria-label={isPlaying ? 'Pause video' : 'Play video'}
-                >
-                  {isPlaying ? <Pause className="w-4 h-4" /> : <Play className="w-4 h-4 fill-current" />}
-                </button>
-
-                <button
-                  onClick={() => {
-                    setCurrentTime(0);
-                    if (videoRef.current) videoRef.current.currentTime = 0;
-                  }}
-                  className="p-1.5 rounded-lg hover:bg-white/10 text-slate-300 hover:text-white transition-colors cursor-pointer focus-visible:ring-2 focus-visible:ring-indigo-400 focus-visible:outline-none"
-                  title="Replay video from start"
-                  aria-label="Replay video"
-                >
-                  <RotateCcw className="w-3.5 h-3.5" />
-                </button>
-
-                <span className="font-mono text-[11px] text-slate-300 font-semibold">
-                  {formatTime(currentTime)} / {formatTime(duration)}
-                </span>
-              </div>
-
-              <div className="flex items-center gap-2">
-                <button
-                  onClick={toggleMute}
-                  className="p-1.5 rounded-lg hover:bg-white/10 text-slate-300 hover:text-white transition-colors cursor-pointer focus-visible:ring-2 focus-visible:ring-indigo-400 focus-visible:outline-none"
-                  aria-label={isMuted ? 'Unmute video audio' : 'Mute video audio'}
-                >
-                  {isMuted ? <VolumeX className="w-4 h-4 text-amber-400" /> : <Volume2 className="w-4 h-4 text-emerald-400" />}
-                </button>
-
-                <button
-                  onClick={handleFullscreen}
-                  className="p-1.5 rounded-lg hover:bg-white/10 text-slate-300 hover:text-white transition-colors cursor-pointer focus-visible:ring-2 focus-visible:ring-indigo-400 focus-visible:outline-none"
-                  aria-label="Toggle Fullscreen"
-                >
-                  <Maximize className="w-3.5 h-3.5" />
-                </button>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      {/* Callout Annotation Text below video */}
-      <div className="mt-3 flex items-center justify-center gap-2">
-        <span className="font-semibold text-indigo-700 text-sm sm:text-base tracking-wide italic">
-          Play to know more about me
-        </span>
-        <svg
-          className="w-5 h-5 text-indigo-600 animate-bounce"
-          fill="none"
-          stroke="currentColor"
-          strokeWidth="2.5"
-          viewBox="0 0 24 24"
+        {/* Floating 24px Radius Glass Card Container with Apple VisionOS Elevated Depth Shadow */}
+        <div
+          ref={containerRef}
+          className="relative w-full rounded-[24px] overflow-hidden bg-slate-900/95 border border-white/90 backdrop-blur-2xl shadow-[0_25px_60px_-15px_rgba(79,70,229,0.35)] hover:shadow-[0_35px_75px_-15px_rgba(79,70,229,0.45)] transition-all duration-300"
         >
-          <path strokeLinecap="round" strokeLinejoin="round" d="M19 14l-7 7m0 0l-7-7m7 7V3" />
-        </svg>
+          {/* 16:9 Aspect Ratio Video Frame */}
+          <div className="relative aspect-video w-full bg-slate-950 flex items-center justify-center overflow-hidden">
+            <video
+              ref={videoRef}
+              poster={posterUrl}
+              playsInline
+              muted={isMuted}
+              onClick={togglePlay}
+              className="w-full h-full object-cover cursor-pointer"
+              aria-label="Video introduction by Sri Hari Mada"
+              title="Video introduction by Sri Hari Mada"
+            />
+
+            {/* Center Overlay Play Button when paused */}
+            {!isPlaying && (
+              <button
+                onClick={togglePlay}
+                className="absolute z-20 w-16 h-16 sm:w-22 sm:h-22 rounded-full bg-gradient-to-r from-blue-600 via-indigo-600 to-purple-600 text-white flex items-center justify-center shadow-2xl hover:scale-110 active:scale-95 transition-all cursor-pointer border-2 border-white/50 group/btn focus-visible:ring-2 focus-visible:ring-indigo-400 focus-visible:outline-none"
+                aria-label="Play AI Avatar Video"
+              >
+                <Play className="w-8 h-8 sm:w-10 sm:h-10 fill-current translate-x-0.5 group-hover/btn:scale-110 transition-transform" />
+              </button>
+            )}
+
+            {/* Bottom Player Controls Bar */}
+            <div className="absolute bottom-0 left-0 right-0 p-3 sm:p-4 bg-gradient-to-t from-slate-950 via-slate-900/90 to-transparent z-30 flex flex-col gap-2">
+              {/* Interactive Progress Bar */}
+              <div
+                role="slider"
+                tabIndex={0}
+                aria-label="Video progress timeline slider"
+                aria-valuemin={0}
+                aria-valuemax={duration}
+                aria-valuenow={Math.round(currentTime)}
+                aria-valuetext={`${formatTime(currentTime)} of ${formatTime(duration)}`}
+                onKeyDown={(e) => {
+                  if (e.key === 'ArrowRight' || e.key === 'ArrowUp') {
+                    e.preventDefault();
+                    const next = Math.min(currentTime + 2, duration);
+                    setCurrentTime(next);
+                    if (videoRef.current) videoRef.current.currentTime = next;
+                  } else if (e.key === 'ArrowLeft' || e.key === 'ArrowDown') {
+                    e.preventDefault();
+                    const prev = Math.max(currentTime - 2, 0);
+                    setCurrentTime(prev);
+                    if (videoRef.current) videoRef.current.currentTime = prev;
+                  }
+                }}
+                onClick={(e) => {
+                  const rect = e.currentTarget.getBoundingClientRect();
+                  const clickX = e.clientX - rect.left;
+                  const newPercent = clickX / rect.width;
+                  const newTime = newPercent * duration;
+                  setCurrentTime(newTime);
+                  if (videoRef.current) videoRef.current.currentTime = newTime;
+                }}
+                className="w-full h-1.5 bg-slate-700/80 hover:h-2.5 rounded-full cursor-pointer relative overflow-hidden transition-all group/bar focus-visible:ring-2 focus-visible:ring-indigo-400 focus-visible:outline-none"
+              >
+                <div
+                  className="h-full bg-gradient-to-r from-blue-500 via-cyan-400 to-indigo-500 rounded-full relative"
+                  style={{ width: `${Math.min(progressPercent, 100)}%` }}
+                >
+                  <div className="absolute right-0 top-1/2 -translate-y-1/2 w-3 h-3 bg-white rounded-full shadow opacity-0 group-hover/bar:opacity-100 transition-opacity" />
+                </div>
+              </div>
+
+              {/* Controls Row */}
+              <div className="flex items-center justify-between text-white text-xs pt-1">
+                <div className="flex items-center gap-3">
+                  <button
+                    onClick={togglePlay}
+                    className="p-1.5 rounded-lg hover:bg-white/10 text-white transition-colors cursor-pointer focus-visible:ring-2 focus-visible:ring-indigo-400 focus-visible:outline-none"
+                    aria-label={isPlaying ? 'Pause video' : 'Play video'}
+                  >
+                    {isPlaying ? <Pause className="w-4 h-4" /> : <Play className="w-4 h-4 fill-current" />}
+                  </button>
+
+                  <button
+                    onClick={() => {
+                      setCurrentTime(0);
+                      if (videoRef.current) videoRef.current.currentTime = 0;
+                    }}
+                    className="p-1.5 rounded-lg hover:bg-white/10 text-slate-300 hover:text-white transition-colors cursor-pointer focus-visible:ring-2 focus-visible:ring-indigo-400 focus-visible:outline-none"
+                    title="Replay video from start"
+                    aria-label="Replay video"
+                  >
+                    <RotateCcw className="w-3.5 h-3.5" />
+                  </button>
+
+                  <span className="font-mono text-[11px] text-slate-300 font-semibold">
+                    {formatTime(currentTime)} / {formatTime(duration)}
+                  </span>
+                </div>
+
+                <div className="flex items-center gap-2">
+                  <button
+                    onClick={toggleMute}
+                    className="p-1.5 rounded-lg hover:bg-white/10 text-slate-300 hover:text-white transition-colors cursor-pointer focus-visible:ring-2 focus-visible:ring-indigo-400 focus-visible:outline-none"
+                    aria-label={isMuted ? 'Unmute video audio' : 'Mute video audio'}
+                  >
+                    {isMuted ? <VolumeX className="w-4 h-4 text-amber-400" /> : <Volume2 className="w-4 h-4 text-emerald-400" />}
+                  </button>
+
+                  <button
+                    onClick={handleFullscreen}
+                    className="p-1.5 rounded-lg hover:bg-white/10 text-slate-300 hover:text-white transition-colors cursor-pointer focus-visible:ring-2 focus-visible:ring-indigo-400 focus-visible:outline-none"
+                    aria-label="Toggle Fullscreen"
+                  >
+                    <Maximize className="w-3.5 h-3.5" />
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
+
+      {/* Caption Label below video */}
+      <div className="mt-3 flex items-center justify-center gap-2 text-indigo-950 font-extrabold text-xs sm:text-sm tracking-wide">
+        <Play className="w-3.5 h-3.5 fill-indigo-600 text-indigo-600" />
+        <span>Play to know more about me</span>
+      </div>
+
+      {/* TRUST PANEL: "Why watch this introduction?" */}
+      <div className="mt-4 w-full p-4 sm:p-5 rounded-2xl aurora-glass border border-white/80 shadow-md">
+        <div className="flex items-center gap-2 mb-3">
+          <Sparkles className="w-4 h-4 text-purple-600" />
+          <h3 className="text-xs sm:text-sm font-bold text-slate-900 tracking-wide">
+            Why watch this introduction?
+          </h3>
+        </div>
+        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-2">
+          {trustHighlights.map((item, idx) => {
+            const IconComp = item.icon;
+            return (
+              <div
+                key={idx}
+                className={`flex items-center gap-2 p-2 rounded-xl border text-[11px] sm:text-xs font-semibold text-slate-800 transition-all cursor-default ${item.color}`}
+              >
+                <IconComp className="w-3.5 h-3.5 shrink-0" />
+                <span className="truncate">{item.label}</span>
+              </div>
+            );
+          })}
+        </div>
+      </div>
+
     </div>
   );
 };
