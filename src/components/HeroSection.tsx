@@ -135,22 +135,22 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ onOpenResume, onDownlo
               <motion.a
                 href="#projects"
                 whileHover={shouldReduceMotion ? {} : { scale: 1.03, y: -2 }}
-                whileTap={shouldReduceMotion ? {} : { scale: 0.97 }}
-                className="inline-flex items-center justify-center gap-2 px-6 py-3.5 rounded-2xl text-sm font-bold text-white bg-gradient-to-r from-blue-600 via-indigo-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 shadow-lg shadow-indigo-500/30 hover:shadow-indigo-500/40 transition-all cursor-pointer focus-visible:ring-2 focus-visible:ring-indigo-500 focus-visible:ring-offset-2 focus-visible:outline-none"
+                whileTap={shouldReduceMotion ? {} : { scale: 0.96 }}
+                className="group/work inline-flex items-center justify-center gap-2 px-6 py-3.5 rounded-2xl text-sm font-bold text-white primary-btn-glow shadow-lg shadow-indigo-500/30 transition-all cursor-pointer focus-visible:ring-2 focus-visible:ring-indigo-500 focus-visible:ring-offset-2 focus-visible:outline-none"
               >
                 <span>View My Work</span>
-                <ArrowRight className="w-4 h-4" />
+                <ArrowRight className="w-4 h-4 group-hover/work:translate-x-1 transition-transform" />
               </motion.a>
 
               <motion.button
                 onClick={onDownloadResume}
                 whileHover={shouldReduceMotion ? {} : { scale: 1.02, y: -2 }}
-                whileTap={shouldReduceMotion ? {} : { scale: 0.97 }}
-                className="inline-flex items-center justify-center gap-2 px-6 py-3.5 rounded-2xl text-sm font-bold text-slate-800 aurora-glass border border-slate-200/90 hover:bg-white hover:border-indigo-300 shadow-sm hover:shadow-md transition-all cursor-pointer focus-visible:ring-2 focus-visible:ring-indigo-500 focus-visible:outline-none"
+                whileTap={shouldReduceMotion ? {} : { scale: 0.96 }}
+                className="group/res inline-flex items-center justify-center gap-2 px-6 py-3.5 rounded-2xl text-sm font-bold text-slate-800 secondary-btn-purple border border-slate-200/90 shadow-sm transition-all cursor-pointer focus-visible:ring-2 focus-visible:ring-indigo-500 focus-visible:outline-none"
                 title="Download Sri Hari Mada Resume PDF"
               >
                 <span>Download Resume</span>
-                <Download className="w-4 h-4 text-indigo-600" />
+                <Download className="w-4 h-4 text-indigo-600 group-hover/res:text-purple-700 transition-colors" />
               </motion.button>
             </motion.div>
 

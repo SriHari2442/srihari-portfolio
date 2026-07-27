@@ -71,39 +71,41 @@ export const ContactSection: React.FC<ContactSectionProps> = ({ onDownloadResume
               {/* Phone Card */}
               <motion.div
                 variants={cardVariants}
-                whileHover={shouldReduceMotion ? {} : { y: -2 }}
-                className="p-4 rounded-2xl bg-white/80 border border-slate-200/80 flex items-center gap-3 text-slate-800 shadow-2xs hover:shadow-xs transition-shadow"
+                whileHover={shouldReduceMotion ? {} : { y: -5, scale: 1.01 }}
+                transition={{ duration: 0.25, ease: 'easeOut' }}
+                className="group/card purple-interactive-card p-4 rounded-2xl flex items-center gap-3 text-slate-800 shadow-xs hover:shadow-xl cursor-default"
               >
-                <div className="p-2.5 rounded-xl bg-emerald-50 text-emerald-600 shrink-0">
+                <div className="p-2.5 rounded-xl bg-emerald-50 text-emerald-600 group-hover/card:scale-110 transition-transform duration-300 shrink-0">
                   <Phone className="w-5 h-5" />
                 </div>
                 <div>
                   <div className="text-[11px] font-bold text-slate-400 uppercase tracking-wider">Phone</div>
-                  <div className="text-xs sm:text-sm font-bold">{PERSONAL_INFO.phone}</div>
+                  <div className="text-xs sm:text-sm font-bold group-hover/card:text-purple-900 transition-colors">{PERSONAL_INFO.phone}</div>
                 </div>
               </motion.div>
 
               {/* Email Card */}
               <motion.div
                 variants={cardVariants}
-                whileHover={shouldReduceMotion ? {} : { y: -2 }}
-                className="p-4 rounded-2xl bg-white/80 border border-slate-200/80 hover:border-indigo-300 transition-all flex items-center justify-between group shadow-2xs hover:shadow-xs"
+                whileHover={shouldReduceMotion ? {} : { y: -5, scale: 1.01 }}
+                transition={{ duration: 0.25, ease: 'easeOut' }}
+                className="group/card purple-interactive-card p-4 rounded-2xl transition-all flex items-center justify-between shadow-xs hover:shadow-xl"
               >
                 <a
                   href={`mailto:${PERSONAL_INFO.email}`}
                   className="flex items-center gap-3 text-slate-800 hover:text-indigo-600 transition-colors min-w-0"
                 >
-                  <div className="p-2.5 rounded-xl bg-blue-50 text-blue-600 shrink-0">
+                  <div className="p-2.5 rounded-xl bg-blue-50 text-blue-600 group-hover/card:scale-110 transition-transform duration-300 shrink-0">
                     <Mail className="w-5 h-5" />
                   </div>
                   <div className="min-w-0">
                     <div className="text-[11px] font-bold text-slate-400 uppercase tracking-wider">Email</div>
-                    <div className="text-xs sm:text-sm font-bold truncate">{PERSONAL_INFO.email}</div>
+                    <div className="text-xs sm:text-sm font-bold group-hover/card:text-purple-900 transition-colors truncate">{PERSONAL_INFO.email}</div>
                   </div>
                 </a>
                 <button
                   onClick={handleCopyEmail}
-                  className="p-2 rounded-xl text-slate-400 hover:text-indigo-600 hover:bg-indigo-50 transition-colors cursor-pointer"
+                  className="p-2 rounded-xl text-slate-400 hover:text-purple-700 hover:bg-purple-100/80 transition-colors cursor-pointer focus-visible:ring-2 focus-visible:ring-purple-500 focus-visible:outline-none"
                   title="Copy Email"
                 >
                   {copiedEmail ? <Check className="w-4 h-4 text-emerald-600" /> : <Copy className="w-4 h-4" />}
@@ -116,11 +118,12 @@ export const ContactSection: React.FC<ContactSectionProps> = ({ onDownloadResume
                 target="_blank"
                 rel="noopener noreferrer"
                 variants={cardVariants}
-                whileHover={shouldReduceMotion ? {} : { y: -2 }}
-                className="p-4 rounded-2xl bg-white/80 border border-slate-200/80 hover:border-indigo-300 transition-all flex items-center justify-between group shadow-2xs hover:shadow-xs"
+                whileHover={shouldReduceMotion ? {} : { y: -5, scale: 1.01 }}
+                transition={{ duration: 0.25, ease: 'easeOut' }}
+                className="group/card purple-interactive-card p-4 rounded-2xl transition-all flex items-center justify-between shadow-xs hover:shadow-xl focus-visible:ring-2 focus-visible:ring-purple-500 focus-visible:outline-none"
               >
-                <div className="flex items-center gap-3 text-slate-800 group-hover:text-indigo-600 transition-colors">
-                  <div className="p-2.5 rounded-xl bg-blue-50 text-blue-700 shrink-0">
+                <div className="flex items-center gap-3 text-slate-800 group-hover/card:text-purple-900 transition-colors">
+                  <div className="p-2.5 rounded-xl bg-blue-50 text-blue-700 group-hover/card:scale-110 transition-transform duration-300 shrink-0">
                     <Linkedin className="w-5 h-5" />
                   </div>
                   <div>
@@ -136,11 +139,12 @@ export const ContactSection: React.FC<ContactSectionProps> = ({ onDownloadResume
                 target="_blank"
                 rel="noopener noreferrer"
                 variants={cardVariants}
-                whileHover={shouldReduceMotion ? {} : { y: -2 }}
-                className="p-4 rounded-2xl bg-white/80 border border-slate-200/80 hover:border-indigo-300 transition-all flex items-center justify-between group shadow-2xs hover:shadow-xs"
+                whileHover={shouldReduceMotion ? {} : { y: -5, scale: 1.01 }}
+                transition={{ duration: 0.25, ease: 'easeOut' }}
+                className="group/card purple-interactive-card p-4 rounded-2xl transition-all flex items-center justify-between shadow-xs hover:shadow-xl focus-visible:ring-2 focus-visible:ring-purple-500 focus-visible:outline-none"
               >
-                <div className="flex items-center gap-3 text-slate-800 group-hover:text-indigo-600 transition-colors">
-                  <div className="p-2.5 rounded-xl bg-slate-100 text-slate-900 shrink-0">
+                <div className="flex items-center gap-3 text-slate-800 group-hover/card:text-purple-900 transition-colors">
+                  <div className="p-2.5 rounded-xl bg-slate-100 text-slate-900 group-hover/card:scale-110 transition-transform duration-300 shrink-0">
                     <Github className="w-5 h-5" />
                   </div>
                   <div>
@@ -280,16 +284,16 @@ export const ContactSection: React.FC<ContactSectionProps> = ({ onDownloadResume
                     <motion.button
                       type="submit"
                       disabled={isSubmitting}
-                      whileHover={shouldReduceMotion ? {} : { scale: 1.01 }}
-                      whileTap={shouldReduceMotion ? {} : { scale: 0.98 }}
-                      className="w-full py-3.5 rounded-xl text-xs sm:text-sm font-bold text-white bg-gradient-to-r from-blue-600 via-indigo-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 shadow-md shadow-indigo-500/25 flex items-center justify-center gap-2 transition-all cursor-pointer focus-visible:ring-2 focus-visible:ring-indigo-500 focus-visible:outline-none"
+                      whileHover={shouldReduceMotion ? {} : { scale: 1.02, y: -2 }}
+                      whileTap={shouldReduceMotion ? {} : { scale: 0.96 }}
+                      className="group/send w-full py-3.5 rounded-xl text-xs sm:text-sm font-bold text-white primary-btn-glow shadow-md shadow-indigo-500/25 flex items-center justify-center gap-2 transition-all cursor-pointer focus-visible:ring-2 focus-visible:ring-indigo-500 focus-visible:outline-none"
                     >
                       {isSubmitting ? (
                         <span>Sending Message...</span>
                       ) : (
                         <>
                           <span>Send Message</span>
-                          <Send className="w-4 h-4" />
+                          <Send className="w-4 h-4 group-hover/send:translate-x-1 group-hover/send:-translate-y-0.5 transition-transform" />
                         </>
                       )}
                     </motion.button>

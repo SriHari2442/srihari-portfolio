@@ -65,7 +65,7 @@ export const ResumeModal: React.FC<ResumeModalProps> = ({ isOpen, onClose, onDow
             </button>
             <button
               onClick={handleDownload}
-              className="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl text-xs font-bold text-white bg-indigo-600 hover:bg-indigo-700 shadow-sm transition-colors cursor-pointer focus-visible:ring-2 focus-visible:ring-indigo-500 focus-visible:outline-none"
+              className="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl text-xs font-bold text-white primary-btn-glow shadow-md shadow-indigo-500/25 transition-all cursor-pointer focus-visible:ring-2 focus-visible:ring-indigo-500 focus-visible:outline-none"
             >
               <Download className="w-4 h-4" />
               <span>Download Resume PDF</span>

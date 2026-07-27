@@ -63,11 +63,11 @@ export const SkillsSection: React.FC = () => {
       viewport={{ once: true, margin: '-50px' }}
       transition={{ duration: 0.5, ease: 'easeOut' }}
     >
-      <div className="aurora-glass rounded-3xl p-6 sm:p-8 border border-white/80 shadow-lg">
+      <div className="purple-interactive-card rounded-3xl p-6 sm:p-8 shadow-lg">
         {/* Section Header */}
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
           <div className="flex items-center gap-2">
-            <div className="p-2 rounded-xl bg-blue-500/10 text-blue-600">
+            <div className="p-2 rounded-xl bg-blue-500/10 text-blue-600 group-hover:scale-110 transition-transform duration-300">
               <Cpu className="w-5 h-5" />
             </div>
             <h2 className="text-xl sm:text-2xl font-bold text-slate-900 tracking-tight">
@@ -80,10 +80,10 @@ export const SkillsSection: React.FC = () => {
             <button
               onClick={() => setActiveCategory('All')}
               aria-pressed={activeCategory === 'All'}
-              className={`px-3 py-1.5 rounded-xl text-xs font-semibold transition-all cursor-pointer relative focus-visible:ring-2 focus-visible:ring-indigo-500 focus-visible:outline-none ${
+              className={`px-3.5 py-1.5 rounded-xl text-xs font-semibold transition-all cursor-pointer relative focus-visible:ring-2 focus-visible:ring-indigo-500 focus-visible:outline-none ${
                 activeCategory === 'All'
-                  ? 'bg-gradient-to-r from-blue-600 to-indigo-600 text-white shadow-sm'
-                  : 'bg-white/80 text-slate-600 hover:bg-slate-100 hover:text-slate-900'
+                  ? 'primary-btn-glow text-white shadow-md shadow-indigo-500/20'
+                  : 'secondary-btn-purple bg-white/80 text-slate-700 border border-slate-200'
               }`}
             >
               All
@@ -93,10 +93,10 @@ export const SkillsSection: React.FC = () => {
                 key={cat.title}
                 onClick={() => setActiveCategory(cat.title)}
                 aria-pressed={activeCategory === cat.title}
-                className={`px-3 py-1.5 rounded-xl text-xs font-semibold transition-all cursor-pointer relative focus-visible:ring-2 focus-visible:ring-indigo-500 focus-visible:outline-none ${
+                className={`px-3.5 py-1.5 rounded-xl text-xs font-semibold transition-all cursor-pointer relative focus-visible:ring-2 focus-visible:ring-indigo-500 focus-visible:outline-none ${
                   activeCategory === cat.title
-                    ? 'bg-gradient-to-r from-blue-600 to-indigo-600 text-white shadow-sm'
-                    : 'bg-white/80 text-slate-600 hover:bg-slate-100 hover:text-slate-900'
+                    ? 'primary-btn-glow text-white shadow-md shadow-indigo-500/20'
+                    : 'secondary-btn-purple bg-white/80 text-slate-700 border border-slate-200'
                 }`}
               >
                 {cat.title}
@@ -119,16 +119,17 @@ export const SkillsSection: React.FC = () => {
               <motion.div
                 key={category.title}
                 variants={itemVariants}
-                whileHover={shouldReduceMotion ? {} : { y: -4, transition: { duration: 0.2 } }}
-                className="aurora-glass-interactive rounded-2xl p-4 sm:p-5 flex flex-col justify-between border border-white/90 shadow-2xs hover:shadow-md transition-shadow"
+                whileHover={shouldReduceMotion ? {} : { y: -6, scale: 1.01 }}
+                transition={{ duration: 0.25, ease: 'easeOut' }}
+                className="group/cat purple-interactive-card rounded-2xl p-4 sm:p-5 flex flex-col justify-between shadow-xs hover:shadow-xl"
               >
                 <div>
                   {/* Category Header */}
                   <div className="flex items-center gap-2.5 mb-3.5">
-                    <div className={`p-2 rounded-xl bg-gradient-to-tr ${category.color} text-white shadow-xs`}>
+                    <div className={`p-2 rounded-xl bg-gradient-to-tr ${category.color} text-white shadow-xs group-hover/cat:scale-110 group-hover/cat:rotate-3 transition-transform duration-300`}>
                       {getCategoryIcon(category.iconName)}
                     </div>
-                    <h3 className="font-bold text-slate-900 text-sm">{category.title}</h3>
+                    <h3 className="font-bold text-slate-900 group-hover/cat:text-purple-900 transition-colors duration-300 text-sm">{category.title}</h3>
                   </div>
 
                   {/* Skill Pills */}
@@ -139,12 +140,12 @@ export const SkillsSection: React.FC = () => {
                         whileHover={
                           shouldReduceMotion
                             ? {}
-                            : { y: -2, x: 2, transition: { duration: 0.15 } }
+                            : { y: -2, scale: 1.01 }
                         }
-                        className="p-2 rounded-xl bg-white/90 border border-slate-200/60 text-xs font-semibold text-slate-700 flex items-center justify-between group/skill hover:border-indigo-300 hover:shadow-2xs transition-colors cursor-default"
+                        className="p-2.5 rounded-xl bg-white/90 hover:bg-purple-50/90 border border-slate-200/80 hover:border-purple-300 text-xs font-semibold text-slate-700 hover:text-purple-900 flex items-center justify-between group/skill shadow-2xs hover:shadow-sm transition-all duration-200 cursor-default"
                       >
-                        <span className="truncate">{skill}</span>
-                        <Check className="w-3.5 h-3.5 text-indigo-500 opacity-0 group-hover/skill:opacity-100 transition-opacity" />
+                        <span className="truncate group-hover/skill:-translate-y-0.5 transition-transform duration-200">{skill}</span>
+                        <Check className="w-3.5 h-3.5 text-purple-600 opacity-0 group-hover/skill:opacity-100 transition-opacity" />
                       </motion.div>
                     ))}
                   </div>

@@ -111,20 +111,22 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenResume, onDownloadResume, 
                 <a
                   key={link.label}
                   href={link.href}
-                  className={`px-3 py-1.5 rounded-xl text-xs xl:text-sm font-semibold transition-all relative focus-visible:ring-2 focus-visible:ring-indigo-500 focus-visible:ring-offset-1 focus-visible:outline-none ${
+                  className={`group/nav px-3 py-1.5 rounded-xl text-xs xl:text-sm font-semibold transition-all relative focus-visible:ring-2 focus-visible:ring-purple-500 focus-visible:ring-offset-1 focus-visible:outline-none ${
                     isActive
-                      ? 'text-indigo-600 font-bold'
-                      : 'text-slate-600 hover:text-indigo-600 hover:bg-indigo-50/60'
+                      ? 'text-purple-700 font-bold'
+                      : 'text-slate-600 hover:text-purple-700 hover:bg-purple-50/60'
                   }`}
                 >
                   {isActive && (
                     <motion.span
                       layoutId="nav-pill"
-                      className="absolute inset-0 bg-indigo-50/90 rounded-xl -z-10 border border-indigo-100/80"
+                      className="absolute inset-0 bg-purple-50/90 rounded-xl -z-10 border border-purple-200/80 shadow-2xs"
                       transition={{ type: 'spring', stiffness: 400, damping: 30 }}
                     />
                   )}
                   <span className="relative z-10">{link.label}</span>
+                  {/* Animated Purple Underline */}
+                  <span className={`absolute bottom-0.5 left-3 right-3 h-0.5 bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 rounded-full transition-transform duration-300 origin-left ${isActive ? 'scale-x-100' : 'scale-x-0 group-hover/nav:scale-x-100'}`} />
                 </a>
               );
             })}
@@ -135,9 +137,9 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenResume, onDownloadResume, 
             {/* Resume Button */}
             <motion.button
               onClick={onDownloadResume}
-              whileHover={shouldReduceMotion ? {} : { scale: 1.03, y: -1 }}
-              whileTap={shouldReduceMotion ? {} : { scale: 0.97 }}
-              className="hidden sm:inline-flex items-center gap-2 px-4 py-2 rounded-xl text-xs sm:text-sm font-bold text-white bg-gradient-to-r from-blue-600 via-indigo-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 shadow-md shadow-indigo-500/25 transition-all cursor-pointer focus-visible:ring-2 focus-visible:ring-indigo-500 focus-visible:ring-offset-2 focus-visible:outline-none"
+              whileHover={shouldReduceMotion ? {} : { scale: 1.03, y: -2 }}
+              whileTap={shouldReduceMotion ? {} : { scale: 0.96 }}
+              className="hidden sm:inline-flex items-center gap-2 px-4 py-2 rounded-xl text-xs sm:text-sm font-bold text-white primary-btn-glow shadow-md shadow-indigo-500/25 transition-all cursor-pointer focus-visible:ring-2 focus-visible:ring-indigo-500 focus-visible:ring-offset-2 focus-visible:outline-none"
               title="Download Sri Hari Mada Resume PDF"
             >
               <span>Download Resume</span>

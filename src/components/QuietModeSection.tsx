@@ -17,7 +17,7 @@ export const QuietModeSection: React.FC = () => {
 
   return (
     <section id="achievements" className="py-6">
-      <div className="aurora-glass rounded-3xl p-6 sm:p-8 border border-white/80 shadow-lg">
+      <div className="purple-interactive-card rounded-3xl p-6 sm:p-8 shadow-lg">
         {/* Section Header */}
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
           <div>
@@ -54,12 +54,12 @@ export const QuietModeSection: React.FC = () => {
               {PRODUCT_CONCEPT.featuresExplored.map((feature, idx) => (
                 <div
                   key={idx}
-                  className="p-4 rounded-2xl bg-white/80 border border-slate-200/80 flex items-start gap-3 shadow-xs"
+                  className="group/feat p-4 rounded-2xl purple-interactive-card flex items-start gap-3 shadow-xs hover:shadow-md cursor-default"
                 >
-                  <div className="p-2 rounded-xl bg-indigo-50 text-indigo-600 shrink-0 mt-0.5">
+                  <div className="p-2 rounded-xl bg-indigo-50 text-indigo-600 group-hover/feat:bg-purple-600 group-hover/feat:text-white transition-all duration-300 shrink-0 mt-0.5">
                     <CheckCircle className="w-4 h-4" />
                   </div>
-                  <span className="text-xs sm:text-sm font-semibold text-slate-800 leading-snug">
+                  <span className="text-xs sm:text-sm font-semibold text-slate-800 group-hover/feat:text-purple-900 transition-colors duration-300 leading-snug">
                     {feature}
                   </span>
                 </div>

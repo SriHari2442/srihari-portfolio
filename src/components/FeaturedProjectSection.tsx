@@ -116,18 +116,20 @@ export const FeaturedProjectSection: React.FC = () => {
         </div>
 
         {/* Master Case Study Container (Two-column layout on Desktop, Stacked on Mobile) */}
-        <div className="aurora-glass rounded-3xl sm:rounded-[2.5rem] p-6 sm:p-8 lg:p-10 border border-white/90 shadow-2xl overflow-hidden relative group/card">
+        <div className="purple-interactive-card rounded-3xl sm:rounded-[2.5rem] p-6 sm:p-8 lg:p-10 shadow-2xl overflow-hidden relative group/card">
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center">
             
             {/* LEFT / TOP COLUMN: Large Interactive PG Adda Screenshot & Mockup Frame */}
             <div className="lg:col-span-7 space-y-4">
               
-              {/* Browser Window Mockup Frame with Subtle Hover Zoom */}
+              {/* Browser Window Mockup Frame with Subtle Hover Zoom & Purple Glow */}
               <motion.div
-                whileHover={shouldReduceMotion ? {} : { scale: 1.015 }}
+                whileHover={shouldReduceMotion ? {} : { scale: 1.02 }}
                 transition={{ duration: 0.35, ease: 'easeOut' }}
-                className="relative rounded-2xl sm:rounded-3xl overflow-hidden bg-slate-950 border border-slate-800 shadow-2xl group/mockup"
+                className="relative rounded-2xl sm:rounded-3xl overflow-hidden bg-slate-950 border border-slate-800 hover:border-purple-500/60 shadow-2xl group/mockup transition-all duration-300 hover:shadow-[0_0_30px_rgba(168,85,247,0.25)]"
               >
+                {/* Soft Hover Overlay Tint */}
+                <div className="absolute inset-0 bg-gradient-to-tr from-purple-900/10 via-indigo-900/0 to-pink-900/10 opacity-0 group-hover/mockup:opacity-100 transition-opacity duration-300 pointer-events-none z-20" />
                 
                 {/* Browser Top Header */}
                 <div className="px-4 py-3 bg-slate-900/90 border-b border-slate-800 flex items-center justify-between gap-4">
@@ -505,11 +507,11 @@ export const FeaturedProjectSection: React.FC = () => {
                   target="_blank"
                   rel="noopener noreferrer"
                   whileHover={shouldReduceMotion ? {} : { scale: 1.03, y: -2 }}
-                  whileTap={shouldReduceMotion ? {} : { scale: 0.97 }}
-                  className="inline-flex items-center gap-2 px-5 py-3 rounded-2xl text-xs sm:text-sm font-bold text-white bg-gradient-to-r from-blue-600 via-indigo-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 shadow-lg shadow-indigo-500/25 hover:shadow-indigo-500/35 transition-all cursor-pointer focus-visible:ring-2 focus-visible:ring-indigo-500 focus-visible:outline-none"
+                  whileTap={shouldReduceMotion ? {} : { scale: 0.96 }}
+                  className="group/demo inline-flex items-center gap-2 px-5 py-3 rounded-2xl text-xs sm:text-sm font-bold text-white primary-btn-glow shadow-lg shadow-indigo-500/25 transition-all cursor-pointer focus-visible:ring-2 focus-visible:ring-indigo-500 focus-visible:outline-none"
                 >
                   <span>Live Demo</span>
-                  <ExternalLink className="w-4 h-4" />
+                  <ExternalLink className="w-4 h-4 group-hover/demo:translate-x-0.5 group-hover/demo:-translate-y-0.5 transition-transform" />
                 </motion.a>
 
                 {/* 2. GitHub Button */}
@@ -518,22 +520,22 @@ export const FeaturedProjectSection: React.FC = () => {
                   target="_blank"
                   rel="noopener noreferrer"
                   whileHover={shouldReduceMotion ? {} : { scale: 1.02, y: -2 }}
-                  whileTap={shouldReduceMotion ? {} : { scale: 0.97 }}
-                  className="inline-flex items-center gap-2 px-5 py-3 rounded-2xl text-xs sm:text-sm font-bold text-slate-800 aurora-glass border border-slate-200/90 hover:bg-white hover:border-indigo-300 shadow-xs transition-all cursor-pointer focus-visible:ring-2 focus-visible:ring-indigo-500 focus-visible:outline-none"
+                  whileTap={shouldReduceMotion ? {} : { scale: 0.96 }}
+                  className="group/git inline-flex items-center gap-2 px-5 py-3 rounded-2xl text-xs sm:text-sm font-bold text-slate-800 secondary-btn-purple border border-slate-200/90 shadow-xs transition-all cursor-pointer focus-visible:ring-2 focus-visible:ring-indigo-500 focus-visible:outline-none"
                 >
                   <span>GitHub</span>
-                  <ExternalLink className="w-4 h-4 text-indigo-600" />
+                  <ExternalLink className="w-4 h-4 text-indigo-600 group-hover/git:text-purple-700 transition-colors" />
                 </motion.a>
 
                 {/* 3. View Case Study Button */}
                 <motion.button
                   onClick={() => setShowCaseStudyModal(true)}
-                  whileHover={shouldReduceMotion ? {} : { scale: 1.02, y: -1 }}
-                  whileTap={shouldReduceMotion ? {} : { scale: 0.97 }}
-                  className="inline-flex items-center gap-2 px-5 py-3 rounded-2xl text-xs sm:text-sm font-bold text-indigo-700 bg-indigo-50/80 border border-indigo-200/80 hover:bg-indigo-100/80 transition-all cursor-pointer ml-auto focus-visible:ring-2 focus-visible:ring-indigo-500 focus-visible:outline-none"
+                  whileHover={shouldReduceMotion ? {} : { scale: 1.02, y: -2 }}
+                  whileTap={shouldReduceMotion ? {} : { scale: 0.96 }}
+                  className="group/cs inline-flex items-center gap-2 px-5 py-3 rounded-2xl text-xs sm:text-sm font-bold text-indigo-700 secondary-btn-purple border border-indigo-200/80 transition-all cursor-pointer ml-auto focus-visible:ring-2 focus-visible:ring-indigo-500 focus-visible:outline-none"
                 >
                   <span>View Case Study</span>
-                  <ChevronRight className="w-4 h-4" />
+                  <ChevronRight className="w-4 h-4 group-hover/cs:translate-x-1 transition-transform" />
                 </motion.button>
               </div>
 

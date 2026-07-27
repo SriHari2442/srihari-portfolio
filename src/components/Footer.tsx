@@ -24,10 +24,10 @@ export const Footer: React.FC = () => {
         <button
           onClick={scrollToTop}
           aria-label="Scroll back to top of page"
-          className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-semibold text-slate-600 hover:text-indigo-600 hover:bg-indigo-50 border border-slate-200/80 transition-all cursor-pointer focus-visible:ring-2 focus-visible:ring-indigo-500 focus-visible:outline-none"
+          className="group/top inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl text-xs font-semibold text-slate-700 secondary-btn-purple border border-slate-200/80 cursor-pointer focus-visible:ring-2 focus-visible:ring-purple-500 focus-visible:outline-none"
         >
           <span>Back to Top</span>
-          <ArrowUp className="w-3.5 h-3.5" />
+          <ArrowUp className="w-3.5 h-3.5 group-hover/top:-translate-y-0.5 transition-transform text-purple-600" />
         </button>
       </div>
     </footer>

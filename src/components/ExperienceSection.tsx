@@ -50,12 +50,12 @@ export const ExperienceSection: React.FC = () => {
         viewport={{ once: true, margin: '-50px' }}
         transition={{ duration: 0.5, ease: 'easeOut' }}
       >
-        <div className="aurora-glass rounded-3xl p-6 sm:p-8 h-full border border-white/80 shadow-lg flex flex-col justify-between">
+        <div className="purple-interactive-card rounded-3xl p-6 sm:p-8 h-full shadow-lg flex flex-col justify-between">
           <div>
             {/* Section Header */}
             <div className="flex items-center justify-between mb-6">
               <div className="flex items-center gap-2">
-                <div className="p-2 rounded-xl bg-purple-500/10 text-purple-600">
+                <div className="p-2 rounded-xl bg-purple-500/10 text-purple-600 group-hover:scale-110 transition-transform duration-300">
                   <Briefcase className="w-5 h-5" />
                 </div>
                 <h2 className="text-xl sm:text-2xl font-bold text-slate-900 tracking-tight">
@@ -64,7 +64,7 @@ export const ExperienceSection: React.FC = () => {
               </div>
               <button
                 onClick={() => setSelectedExperience(EXPERIENCES[0])}
-                className="text-xs sm:text-sm font-semibold text-indigo-600 hover:text-indigo-800 flex items-center gap-1 transition-colors cursor-pointer focus-visible:ring-2 focus-visible:ring-indigo-500 focus-visible:outline-none rounded-lg px-2 py-1"
+                className="text-xs sm:text-sm font-semibold text-indigo-600 hover:text-purple-700 flex items-center gap-1 transition-colors cursor-pointer focus-visible:ring-2 focus-visible:ring-indigo-500 focus-visible:outline-none rounded-lg px-2 py-1"
               >
                 <span>View Details</span>
                 <ChevronRight className="w-4 h-4" />
@@ -77,27 +77,29 @@ export const ExperienceSection: React.FC = () => {
               initial="hidden"
               whileInView="visible"
               viewport={{ once: true, margin: '-40px' }}
-              className="relative pl-6 space-y-6 before:absolute before:left-2.5 before:top-3 before:bottom-3 before:w-0.5 before:bg-indigo-100"
+              className="relative pl-6 space-y-6 before:absolute before:left-2.5 before:top-3 before:bottom-3 before:w-0.5 before:bg-gradient-to-b before:from-indigo-300 before:via-purple-300 before:to-pink-300"
             >
               {EXPERIENCES.map((exp) => (
                 <motion.div key={exp.id} variants={itemVariants} className="relative group">
                   {/* Timeline Dot Indicator */}
-                  <div className="absolute -left-[1.85rem] top-1.5 w-4 h-4 rounded-full bg-white border-4 border-indigo-600 group-hover:scale-125 transition-transform" />
+                  <div className="absolute -left-[1.85rem] top-2 w-4 h-4 rounded-full bg-white border-4 border-indigo-600 group-hover:border-purple-500 group-hover:bg-purple-100 group-hover:scale-130 group-hover:shadow-[0_0_12px_rgba(168,85,247,0.8)] transition-all duration-300 z-10" />
 
                   <motion.button
                     type="button"
                     onClick={() => setSelectedExperience(exp)}
-                    whileHover={shouldReduceMotion ? {} : { y: -3, transition: { duration: 0.2 } }}
-                    className="w-full text-left p-4 sm:p-5 rounded-2xl bg-white/70 hover:bg-white border border-slate-200/80 hover:border-indigo-200 transition-colors cursor-pointer shadow-xs hover:shadow-md focus-visible:ring-2 focus-visible:ring-indigo-500 focus-visible:outline-none"
+                    whileHover={shouldReduceMotion ? {} : { y: -5, scale: 1.01 }}
+                    whileTap={shouldReduceMotion ? {} : { scale: 0.98 }}
+                    transition={{ duration: 0.25, ease: 'easeOut' }}
+                    className="w-full text-left p-4 sm:p-5 rounded-2xl purple-interactive-card shadow-sm hover:shadow-xl transition-all cursor-pointer focus-visible:ring-2 focus-visible:ring-purple-500 focus-visible:outline-none"
                     aria-label={`View experience details for ${exp.role} at ${exp.company}`}
                   >
                     <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 mb-2">
                       {/* Company & Role */}
                       <div>
-                        <h3 className="font-bold text-slate-900 text-sm sm:text-base group-hover:text-indigo-600 transition-colors">
+                        <h3 className="font-bold text-slate-900 text-sm sm:text-base group-hover:text-purple-800 transition-colors">
                           {exp.role}
                         </h3>
-                        <p className="text-xs text-slate-500 font-semibold">{exp.company}</p>
+                        <p className="text-xs text-slate-500 font-semibold group-hover:text-slate-700 transition-colors">{exp.company}</p>
                       </div>
 
                       {/* Tag & Date */}
@@ -105,19 +107,19 @@ export const ExperienceSection: React.FC = () => {
                         <span className={`px-2.5 py-1 rounded-full text-[11px] font-semibold border ${exp.tagColor}`}>
                           {exp.tag}
                         </span>
-                        <div className="flex items-center gap-1 text-[11px] font-medium text-slate-400">
-                          <Calendar className="w-3 h-3" />
+                        <div className="flex items-center gap-1 text-[11px] font-medium text-slate-400 group-hover:text-slate-600">
+                          <Calendar className="w-3 h-3 text-indigo-500" />
                           <span>{exp.period}</span>
                         </div>
                       </div>
                     </div>
 
-                    <div className="text-xs font-semibold text-indigo-700 mb-1">
+                    <div className="text-xs font-semibold text-indigo-700 group-hover:text-purple-700 mb-1 transition-colors">
                       Project: {exp.project}
                     </div>
 
                     {/* First responsibility summary */}
-                    <p className="text-xs text-slate-600 line-clamp-2 leading-relaxed">
+                    <p className="text-xs text-slate-600 group-hover:text-slate-800 line-clamp-2 leading-relaxed transition-colors">
                       {exp.responsibilities[0]}
                     </p>
                   </motion.button>

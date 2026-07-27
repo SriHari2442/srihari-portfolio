@@ -25,14 +25,99 @@
   -webkit-backdrop-filter: blur(16px);
   border: 1px solid rgba(255, 255, 255, 0.85);
   box-shadow: 0 8px 24px -4px rgba(79, 70, 229, 0.07);
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .aurora-glass-interactive:hover {
-  background: rgba(255, 255, 255, 0.92);
-  border-color: rgba(165, 180, 252, 0.9);
-  box-shadow: 0 16px 36px -6px rgba(99, 102, 241, 0.15), 0 6px 16px -2px rgba(168, 85, 247, 0.1);
-  transform: translateY(-2px);
+  background: linear-gradient(135deg, rgba(238, 242, 255, 0.95), rgba(245, 243, 255, 0.95) 50%, rgba(253, 242, 248, 0.9)) !important;
+  border-color: rgba(165, 180, 252, 0.9) !important;
+  box-shadow: 0 16px 36px -6px rgba(124, 58, 237, 0.18), 0 6px 16px -2px rgba(236, 72, 153, 0.12) !important;
+  transform: translateY(-4px) scale(1.008);
+}
+
+/* Premium Purple Interactive Card Hover Style */
+.purple-interactive-card {
+  background: rgba(255, 255, 255, 0.88);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(226, 232, 240, 0.85);
+  transition: transform 300ms cubic-bezier(0.16, 1, 0.3, 1),
+              background 300ms cubic-bezier(0.16, 1, 0.3, 1),
+              border-color 300ms cubic-bezier(0.16, 1, 0.3, 1),
+              box-shadow 300ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .purple-interactive-card:hover {
+    background: linear-gradient(135deg, rgba(238, 242, 255, 0.96), rgba(245, 243, 255, 0.96) 50%, rgba(253, 242, 248, 0.92)) !important;
+    border-color: rgba(165, 180, 252, 0.9) !important;
+    box-shadow: 0 20px 40px -8px rgba(124, 58, 237, 0.16), 0 8px 20px -4px rgba(236, 72, 153, 0.12) !important;
+    transform: translateY(-6px) scale(1.01);
+  }
+}
+
+.purple-interactive-card:active {
+  transform: translateY(-2px) scale(0.98);
+}
+
+/* Primary Button Interactive Glow & Press */
+.primary-btn-glow {
+  background: linear-gradient(90deg, #2563eb, #7c3aed, #db2777);
+  background-size: 200% 100%;
+  transition: transform 300ms cubic-bezier(0.16, 1, 0.3, 1),
+              box-shadow 300ms cubic-bezier(0.16, 1, 0.3, 1),
+              background-position 300ms ease;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .primary-btn-glow:hover {
+    background-position: 100% 0;
+    transform: translateY(-2px);
+    box-shadow: 0 12px 28px -4px rgba(124, 58, 237, 0.45);
+  }
+}
+
+.primary-btn-glow:active {
+  transform: translateY(0px) scale(0.96);
+}
+
+/* Secondary Button Interactive Hover */
+.secondary-btn-purple {
+  transition: transform 300ms cubic-bezier(0.16, 1, 0.3, 1),
+              background-color 300ms cubic-bezier(0.16, 1, 0.3, 1),
+              border-color 300ms cubic-bezier(0.16, 1, 0.3, 1),
+              color 300ms cubic-bezier(0.16, 1, 0.3, 1),
+              box-shadow 300ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .secondary-btn-purple:hover {
+    background-color: rgba(245, 243, 255, 0.95) !important;
+    border-color: rgba(196, 181, 253, 0.9) !important;
+    color: #5b21b6 !important;
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px -4px rgba(124, 58, 237, 0.15) !important;
+  }
+}
+
+.secondary-btn-purple:active {
+  transform: translateY(0px) scale(0.96);
+}
+
+/* Respect reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  .purple-interactive-card,
+  .purple-interactive-card:hover,
+  .primary-btn-glow,
+  .primary-btn-glow:hover,
+  .secondary-btn-purple,
+  .secondary-btn-purple:hover,
+  .aurora-glass-interactive,
+  .aurora-glass-interactive:hover {
+    transform: none !important;
+    box-shadow: none !important;
+    transition: none !important;
+  }
 }
 
 .aurora-glass-dark {

@@ -47,11 +47,11 @@ export const AboutSection: React.FC = () => {
         viewport={{ once: true, margin: '-50px' }}
         transition={{ duration: 0.5, ease: 'easeOut' }}
       >
-        <div className="aurora-glass rounded-3xl p-6 sm:p-8 h-full flex flex-col justify-between border border-white/80 shadow-lg">
+        <div className="purple-interactive-card rounded-3xl p-6 sm:p-8 h-full flex flex-col justify-between shadow-lg">
           <div>
             {/* Title Badge */}
             <div className="flex items-center gap-2 mb-4">
-              <div className="p-2 rounded-xl bg-blue-500/10 text-blue-600">
+              <div className="p-2 rounded-xl bg-blue-500/10 text-blue-600 group-hover:scale-110 transition-transform duration-300">
                 <User className="w-5 h-5" />
               </div>
               <h2 className="text-xl sm:text-2xl font-bold text-slate-900 tracking-tight">
@@ -74,10 +74,11 @@ export const AboutSection: React.FC = () => {
                     initial={shouldReduceMotion ? { opacity: 0 } : { opacity: 0, x: -12 }}
                     whileInView={{ opacity: 1, x: 0 }}
                     viewport={{ once: true }}
-                    transition={{ delay: idx * 0.08, duration: 0.4 }}
-                    className="flex items-center gap-3 text-slate-700 text-xs sm:text-sm font-medium"
+                    whileHover={shouldReduceMotion ? {} : { x: 4 }}
+                    transition={{ delay: idx * 0.08, duration: 0.3 }}
+                    className="flex items-center gap-3 text-slate-700 hover:text-indigo-900 text-xs sm:text-sm font-medium transition-colors cursor-default group/item"
                   >
-                    <div className="p-1.5 rounded-lg bg-indigo-50 text-indigo-600 shrink-0">
+                    <div className="p-1.5 rounded-lg bg-indigo-50 text-indigo-600 group-hover/item:bg-indigo-600 group-hover/item:text-white transition-all duration-200 shrink-0">
                       <Icon className="w-4 h-4" />
                     </div>
                     <span>{item.label}</span>
@@ -91,12 +92,12 @@ export const AboutSection: React.FC = () => {
           <div>
             <motion.button
               onClick={() => setShowModal(true)}
-              whileHover={shouldReduceMotion ? {} : { scale: 1.02, y: -1 }}
-              whileTap={shouldReduceMotion ? {} : { scale: 0.98 }}
-              className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-5 py-3 rounded-2xl text-xs sm:text-sm font-bold text-white bg-gradient-to-r from-blue-600 via-indigo-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 shadow-md shadow-indigo-500/20 hover:shadow-indigo-500/30 transition-all cursor-pointer"
+              whileHover={shouldReduceMotion ? {} : { scale: 1.02, y: -2 }}
+              whileTap={shouldReduceMotion ? {} : { scale: 0.96 }}
+              className="group/btn w-full sm:w-auto inline-flex items-center justify-center gap-2 px-5 py-3 rounded-2xl text-xs sm:text-sm font-bold text-white primary-btn-glow shadow-md shadow-indigo-500/20 hover:shadow-indigo-500/35 transition-all cursor-pointer focus-visible:ring-2 focus-visible:ring-indigo-500 focus-visible:outline-none"
             >
               <span>View Full Summary</span>
-              <ArrowRight className="w-4 h-4" />
+              <ArrowRight className="w-4 h-4 group-hover/btn:translate-x-1 transition-transform" />
             </motion.button>
           </div>
         </div>
