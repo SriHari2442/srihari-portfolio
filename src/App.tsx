@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Navbar } from './components/Navbar';
 import { HeroSection } from './components/HeroSection';
-import { StatsRow } from './components/StatsRow';
 import { AboutSection } from './components/AboutSection';
 import { ExperienceSection } from './components/ExperienceSection';
 import { FeaturedProjectSection } from './components/FeaturedProjectSection';
@@ -54,26 +53,23 @@ export default function App() {
       />
 
       {/* Main Content Sections */}
-      <main className="flex-1 space-y-6 sm:space-y-10 pb-16 md:pb-8">
-        {/* 1. Hero Section */}
+      <main className="flex-1 pb-16 md:pb-8">
+        {/* 1. Hero Section (includes Statistics Cards) */}
         <HeroSection
           onOpenResume={() => setResumeOpen(true)}
           onDownloadResume={handleDownloadResume}
         />
 
-        {/* 2. Key Highlights Row */}
-        <StatsRow />
-
-        {/* 3. Professional Summary & Experience Grid */}
+        {/* 2. Professional Summary & Experience Grid */}
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-8">
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-stretch">
-            {/* Professional Summary (6 Cols) */}
-            <div className="lg:col-span-6">
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
+            {/* Professional Summary (5 Cols - ~42%) */}
+            <div className="lg:col-span-5 self-start h-fit">
               <AboutSection />
             </div>
 
-            {/* Experience Timeline (6 Cols) */}
-            <div className="lg:col-span-6">
+            {/* Experience Timeline (7 Cols - ~58%) */}
+            <div className="lg:col-span-7 self-start h-fit">
               <ExperienceSection />
             </div>
           </div>
@@ -93,7 +89,10 @@ export default function App() {
       </main>
 
       {/* Footer */}
-      <Footer />
+      <Footer
+        onOpenResume={() => setResumeOpen(true)}
+        onDownloadResume={handleDownloadResume}
+      />
 
       {/* Resume Modal Drawer */}
       <ResumeModal

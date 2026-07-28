@@ -133,19 +133,23 @@ export const SkillsSection: React.FC = () => {
                   </div>
 
                   {/* Skill Pills */}
-                  <div className="space-y-1.5">
+                  <div className="space-y-2">
                     {category.skills.map((skill) => (
                       <motion.div
                         key={skill}
                         whileHover={
                           shouldReduceMotion
                             ? {}
-                            : { y: -2, scale: 1.01 }
+                            : { y: -3, scale: 1.03 }
                         }
-                        className="p-2.5 rounded-xl bg-white/90 hover:bg-purple-50/90 border border-slate-200/80 hover:border-purple-300 text-xs font-semibold text-slate-700 hover:text-purple-900 flex items-center justify-between group/skill shadow-2xs hover:shadow-sm transition-all duration-200 cursor-default"
+                        transition={{ duration: 0.2, ease: 'easeOut' }}
+                        className="px-3.5 py-2.5 rounded-xl bg-white/90 dark:bg-slate-900/90 border border-purple-200/80 dark:border-purple-800/80 hover:border-purple-400 dark:hover:border-purple-400 text-xs sm:text-sm font-bold text-slate-800 dark:text-slate-100 flex items-center justify-between gap-2 shadow-xs hover:shadow-[0_0_20px_rgba(168,85,247,0.4)] hover:shadow-purple-500/20 hover:bg-gradient-to-r hover:from-purple-50/80 hover:to-indigo-50/80 dark:hover:from-purple-950/60 dark:hover:to-slate-900/90 transition-all duration-200 cursor-default select-none group/pill"
                       >
-                        <span className="truncate group-hover/skill:-translate-y-0.5 transition-transform duration-200">{skill}</span>
-                        <Check className="w-3.5 h-3.5 text-purple-600 opacity-0 group-hover/skill:opacity-100 transition-opacity" />
+                        <span className="flex items-center gap-2 truncate">
+                          <span className="w-2 h-2 rounded-full bg-purple-500 group-hover/pill:bg-purple-400 group-hover/pill:shadow-[0_0_8px_rgba(168,85,247,0.9)] transition-all shrink-0" />
+                          <span className="truncate group-hover/pill:text-purple-950 dark:group-hover/pill:text-purple-200 transition-colors">{skill}</span>
+                        </span>
+                        <Check className="w-3.5 h-3.5 text-purple-600 dark:text-purple-400 opacity-60 group-hover/pill:opacity-100 group-hover/pill:scale-110 transition-all shrink-0" />
                       </motion.div>
                     ))}
                   </div>

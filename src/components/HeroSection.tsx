@@ -3,6 +3,7 @@ import { ArrowRight, Download, MapPin } from 'lucide-react';
 import { motion, useReducedMotion } from 'motion/react';
 import { PERSONAL_INFO } from '../data/portfolioData';
 import { VideoPlayer } from './VideoPlayer';
+import { StatsRow } from './StatsRow';
 
 interface HeroSectionProps {
   onOpenResume: () => void;
@@ -51,7 +52,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ onOpenResume, onDownlo
   };
 
   return (
-    <section id="home" className="relative pt-28 sm:pt-32 lg:pt-36 pb-16 sm:pb-24 lg:pb-28 overflow-hidden min-h-[90vh] lg:min-h-[92vh] flex items-center">
+    <section id="home" className="relative pt-28 sm:pt-32 lg:pt-36 pb-12 sm:pb-16 overflow-hidden">
       {/* Background Ambient Glowing Blobs with Soft Motion */}
       <motion.div
         animate={
@@ -182,6 +183,11 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ onOpenResume, onDownlo
             <VideoPlayer shouldReduceMotion={shouldReduceMotion ?? false} />
           </motion.div>
 
+        </div>
+
+        {/* Statistics Cards - Closing Element of Hero Section */}
+        <div className="mt-10 sm:mt-12 lg:mt-14 w-full">
+          <StatsRow />
         </div>
       </div>
     </section>

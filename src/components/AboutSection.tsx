@@ -41,55 +41,53 @@ export const AboutSection: React.FC = () => {
     <>
       <motion.section
         id="about"
-        className="py-6 h-full"
+        className="h-fit"
         initial={shouldReduceMotion ? { opacity: 0 } : { opacity: 0, y: 24 }}
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true, margin: '-50px' }}
         transition={{ duration: 0.5, ease: 'easeOut' }}
       >
-        <div className="purple-interactive-card rounded-3xl p-6 sm:p-8 h-full flex flex-col justify-between shadow-lg">
-          <div>
-            {/* Title Badge */}
-            <div className="flex items-center gap-2 mb-4">
-              <div className="p-2 rounded-xl bg-blue-500/10 text-blue-600 group-hover:scale-110 transition-transform duration-300">
-                <User className="w-5 h-5" />
-              </div>
-              <h2 className="text-xl sm:text-2xl font-bold text-slate-900 tracking-tight">
-                Professional Summary
-              </h2>
+        <div className="purple-interactive-card rounded-3xl p-6 sm:p-8 h-fit shadow-lg">
+          {/* Title Badge */}
+          <div className="flex items-center gap-2 mb-4">
+            <div className="p-2 rounded-xl bg-blue-500/10 text-blue-600 group-hover:scale-110 transition-transform duration-300">
+              <User className="w-5 h-5" />
             </div>
+            <h2 className="text-xl sm:text-2xl font-bold text-slate-900 tracking-tight">
+              About Me
+            </h2>
+          </div>
 
-            {/* Description */}
-            <p className="text-slate-600 text-sm sm:text-base leading-relaxed mb-6 font-normal">
-              {PERSONAL_INFO.professionalSummary}
-            </p>
+          {/* Description */}
+          <p className="text-slate-600 text-sm sm:text-base leading-relaxed mb-6 font-normal">
+            {PERSONAL_INFO.professionalSummary}
+          </p>
 
-            {/* Bullet Highlights Grid */}
-            <div className="space-y-3 mb-8">
-              {highlights.map((item, idx) => {
-                const Icon = item.icon;
-                return (
-                  <motion.div
-                    key={item.label}
-                    initial={shouldReduceMotion ? { opacity: 0 } : { opacity: 0, x: -12 }}
-                    whileInView={{ opacity: 1, x: 0 }}
-                    viewport={{ once: true }}
-                    whileHover={shouldReduceMotion ? {} : { x: 4 }}
-                    transition={{ delay: idx * 0.08, duration: 0.3 }}
-                    className="flex items-center gap-3 text-slate-700 hover:text-indigo-900 text-xs sm:text-sm font-medium transition-colors cursor-default group/item"
-                  >
-                    <div className="p-1.5 rounded-lg bg-indigo-50 text-indigo-600 group-hover/item:bg-indigo-600 group-hover/item:text-white transition-all duration-200 shrink-0">
-                      <Icon className="w-4 h-4" />
-                    </div>
-                    <span>{item.label}</span>
-                  </motion.div>
-                );
-              })}
-            </div>
+          {/* Bullet Highlights Grid */}
+          <div className="space-y-3">
+            {highlights.map((item, idx) => {
+              const Icon = item.icon;
+              return (
+                <motion.div
+                  key={item.label}
+                  initial={shouldReduceMotion ? { opacity: 0 } : { opacity: 0, x: -12 }}
+                  whileInView={{ opacity: 1, x: 0 }}
+                  viewport={{ once: true }}
+                  whileHover={shouldReduceMotion ? {} : { x: 4 }}
+                  transition={{ delay: idx * 0.08, duration: 0.3 }}
+                  className="flex items-center gap-3 text-slate-700 hover:text-indigo-900 text-xs sm:text-sm font-medium transition-colors cursor-default group/item"
+                >
+                  <div className="p-1.5 rounded-lg bg-indigo-50 text-indigo-600 group-hover/item:bg-indigo-600 group-hover/item:text-white transition-all duration-200 shrink-0">
+                    <Icon className="w-4 h-4" />
+                  </div>
+                  <span>{item.label}</span>
+                </motion.div>
+              );
+            })}
           </div>
 
           {/* Action Button */}
-          <div>
+          <div className="mt-7">
             <motion.button
               onClick={() => setShowModal(true)}
               whileHover={shouldReduceMotion ? {} : { scale: 1.02, y: -2 }}

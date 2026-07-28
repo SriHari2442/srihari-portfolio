@@ -19,7 +19,7 @@ export const PERSONAL_INFO = {
   githubHandle: 'SriHari2442',
   heroDescription: 'I build scalable, responsive, accessible, and user-focused web applications using React.js and TypeScript.',
   professionalSummary:
-    'Frontend Engineer with 3+ years of experience building scalable, responsive, and accessible web applications using React.js and TypeScript across banking and logistics domains. Experienced in reusable component architecture, state management, REST API integration, performance optimization, and WCAG-compliant development. Independently designed and deployed PG Adda, a responsive frontend product prototype demonstrating end-to-end development, product thinking, and user-focused interface design.',
+    'Frontend Engineer with experience in enterprise web development using React.js and TypeScript. I specialize in building maintainable, high-performance, and accessible user interfaces for complex domain applications. By pairing solid component architecture with product thinking, I transform intricate requirements into clean, scalable frontend solutions and intuitive user experiences. My work spans engineering reusable component systems, optimizing state management, and ensuring seamless API integration. Driven by a passion for creating intuitive user experiences, I focus on WCAG compliance, code quality, and long-term maintainability to deliver software that balances technical excellence with real product impact.',
 };
 
 export const STATS: Stat[] = [
@@ -132,23 +132,42 @@ export const EXPERIENCES: Experience[] = [
 
 export const FEATURED_PROJECT: FeaturedProject = {
   name: 'PG Adda',
-  subtitle: 'Frontend Product Prototype for PG and Co-Living Discovery',
+  subtitle: 'Frontend Product Prototype for PG & Co-Living Discovery',
   type: 'Personal Project',
   description:
-    'PG Adda is a responsive frontend product prototype designed to help users discover PG and co-living accommodation in Hyderabad.',
+    'PG Adda is a responsive frontend product prototype designed to simplify the discovery experience through modern search, filtering, favourites, property exploration, and visit scheduling workflows.',
+  challenge:
+    'Finding PG accommodation is often frustrating because information is scattered across different platforms, many listings are outdated, and users spend significant time contacting multiple owners before finding a suitable place.',
+  solution:
+    'PG Adda is a responsive frontend product prototype designed to simplify the discovery experience through modern search, filtering, favourites, property exploration, and visit scheduling workflows.',
+  keyContributions: [
+    'Designed the complete user journey',
+    'Built reusable React and TypeScript components',
+    'Created responsive desktop and mobile layouts',
+    'Implemented filtering and search experiences',
+    'Designed enquiry and visit scheduling flows',
+    'Focused on accessibility and intuitive UX',
+  ],
+  engineeringHighlights: [
+    'Component-based architecture',
+    'TypeScript-first development',
+    'Responsive UI',
+    'Accessible interactions',
+    'Modern React patterns',
+    'Product-first thinking',
+  ],
   features: [
     'Location-based search',
-    'Budget filtering',
-    'Amenity filtering',
-    'Tenant-category filtering',
+    'Budget filters',
+    'Amenity filters',
+    'Tenant-category filters',
     'Sorting',
     'Favourites',
     'Detailed property views',
-    'Property enquiry',
+    'Call, WhatsApp, and email actions',
     'Site-visit date and time selection',
     'Confirmation feedback',
-    'Call, WhatsApp, and email actions',
-    'Responsive desktop and mobile interfaces',
+    'Responsive desktop and mobile layouts',
   ],
   technologies: [
     'React.js',
@@ -183,52 +202,28 @@ export const PRODUCT_CONCEPT: ProductConcept = {
 
 export const SKILL_CATEGORIES: SkillCategory[] = [
   {
-    title: 'Languages',
-    iconName: 'Code2',
-    skills: ['JavaScript ES6+', 'TypeScript'],
-    color: 'from-blue-500 to-indigo-600',
-  },
-  {
     title: 'Frontend',
     iconName: 'Layout',
-    skills: ['React.js', 'React Hooks', 'HTML5', 'CSS3', 'React Router'],
-    color: 'from-indigo-500 to-purple-600',
+    skills: ['React.js', 'TypeScript', 'JavaScript', 'HTML5', 'CSS3'],
+    color: 'from-purple-600 to-indigo-600',
   },
   {
-    title: 'State Management',
-    iconName: 'Layers',
-    skills: ['Redux', 'Redux Toolkit', 'Context API'],
+    title: 'Architecture',
+    iconName: 'Cpu',
+    skills: ['REST APIs', 'Component Architecture', 'Responsive Design', 'Accessibility'],
+    color: 'from-indigo-600 to-purple-600',
+  },
+  {
+    title: 'Development',
+    iconName: 'Wrench',
+    skills: ['Git', 'GitHub', 'Vite', 'Jenkins', 'OpenShift'],
     color: 'from-purple-500 to-pink-600',
   },
   {
-    title: 'Styling',
-    iconName: 'Palette',
-    skills: ['Tailwind CSS', 'Bootstrap', 'Responsive Design'],
-    color: 'from-pink-500 to-rose-600',
-  },
-  {
-    title: 'Architecture & APIs',
-    iconName: 'Cpu',
-    skills: ['Component-Based Architecture', 'REST APIs'],
-    color: 'from-amber-500 to-orange-600',
-  },
-  {
-    title: 'Development Tools',
-    iconName: 'Wrench',
-    skills: ['Git', 'GitHub', 'NPM', 'Vite', 'Jenkins', 'OpenShift', 'Jira', 'Vercel'],
-    color: 'from-emerald-500 to-teal-600',
-  },
-  {
-    title: 'Analytics & Accessibility',
-    iconName: 'ShieldCheck',
-    skills: ['Adobe Analytics', 'Contentsquare', 'WCAG', 'ADA'],
-    color: 'from-teal-500 to-cyan-600',
-  },
-  {
-    title: 'AI-Assisted Development',
+    title: 'AI',
     iconName: 'Sparkles',
-    skills: ['GitHub Copilot', 'Claude', 'ChatGPT', 'Gemini', 'Google AI Studio', 'NotebookLM'],
-    color: 'from-violet-500 to-purple-600',
+    skills: ['Claude', 'ChatGPT', 'Gemini', 'Google AI Studio', 'NotebookLM'],
+    color: 'from-pink-600 to-violet-600',
   },
 ];
 

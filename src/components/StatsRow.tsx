@@ -88,43 +88,39 @@ export const StatsRow: React.FC = () => {
   };
 
   return (
-    <section className="py-6 sm:py-10">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <motion.div
+      variants={containerVariants}
+      initial="hidden"
+      whileInView="visible"
+      viewport={{ once: true, margin: '-50px' }}
+      className="grid grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6"
+    >
+      {STATS.map((stat) => (
         <motion.div
-          variants={containerVariants}
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true, margin: '-50px' }}
-          className="grid grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6"
+          key={stat.id}
+          variants={cardVariants}
+          whileHover={shouldReduceMotion ? {} : { y: -6, scale: 1.01 }}
+          transition={{ duration: 0.25, ease: 'easeOut' }}
+          className="group purple-interactive-card rounded-2xl p-4 sm:p-6 flex items-center gap-3.5 sm:gap-5 cursor-default shadow-sm hover:shadow-xl"
         >
-          {STATS.map((stat) => (
-            <motion.div
-              key={stat.id}
-              variants={cardVariants}
-              whileHover={shouldReduceMotion ? {} : { y: -6, scale: 1.01 }}
-              transition={{ duration: 0.25, ease: 'easeOut' }}
-              className="group purple-interactive-card rounded-2xl p-4 sm:p-6 flex items-center gap-3.5 sm:gap-5 cursor-default shadow-sm hover:shadow-xl"
-            >
-              {/* Icon Badge */}
-              <div
-                className={`w-11 h-11 sm:w-14 sm:h-14 rounded-2xl flex items-center justify-center shrink-0 shadow-sm transition-transform duration-300 group-hover:scale-110 group-hover:rotate-3 ${stat.badgeBg}`}
-              >
-                {getIcon(stat.iconName)}
-              </div>
+          {/* Icon Badge */}
+          <div
+            className={`w-11 h-11 sm:w-14 sm:h-14 rounded-2xl flex items-center justify-center shrink-0 shadow-sm transition-transform duration-300 group-hover:scale-110 group-hover:rotate-3 ${stat.badgeBg}`}
+          >
+            {getIcon(stat.iconName)}
+          </div>
 
-              {/* Metric Text */}
-              <div className="min-w-0">
-                <div className={`text-xl sm:text-2xl lg:text-3xl font-black tracking-tight transition-colors duration-300 group-hover:text-purple-900 ${stat.textColor}`}>
-                  <CountUpValue valueStr={stat.value} />
-                </div>
-                <div className="text-xs sm:text-sm font-semibold text-slate-500 group-hover:text-slate-700 transition-colors duration-300 truncate">
-                  {stat.label}
-                </div>
-              </div>
-            </motion.div>
-          ))}
+          {/* Metric Text */}
+          <div className="min-w-0">
+            <div className={`text-xl sm:text-2xl lg:text-3xl font-black tracking-tight transition-colors duration-300 group-hover:text-purple-900 ${stat.textColor}`}>
+              <CountUpValue valueStr={stat.value} />
+            </div>
+            <div className="text-xs sm:text-sm font-semibold text-slate-500 group-hover:text-slate-700 transition-colors duration-300 truncate">
+              {stat.label}
+            </div>
+          </div>
         </motion.div>
-      </div>
-    </section>
+      ))}
+    </motion.div>
   );
 };

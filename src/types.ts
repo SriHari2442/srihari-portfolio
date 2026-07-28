@@ -29,6 +29,10 @@ export interface FeaturedProject {
   subtitle: string;
   type: string;
   description: string;
+  challenge?: string;
+  solution?: string;
+  keyContributions?: string[];
+  engineeringHighlights?: string[];
   features: string[];
   technologies: string[];
   liveUrl: string;

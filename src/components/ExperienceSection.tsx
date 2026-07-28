@@ -1,8 +1,20 @@
 import React, { useState, useEffect } from 'react';
-import { Briefcase, Calendar, ChevronRight, CheckCircle, X, MapPin } from 'lucide-react';
+import { Briefcase, Calendar, ChevronRight, CheckCircle, X, MapPin, ArrowDown, Sparkles } from 'lucide-react';
 import { motion, AnimatePresence, useReducedMotion } from 'motion/react';
 import { EXPERIENCES } from '../data/portfolioData';
 import { Experience } from '../types';
+
+interface TimelineNode {
+  id: string;
+  year: string;
+  company: string;
+  role: string;
+  duration: string;
+  isCurrent?: boolean;
+  impactSummary: string;
+  technologies: string[];
+  experienceRef?: Experience;
+}
 
 export const ExperienceSection: React.FC = () => {
   const [selectedExperience, setSelectedExperience] = useState<Experience | null>(null);
@@ -21,21 +33,51 @@ export const ExperienceSection: React.FC = () => {
     return () => window.removeEventListener('keydown', handleKeyDown);
   }, [selectedExperience]);
 
+  const encoreExp = EXPERIENCES.find((e) => e.id === 'encore') || EXPERIENCES[1];
+  const virtusaExp = EXPERIENCES.find((e) => e.id === 'virtusa') || EXPERIENCES[0];
+
+  // 2-Stage Career Timeline Nodes
+  const timelineNodes: TimelineNode[] = [
+    {
+      id: '2022-encore',
+      year: '2022 – 2024',
+      company: 'Encore IT Services Pvt. Ltd.',
+      role: 'Frontend React Developer',
+      duration: 'November 2022 – May 2024',
+      impactSummary:
+        'Engineered reusable React components, configurable reporting dashboards, and operational workflow modules for Span Alaska Matson logistics platform.',
+      technologies: ['React.js', 'JavaScript ES6+', 'React Hooks', 'Context API', 'HTML5', 'CSS3', 'Bootstrap', 'REST APIs'],
+      experienceRef: encoreExp,
+    },
+    {
+      id: '2024-virtusa',
+      year: '2024 – Present',
+      company: 'Virtusa Consulting Services Pvt. Ltd.',
+      role: 'Software Engineer – Frontend',
+      duration: 'August 2024 – Present',
+      isCurrent: true,
+      impactSummary:
+        'Building scalable, accessible, and high-performance React and TypeScript applications for enterprise banking. Focused on reusable component architecture, WCAG-compliant accessibility, REST API integration, release coordination, and delivering maintainable frontend solutions in Agile environments.',
+      technologies: ['React.js', 'TypeScript', 'Component Architecture', 'WCAG / ADA', 'REST APIs', 'Performance Optimization'],
+      experienceRef: virtusaExp,
+    },
+  ];
+
   const containerVariants = {
     hidden: { opacity: 0 },
     visible: {
       opacity: 1,
       transition: {
-        staggerChildren: shouldReduceMotion ? 0 : 0.15,
+        staggerChildren: shouldReduceMotion ? 0 : 0.18,
       },
     },
   };
 
   const itemVariants = {
-    hidden: shouldReduceMotion ? { opacity: 0 } : { opacity: 0, x: -20 },
+    hidden: shouldReduceMotion ? { opacity: 0 } : { opacity: 0, y: 20 },
     visible: {
       opacity: 1,
-      x: 0,
+      y: 0,
       transition: { duration: 0.5, ease: 'easeOut' },
     },
   };
@@ -44,86 +86,147 @@ export const ExperienceSection: React.FC = () => {
     <>
       <motion.section
         id="experience"
-        className="py-6 h-full"
+        className="h-fit"
         initial={shouldReduceMotion ? { opacity: 0 } : { opacity: 0, y: 24 }}
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true, margin: '-50px' }}
         transition={{ duration: 0.5, ease: 'easeOut' }}
       >
-        <div className="purple-interactive-card rounded-3xl p-6 sm:p-8 h-full shadow-lg flex flex-col justify-between">
+        <div className="purple-interactive-card rounded-3xl p-6 sm:p-8 h-fit shadow-lg">
           <div>
             {/* Section Header */}
-            <div className="flex items-center justify-between mb-6">
-              <div className="flex items-center gap-2">
-                <div className="p-2 rounded-xl bg-purple-500/10 text-purple-600 group-hover:scale-110 transition-transform duration-300">
+            <div className="flex items-center justify-between mb-8 pb-4 border-b border-purple-200/60 dark:border-purple-900/50">
+              <div className="flex items-center gap-2.5">
+                <div className="p-2.5 rounded-2xl bg-purple-500/10 text-purple-600 dark:text-purple-400 border border-purple-200/50 dark:border-purple-800/50 shadow-xs">
                   <Briefcase className="w-5 h-5" />
                 </div>
-                <h2 className="text-xl sm:text-2xl font-bold text-slate-900 tracking-tight">
-                  Professional Experience
-                </h2>
+                <div>
+                  <h2 className="text-xl sm:text-2xl font-extrabold text-slate-900 dark:text-white tracking-tight">
+                    Career Timeline
+                  </h2>
+                  <p className="text-xs text-slate-500 dark:text-slate-400 font-medium">
+                    Enterprise Frontend Engineering Milestones
+                  </p>
+                </div>
               </div>
               <button
-                onClick={() => setSelectedExperience(EXPERIENCES[0])}
-                className="text-xs sm:text-sm font-semibold text-indigo-600 hover:text-purple-700 flex items-center gap-1 transition-colors cursor-pointer focus-visible:ring-2 focus-visible:ring-indigo-500 focus-visible:outline-none rounded-lg px-2 py-1"
+                onClick={() => setSelectedExperience(virtusaExp)}
+                className="text-xs sm:text-sm font-bold text-indigo-600 hover:text-purple-700 dark:text-indigo-400 dark:hover:text-purple-300 flex items-center gap-1 transition-colors cursor-pointer focus-visible:ring-2 focus-visible:ring-indigo-500 focus-visible:outline-none rounded-lg px-2 py-1"
               >
-                <span>View Details</span>
+                <span>Full Details</span>
                 <ChevronRight className="w-4 h-4" />
               </button>
             </div>
 
-            {/* Timeline Vertical Stack */}
+            {/* Premium Career Timeline Container */}
             <motion.div
               variants={containerVariants}
               initial="hidden"
               whileInView="visible"
               viewport={{ once: true, margin: '-40px' }}
-              className="relative pl-6 space-y-6 before:absolute before:left-2.5 before:top-3 before:bottom-3 before:w-0.5 before:bg-gradient-to-b before:from-indigo-300 before:via-purple-300 before:to-pink-300"
+              className="relative pl-6 sm:pl-10 space-y-2 before:absolute before:left-2 sm:before:left-3.5 before:top-4 before:bottom-6 before:w-1 before:bg-gradient-to-b before:from-purple-500 before:via-indigo-500 before:to-emerald-500 before:rounded-full before:shadow-[0_0_10px_rgba(168,85,247,0.3)]"
             >
-              {EXPERIENCES.map((exp) => (
-                <motion.div key={exp.id} variants={itemVariants} className="relative group">
-                  {/* Timeline Dot Indicator */}
-                  <div className="absolute -left-[1.85rem] top-2 w-4 h-4 rounded-full bg-white border-4 border-indigo-600 group-hover:border-purple-500 group-hover:bg-purple-100 group-hover:scale-130 group-hover:shadow-[0_0_12px_rgba(168,85,247,0.8)] transition-all duration-300 z-10" />
+              {timelineNodes.map((node, index) => (
+                <React.Fragment key={node.id}>
+                  <motion.div variants={itemVariants} className="relative group/card">
+                    {/* Glowing Node Circle Indicator */}
+                    <div className="absolute -left-[1.85rem] sm:-left-[2.85rem] top-6 -translate-y-1/2 w-6 h-6 rounded-full bg-white dark:bg-slate-900 border-2 border-purple-500 dark:border-purple-400 shadow-[0_0_14px_rgba(168,85,247,0.6)] flex items-center justify-center z-10 group-hover/card:scale-125 transition-transform duration-300">
+                      <div
+                        className={`w-2.5 h-2.5 rounded-full ${
+                          node.isCurrent ? 'bg-emerald-500 animate-ping' : 'bg-purple-600'
+                        }`}
+                      />
+                    </div>
 
-                  <motion.button
-                    type="button"
-                    onClick={() => setSelectedExperience(exp)}
-                    whileHover={shouldReduceMotion ? {} : { y: -5, scale: 1.01 }}
-                    whileTap={shouldReduceMotion ? {} : { scale: 0.98 }}
-                    transition={{ duration: 0.25, ease: 'easeOut' }}
-                    className="w-full text-left p-4 sm:p-5 rounded-2xl purple-interactive-card shadow-sm hover:shadow-xl transition-all cursor-pointer focus-visible:ring-2 focus-visible:ring-purple-500 focus-visible:outline-none"
-                    aria-label={`View experience details for ${exp.role} at ${exp.company}`}
-                  >
-                    <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 mb-2">
-                      {/* Company & Role */}
-                      <div>
-                        <h3 className="font-bold text-slate-900 text-sm sm:text-base group-hover:text-purple-800 transition-colors">
-                          {exp.role}
-                        </h3>
-                        <p className="text-xs text-slate-500 font-semibold group-hover:text-slate-700 transition-colors">{exp.company}</p>
-                      </div>
+                    {/* Premium Glass Timeline Card */}
+                    <motion.div
+                      whileHover={shouldReduceMotion ? {} : { y: -4, scale: 1.01 }}
+                      transition={{ duration: 0.25, ease: 'easeOut' }}
+                      className="p-5 sm:p-6 rounded-2xl bg-white/80 dark:bg-slate-900/80 backdrop-blur-xl border border-purple-200/70 dark:border-purple-900/60 hover:border-purple-400/80 dark:hover:border-purple-500/80 shadow-md hover:shadow-2xl transition-all duration-300 relative overflow-hidden group/inner"
+                    >
+                      {/* Glass Overlay Light Reflection */}
+                      <div className="absolute inset-0 bg-gradient-to-r from-purple-500/5 via-indigo-500/5 to-emerald-500/5 opacity-0 group-hover/inner:opacity-100 transition-opacity duration-300 pointer-events-none" />
 
-                      {/* Tag & Date */}
-                      <div className="flex flex-wrap items-center gap-2">
-                        <span className={`px-2.5 py-1 rounded-full text-[11px] font-semibold border ${exp.tagColor}`}>
-                          {exp.tag}
+                      {/* Timeline Card Header: Year Pill & Duration */}
+                      <div className="flex flex-wrap items-center justify-between gap-2 mb-3">
+                        <span className="px-3 py-1 rounded-full text-xs font-black tracking-wider uppercase flex items-center gap-1.5 shadow-sm bg-gradient-to-r from-purple-600 via-indigo-600 to-purple-700 text-white">
+                          <Calendar className="w-3.5 h-3.5" />
+                          <span>{node.year}</span>
                         </span>
-                        <div className="flex items-center gap-1 text-[11px] font-medium text-slate-400 group-hover:text-slate-600">
-                          <Calendar className="w-3 h-3 text-indigo-500" />
-                          <span>{exp.period}</span>
+
+                        <div className="flex flex-wrap items-center gap-2">
+                          {node.duration && (
+                            <div className="flex items-center gap-1 text-xs font-bold text-slate-500 dark:text-slate-400 bg-slate-100 dark:bg-slate-800/80 px-2.5 py-1 rounded-lg border border-slate-200 dark:border-slate-700">
+                              <Calendar className="w-3 h-3 text-indigo-500" />
+                              <span>{node.duration}</span>
+                            </div>
+                          )}
+                          {node.isCurrent && (
+                            <span className="px-2.5 py-1 rounded-full text-[10px] font-black tracking-wider uppercase bg-emerald-500/15 text-emerald-700 dark:text-emerald-400 border border-emerald-500/30 flex items-center gap-1 shadow-2xs">
+                              <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse inline-block" />
+                              <span>Current</span>
+                            </span>
+                          )}
                         </div>
                       </div>
-                    </div>
 
-                    <div className="text-xs font-semibold text-indigo-700 group-hover:text-purple-700 mb-1 transition-colors">
-                      Project: {exp.project}
-                    </div>
+                      {/* Role & Company */}
+                      <div className="mb-3.5 space-y-1">
+                        <h3 className="text-base sm:text-lg font-extrabold text-slate-900 dark:text-white tracking-tight group-hover/inner:text-purple-700 dark:group-hover/inner:text-purple-300 transition-colors">
+                          {node.role}
+                        </h3>
+                        <p className="text-xs sm:text-sm font-bold text-purple-700 dark:text-purple-400">
+                          {node.company}
+                        </p>
+                      </div>
 
-                    {/* First responsibility summary */}
-                    <p className="text-xs text-slate-600 group-hover:text-slate-800 line-clamp-2 leading-relaxed transition-colors">
-                      {exp.responsibilities[0]}
-                    </p>
-                  </motion.button>
-                </motion.div>
+                      {/* Impact Summary */}
+                      <p className="text-xs sm:text-sm text-slate-600 dark:text-slate-300 leading-relaxed mb-4 font-medium">
+                        {node.impactSummary}
+                      </p>
+
+                      {/* Technologies Badges */}
+                      <div className="mt-5 space-y-2">
+                        <span className="text-[10px] font-extrabold uppercase tracking-wider text-slate-400 dark:text-slate-500">
+                          CORE TECHNOLOGIES
+                        </span>
+                        <div className="flex flex-wrap gap-1.5">
+                          {node.technologies.map((tech) => (
+                            <span
+                              key={tech}
+                              className="px-2.5 py-1 rounded-lg text-xs font-semibold bg-purple-50 dark:bg-purple-950/60 text-purple-700 dark:text-purple-300 border border-purple-200/60 dark:border-purple-800/60 shadow-2xs"
+                            >
+                              {tech}
+                            </span>
+                          ))}
+                        </div>
+                      </div>
+
+                      {/* Action Button for Full Responsibilities Modal */}
+                      {node.experienceRef && (
+                        <div className="mt-4 pt-3 border-t border-purple-100/80 dark:border-purple-900/40 flex justify-end">
+                          <button
+                            type="button"
+                            onClick={() => setSelectedExperience(node.experienceRef!)}
+                            className="text-xs font-bold text-indigo-600 hover:text-purple-700 dark:text-indigo-400 dark:hover:text-purple-300 flex items-center gap-1 cursor-pointer transition-colors"
+                          >
+                            <span>View Experience Details</span>
+                            <ChevronRight className="w-3.5 h-3.5" />
+                          </button>
+                        </div>
+                      )}
+                    </motion.div>
+                  </motion.div>
+
+                  {/* Downward Arrow Indicator Between Timeline Nodes (↓) */}
+                  {index < timelineNodes.length - 1 && (
+                    <div className="py-2.5 flex items-center justify-start pl-2 sm:pl-4">
+                      <div className="w-7 h-7 rounded-full bg-purple-100 dark:bg-purple-950/80 border border-purple-300 dark:border-purple-700 text-purple-600 dark:text-purple-300 flex items-center justify-center font-black text-xs shadow-xs animate-bounce">
+                        <ArrowDown className="w-3.5 h-3.5" />
+                      </div>
+                    </div>
+                  )}
+                </React.Fragment>
               ))}
             </motion.div>
           </div>
