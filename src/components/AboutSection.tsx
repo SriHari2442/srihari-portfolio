@@ -109,7 +109,7 @@ export const AboutSection: React.FC = () => {
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             transition={{ duration: 0.2 }}
-            className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-md"
+            className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-[#0f172a]/60 backdrop-blur-md"
             role="dialog"
             aria-modal="true"
             aria-labelledby="about-modal-title"
@@ -122,54 +122,54 @@ export const AboutSection: React.FC = () => {
               animate={{ opacity: 1, scale: 1, y: 0 }}
               exit={shouldReduceMotion ? { opacity: 0 } : { opacity: 0, scale: 0.94, y: 10 }}
               transition={{ duration: 0.25, ease: 'easeOut' }}
-              className="relative w-full max-w-2xl aurora-glass rounded-3xl p-6 sm:p-8 shadow-2xl border border-white max-h-[90vh] overflow-y-auto"
+              className="relative w-full max-w-2xl aurora-glass-modal rounded-[28px] sm:rounded-[32px] p-6 sm:p-8 shadow-2xl border border-white/75 dark:border-slate-700/80 max-h-[90vh] overflow-y-auto"
             >
               {/* Close Button */}
               <button
                 onClick={() => setShowModal(false)}
-                className="absolute top-5 right-5 p-2 rounded-full bg-slate-100 text-slate-500 hover:text-slate-800 hover:bg-slate-200 transition-colors cursor-pointer focus-visible:ring-2 focus-visible:ring-indigo-500 focus-visible:outline-none"
+                className="absolute top-5 right-5 p-2.5 rounded-full modal-close-btn cursor-pointer focus-visible:ring-2 focus-visible:ring-purple-500 focus-visible:outline-none"
                 aria-label="Close modal"
               >
                 <X className="w-5 h-5" />
               </button>
 
               {/* Header */}
-              <div className="flex items-center gap-3 mb-6">
-                <div className="w-12 h-12 rounded-2xl bg-gradient-to-tr from-blue-600 to-indigo-600 text-white font-extrabold flex items-center justify-center text-xl shadow-md">
+              <div className="flex items-center gap-3 mb-6 pr-8">
+                <div className="w-12 h-12 rounded-2xl bg-gradient-to-tr from-purple-600 to-indigo-600 text-white font-extrabold flex items-center justify-center text-xl shadow-md">
                   SH
                 </div>
                 <div>
-                  <h3 id="about-modal-title" className="text-2xl font-extrabold text-slate-900">{PERSONAL_INFO.name}</h3>
-                  <p className="text-sm font-semibold text-indigo-600">{PERSONAL_INFO.role} • {PERSONAL_INFO.location}</p>
+                  <h3 id="about-modal-title" className="text-2xl font-extrabold text-slate-900 dark:text-white">{PERSONAL_INFO.name}</h3>
+                  <p className="text-sm font-semibold text-purple-600 dark:text-purple-400">{PERSONAL_INFO.role} • {PERSONAL_INFO.location}</p>
                 </div>
               </div>
 
               {/* Detailed Summary */}
-              <div className="space-y-4 text-slate-600 text-sm leading-relaxed">
-                <p>{PERSONAL_INFO.professionalSummary}</p>
+              <div className="space-y-5 text-slate-700 dark:text-slate-200 text-sm font-medium">
+                <p className="leading-[1.65] max-w-prose text-[#334155] dark:text-slate-200">{PERSONAL_INFO.professionalSummary}</p>
 
-                <div className="p-4 rounded-2xl bg-indigo-50/60 border border-indigo-100 space-y-2">
-                  <h4 className="font-bold text-slate-900 text-base flex items-center gap-2">
-                    <GraduationCap className="w-5 h-5 text-indigo-600" />
+                <div className="p-4 rounded-2xl aurora-glass-card space-y-2">
+                  <h4 className="font-bold text-slate-900 dark:text-white text-base flex items-center gap-2">
+                    <GraduationCap className="w-5 h-5 text-purple-600 dark:text-purple-400" />
                     <span>Education</span>
                   </h4>
-                  <div className="text-xs sm:text-sm text-slate-700">
+                  <div className="text-xs sm:text-sm text-slate-800 dark:text-slate-200">
                     <span className="font-bold">{EDUCATION.degree}</span> — {EDUCATION.institution} ({EDUCATION.year})
                   </div>
                 </div>
 
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-2">
-                  <div className="p-3.5 rounded-xl border border-slate-200/80 bg-white/80">
-                    <div className="font-semibold text-slate-900 text-xs mb-1 flex items-center gap-1.5">
-                      <Globe className="w-4 h-4 text-blue-600" /> Key Domains
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-1">
+                  <div className="p-3.5 rounded-2xl aurora-glass-card">
+                    <div className="font-semibold text-slate-900 dark:text-white text-xs mb-1 flex items-center gap-1.5">
+                      <Globe className="w-4 h-4 text-purple-600 dark:text-purple-400" /> Key Domains
                     </div>
-                    <div className="text-xs text-slate-600">Enterprise Banking & Logistics</div>
+                    <div className="text-xs text-slate-600 dark:text-slate-400">Enterprise Banking & Logistics</div>
                   </div>
-                  <div className="p-3.5 rounded-xl border border-slate-200/80 bg-white/80">
-                    <div className="font-semibold text-slate-900 text-xs mb-1 flex items-center gap-1.5">
-                      <Award className="w-4 h-4 text-purple-600" /> Core Compliance
+                  <div className="p-3.5 rounded-2xl aurora-glass-card">
+                    <div className="font-semibold text-slate-900 dark:text-white text-xs mb-1 flex items-center gap-1.5">
+                      <Award className="w-4 h-4 text-purple-600 dark:text-purple-400" /> Core Compliance
                     </div>
-                    <div className="text-xs text-slate-600">WCAG & ADA Standards</div>
+                    <div className="text-xs text-slate-600 dark:text-slate-400">WCAG & ADA Standards</div>
                   </div>
                 </div>
               </div>
@@ -177,7 +177,7 @@ export const AboutSection: React.FC = () => {
               <div className="mt-8 flex justify-end">
                 <button
                   onClick={() => setShowModal(false)}
-                  className="px-5 py-2.5 rounded-xl font-bold text-sm bg-slate-900 text-white hover:bg-slate-800 transition-colors cursor-pointer"
+                  className="px-5 py-2.5 rounded-xl font-bold text-sm modal-purple-btn cursor-pointer"
                 >
                   Close
                 </button>

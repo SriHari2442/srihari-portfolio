@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import {
   Sparkles,
   CheckCircle,
@@ -20,6 +20,10 @@ import {
   ShieldCheck,
   Loader2,
   CheckCircle2,
+  ChevronLeft,
+  ChevronRight,
+  ZoomIn,
+  ZoomOut,
 } from 'lucide-react';
 import { PRODUCT_CONCEPT } from '../data/portfolioData';
 
@@ -28,7 +32,7 @@ interface AssetScreenshot {
   title: string;
   subtitle: string;
   fullUrl: string;
-  thumbUrl: string;
+  altText: string;
 }
 
 const QUIET_MODE_SCREENSHOTS: AssetScreenshot[] = [
@@ -36,20 +40,385 @@ const QUIET_MODE_SCREENSHOTS: AssetScreenshot[] = [
     id: 'ux-01',
     title: 'Figma UX Workflow & System Architecture',
     subtitle: 'Notification logic, quiet state triggers, and user boundary controls',
-    fullUrl: '/assets/quiet-mode/ux-screenshot-01.png',
-    thumbUrl: '/assets/quiet-mode/ux-screenshot-01-thumb.webp',
+    fullUrl:
+      'https://res.cloudinary.com/xgjyuzlg/image/upload/f_auto,q_auto/v1785323513/WhatsApp_Image_2026-07-29_at_4.26.29_PM_1_zv06zz.jpg',
+    altText: 'Figma UX Workflow and System Architecture',
   },
   {
     id: 'ux-02',
     title: 'WhatsApp Quiet Mode Interface & Status Badge',
     subtitle: 'Sender visibility, auto-replies, and silent notification banner',
-    fullUrl: '/assets/quiet-mode/ux-screenshot-02.png',
-    thumbUrl: '/assets/quiet-mode/ux-screenshot-02-thumb.webp',
+    fullUrl:
+      'https://res.cloudinary.com/xgjyuzlg/image/upload/f_auto,q_auto/v1785323515/WhatsApp_Image_2026-07-29_at_4.26.29_PM_osncgn.jpg',
+    altText: 'WhatsApp Quiet Mode Interface and Status Badge',
   },
 ];
 
 const QUIET_MODE_VIDEO_URL =
   'https://res.cloudinary.com/xgjyuzlg/video/upload/f_auto,q_auto/v1785323472/quiet_w32q0b.mp4';
+
+/* Project Gallery Card Component */
+const GalleryImageCard: React.FC<{
+  screen: AssetScreenshot;
+  onOpen: () => void;
+}> = ({ screen, onOpen }) => {
+  const [isLoading, setIsLoading] = useState(true);
+  const [hasError, setHasError] = useState(false);
+  const [retryCount, setRetryCount] = useState(0);
+
+  const imageUrl = retryCount > 0 ? `${screen.fullUrl}?retry=${retryCount}` : screen.fullUrl;
+
+  const handleRetry = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    setHasError(false);
+    setIsLoading(true);
+    setRetryCount((prev) => prev + 1);
+  };
+
+  return (
+    <div
+      onClick={onOpen}
+      className="group relative rounded-2xl overflow-hidden bg-slate-950 border border-slate-200 shadow-sm hover:shadow-xl transition-all duration-300 cursor-pointer h-40"
+    >
+      {/* Skeleton Placeholder */}
+      {isLoading && !hasError && (
+        <div className="absolute inset-0 z-10 bg-slate-900 animate-pulse flex flex-col items-center justify-center p-4">
+          <div className="w-8 h-8 rounded-full bg-slate-800 border border-slate-700/60 flex items-center justify-center text-slate-500 mb-2">
+            <Loader2 className="w-4 h-4 animate-spin text-purple-400" />
+          </div>
+          <span className="text-[11px] text-slate-400 font-medium tracking-wide">
+            Loading screenshot...
+          </span>
+        </div>
+      )}
+
+      {/* Error State */}
+      {hasError ? (
+        <div className="absolute inset-0 z-10 bg-slate-950 flex flex-col items-center justify-center p-3 text-center border border-rose-500/30">
+          <AlertCircle className="w-5 h-5 text-rose-400 mb-1" />
+          <p className="text-xs font-semibold text-white mb-2">Unable to load image</p>
+          <button
+            onClick={handleRetry}
+            className="py-1 px-3 rounded-lg bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-500 hover:to-indigo-500 text-white text-[11px] font-medium shadow-sm transition-all cursor-pointer flex items-center gap-1 border border-white/20"
+          >
+            <RotateCcw className="w-3 h-3" />
+            <span>Retry</span>
+          </button>
+        </div>
+      ) : (
+        <img
+          key={imageUrl}
+          src={imageUrl}
+          alt={screen.altText}
+          loading="lazy"
+          decoding="async"
+          onLoad={() => setIsLoading(false)}
+          onError={() => {
+            setIsLoading(false);
+            setHasError(true);
+          }}
+          className={`w-full h-full object-cover object-top group-hover:scale-105 transition-all duration-500 ${
+            isLoading ? 'opacity-0' : 'opacity-100'
+          }`}
+        />
+      )}
+
+      {/* Card Details & Eye Overlay */}
+      <div className="absolute inset-0 bg-gradient-to-t from-slate-950/90 via-slate-950/30 to-transparent opacity-80 group-hover:opacity-95 transition-opacity flex flex-col justify-end p-3 text-white pointer-events-none">
+        <div className="flex items-center justify-between">
+          <span className="text-xs font-bold truncate pr-2">{screen.title}</span>
+          <span className="p-1.5 rounded-lg bg-white/20 backdrop-blur-md group-hover:bg-purple-600 transition-colors pointer-events-auto">
+            <Eye className="w-3.5 h-3.5" />
+          </span>
+        </div>
+        <span className="text-[10px] text-slate-300 font-medium truncate mt-0.5">
+          {screen.subtitle}
+        </span>
+      </div>
+    </div>
+  );
+};
+
+/* Interactive Lightbox Modal Component */
+interface ImageLightboxModalProps {
+  screenshots: AssetScreenshot[];
+  currentIndex: number;
+  onClose: () => void;
+  onSelectIndex: (index: number) => void;
+}
+
+const ImageLightboxModal: React.FC<ImageLightboxModalProps> = ({
+  screenshots,
+  currentIndex,
+  onClose,
+  onSelectIndex,
+}) => {
+  const current = screenshots[currentIndex];
+  const [zoom, setZoom] = useState(1);
+  const [pan, setPan] = useState({ x: 0, y: 0 });
+  const [isDragging, setIsDragging] = useState(false);
+  const [dragStart, setDragStart] = useState({ x: 0, y: 0 });
+  const [panStart, setPanStart] = useState({ x: 0, y: 0 });
+
+  const [isLoading, setIsLoading] = useState(true);
+  const [hasError, setHasError] = useState(false);
+  const [retryCount, setRetryCount] = useState(0);
+
+  // Reset zoom, pan, loading state when active index changes
+  useEffect(() => {
+    setZoom(1);
+    setPan({ x: 0, y: 0 });
+    setIsLoading(true);
+    setHasError(false);
+    setRetryCount(0);
+  }, [currentIndex]);
+
+  // Keyboard navigation (ESC, ArrowLeft, ArrowRight)
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') {
+        onClose();
+      } else if (e.key === 'ArrowLeft') {
+        e.preventDefault();
+        onSelectIndex((currentIndex - 1 + screenshots.length) % screenshots.length);
+      } else if (e.key === 'ArrowRight') {
+        e.preventDefault();
+        onSelectIndex((currentIndex + 1) % screenshots.length);
+      }
+    };
+
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [currentIndex, screenshots.length, onClose, onSelectIndex]);
+
+  // Zoom actions
+  const handleZoomIn = () => {
+    setZoom((prev) => Math.min(prev + 0.5, 3));
+  };
+
+  const handleZoomOut = () => {
+    setZoom((prev) => {
+      const next = Math.max(prev - 0.5, 1);
+      if (next === 1) setPan({ x: 0, y: 0 });
+      return next;
+    });
+  };
+
+  const handleResetZoom = () => {
+    setZoom(1);
+    setPan({ x: 0, y: 0 });
+  };
+
+  // Mouse Pan handlers
+  const handleMouseDown = (e: React.MouseEvent) => {
+    if (zoom <= 1) return;
+    setIsDragging(true);
+    setDragStart({ x: e.clientX, y: e.clientY });
+    setPanStart({ x: pan.x, y: pan.y });
+  };
+
+  const handleMouseMove = (e: React.MouseEvent) => {
+    if (!isDragging || zoom <= 1) return;
+    const dx = e.clientX - dragStart.x;
+    const dy = e.clientY - dragStart.y;
+    setPan({ x: panStart.x + dx, y: panStart.y + dy });
+  };
+
+  const handleMouseUp = () => {
+    setIsDragging(false);
+  };
+
+  // Touch Pan handlers
+  const handleTouchStart = (e: React.TouchEvent) => {
+    if (zoom <= 1 || e.touches.length !== 1) return;
+    setIsDragging(true);
+    setDragStart({ x: e.touches[0].clientX, y: e.touches[0].clientY });
+    setPanStart({ x: pan.x, y: pan.y });
+  };
+
+  const handleTouchMove = (e: React.TouchEvent) => {
+    if (!isDragging || zoom <= 1 || e.touches.length !== 1) return;
+    const dx = e.touches[0].clientX - dragStart.x;
+    const dy = e.touches[0].clientY - dragStart.y;
+    setPan({ x: panStart.x + dx, y: panStart.y + dy });
+  };
+
+  const handleTouchEnd = () => {
+    setIsDragging(false);
+  };
+
+  const imageUrl = retryCount > 0 ? `${current.fullUrl}?retry=${retryCount}` : current.fullUrl;
+
+  const handleRetryModal = () => {
+    setHasError(false);
+    setIsLoading(true);
+    setRetryCount((prev) => prev + 1);
+  };
+
+  return (
+    <div
+      className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-6 bg-[#0f172a]/60 backdrop-blur-md animate-in fade-in duration-200"
+      role="dialog"
+      aria-modal="true"
+      aria-label="Image gallery viewer"
+      onClick={onClose}
+    >
+      <div
+        className="relative max-w-5xl w-full aurora-glass-modal rounded-[28px] overflow-hidden border border-white/75 dark:border-slate-700/80 shadow-2xl flex flex-col max-h-[90vh]"
+        onClick={(e) => e.stopPropagation()}
+      >
+        {/* Header */}
+        <div className="flex items-center justify-between py-3 px-4 sm:px-6 bg-slate-900/90 border-b border-slate-800 z-10">
+          <div className="pr-4">
+            <h4 className="text-sm font-bold text-white tracking-wide">{current.title}</h4>
+            <p className="text-xs text-slate-400 mt-0.5">{current.subtitle}</p>
+          </div>
+
+          <div className="flex items-center gap-2 shrink-0">
+            {/* Zoom Controls */}
+            <div className="flex items-center bg-slate-800/80 rounded-lg p-0.5 border border-slate-700/60">
+              <button
+                onClick={handleZoomOut}
+                disabled={zoom <= 1}
+                className="p-1.5 rounded-md text-slate-300 hover:text-white hover:bg-slate-700 disabled:opacity-40 disabled:hover:bg-transparent transition-colors cursor-pointer"
+                title="Zoom Out"
+                aria-label="Zoom Out"
+              >
+                <ZoomOut className="w-4 h-4" />
+              </button>
+              <span className="text-[11px] font-mono text-slate-300 px-2 min-w-[40px] text-center">
+                {Math.round(zoom * 100)}%
+              </span>
+              <button
+                onClick={handleZoomIn}
+                disabled={zoom >= 3}
+                className="p-1.5 rounded-md text-slate-300 hover:text-white hover:bg-slate-700 disabled:opacity-40 disabled:hover:bg-transparent transition-colors cursor-pointer"
+                title="Zoom In"
+                aria-label="Zoom In"
+              >
+                <ZoomIn className="w-4 h-4" />
+              </button>
+              {zoom > 1 && (
+                <button
+                  onClick={handleResetZoom}
+                  className="p-1.5 rounded-md text-indigo-400 hover:bg-slate-700 transition-colors cursor-pointer"
+                  title="Reset Zoom"
+                  aria-label="Reset Zoom"
+                >
+                  <RotateCcw className="w-3.5 h-3.5" />
+                </button>
+              )}
+            </div>
+
+            {/* Close Button */}
+            <button
+              onClick={onClose}
+              className="p-2.5 rounded-full modal-close-btn cursor-pointer focus-visible:ring-2 focus-visible:ring-purple-500 focus-visible:outline-none"
+              aria-label="Close screenshot modal"
+            >
+              <X className="w-5 h-5" />
+            </button>
+          </div>
+        </div>
+
+        {/* Viewport Container */}
+        <div
+          className={`relative flex-1 min-h-[300px] sm:min-h-[450px] bg-slate-950 flex items-center justify-center overflow-hidden p-2 select-none ${
+            zoom > 1 ? (isDragging ? 'cursor-grabbing' : 'cursor-grab') : 'cursor-default'
+          }`}
+          onMouseDown={handleMouseDown}
+          onMouseMove={handleMouseMove}
+          onMouseUp={handleMouseUp}
+          onMouseLeave={handleMouseUp}
+          onTouchStart={handleTouchStart}
+          onTouchMove={handleTouchMove}
+          onTouchEnd={handleTouchEnd}
+        >
+          {/* Skeleton Loading State */}
+          {isLoading && !hasError && (
+            <div className="absolute inset-0 z-10 bg-slate-950 flex flex-col items-center justify-center p-4">
+              <Loader2 className="w-8 h-8 text-indigo-400 animate-spin mb-2" />
+              <p className="text-xs text-slate-300 font-medium">Loading high-resolution image...</p>
+            </div>
+          )}
+
+          {/* Error State */}
+          {hasError ? (
+            <div className="absolute inset-0 z-10 bg-slate-950 flex flex-col items-center justify-center p-6 text-center">
+              <AlertCircle className="w-8 h-8 text-rose-400 mb-2" />
+              <h4 className="text-sm font-bold text-white mb-1">Unable to load image</h4>
+              <p className="text-xs text-slate-400 mb-4">Please check your network or try again.</p>
+              <button
+                onClick={handleRetryModal}
+                className="py-2 px-4 rounded-xl bg-purple-600 hover:bg-purple-500 text-white text-xs font-semibold shadow-md transition-all cursor-pointer flex items-center gap-1.5"
+              >
+                <RotateCcw className="w-3.5 h-3.5" />
+                <span>Retry</span>
+              </button>
+            </div>
+          ) : (
+            <img
+              key={imageUrl}
+              src={imageUrl}
+              alt={current.altText}
+              onLoad={() => setIsLoading(false)}
+              onError={() => {
+                setIsLoading(false);
+                setHasError(true);
+              }}
+              style={{
+                transform: `scale(${zoom}) translate(${pan.x / zoom}px, ${pan.y / zoom}px)`,
+                transition: isDragging ? 'none' : 'transform 0.2s ease-out',
+              }}
+              className={`max-w-full max-h-[70vh] object-contain rounded-lg transition-opacity duration-300 ${
+                isLoading ? 'opacity-0' : 'opacity-100'
+              }`}
+            />
+          )}
+
+          {/* Navigation Controls (Previous / Next) */}
+          {screenshots.length > 1 && (
+            <>
+              <button
+                onClick={(e) => {
+                  e.stopPropagation();
+                  onSelectIndex((currentIndex - 1 + screenshots.length) % screenshots.length);
+                }}
+                className="absolute left-3 top-1/2 -translate-y-1/2 p-2.5 rounded-full bg-slate-900/80 hover:bg-purple-600 text-white border border-slate-700/80 shadow-lg backdrop-blur-md transition-all cursor-pointer focus-visible:ring-2 focus-visible:ring-indigo-400 focus-visible:outline-none"
+                aria-label="Previous image"
+                title="Previous image (Left arrow)"
+              >
+                <ChevronLeft className="w-5 h-5" />
+              </button>
+
+              <button
+                onClick={(e) => {
+                  e.stopPropagation();
+                  onSelectIndex((currentIndex + 1) % screenshots.length);
+                }}
+                className="absolute right-3 top-1/2 -translate-y-1/2 p-2.5 rounded-full bg-slate-900/80 hover:bg-purple-600 text-white border border-slate-700/80 shadow-lg backdrop-blur-md transition-all cursor-pointer focus-visible:ring-2 focus-visible:ring-indigo-400 focus-visible:outline-none"
+                aria-label="Next image"
+                title="Next image (Right arrow)"
+              >
+                <ChevronRight className="w-5 h-5" />
+              </button>
+            </>
+          )}
+        </div>
+
+        {/* Footer info bar */}
+        <div className="py-2.5 px-4 bg-slate-900/90 border-t border-slate-800 flex items-center justify-between text-xs text-slate-400">
+          <span>
+            Image {currentIndex + 1} of {screenshots.length}
+          </span>
+          <span className="text-[11px] text-slate-500 hidden sm:inline">
+            Use Left / Right arrow keys to navigate, ESC to close
+          </span>
+        </div>
+      </div>
+    </div>
+  );
+};
 
 export const QuietModeSection: React.FC = () => {
   // Inline Video Player States
@@ -62,8 +431,8 @@ export const QuietModeSection: React.FC = () => {
   const [isEnded, setIsEnded] = useState(false);
   const [hasError, setHasError] = useState(false);
 
-  // Gallery Modal Lightbox
-  const [selectedImage, setSelectedImage] = useState<AssetScreenshot | null>(null);
+  // Gallery Modal Lightbox Index
+  const [selectedImageIndex, setSelectedImageIndex] = useState<number | null>(null);
 
   // Watch Product Demo Video Modal
   const [isDemoModalOpen, setIsDemoModalOpen] = useState(false);
@@ -75,6 +444,33 @@ export const QuietModeSection: React.FC = () => {
   const [modalIsLoading, setModalIsLoading] = useState(false);
   const [modalIsEnded, setModalIsEnded] = useState(false);
   const [modalHasError, setModalHasError] = useState(false);
+
+  const [isFullscreen, setIsFullscreen] = useState(false);
+
+  useEffect(() => {
+    const handleFsChange = () => {
+      const fsElem =
+        document.fullscreenElement ||
+        (document as any).webkitFullscreenElement ||
+        (document as any).mozFullScreenElement;
+      setIsFullscreen(
+        Boolean(
+          fsElem &&
+            (fsElem === videoContainerRef.current || fsElem === videoRef.current)
+        )
+      );
+    };
+
+    document.addEventListener('fullscreenchange', handleFsChange);
+    document.addEventListener('webkitfullscreenchange', handleFsChange);
+    document.addEventListener('mozfullscreenchange', handleFsChange);
+
+    return () => {
+      document.removeEventListener('fullscreenchange', handleFsChange);
+      document.removeEventListener('webkitfullscreenchange', handleFsChange);
+      document.removeEventListener('mozfullscreenchange', handleFsChange);
+    };
+  }, []);
 
   const videoRef = useRef<HTMLVideoElement | null>(null);
   const videoContainerRef = useRef<HTMLDivElement | null>(null);
@@ -165,11 +561,37 @@ export const QuietModeSection: React.FC = () => {
   };
 
   const handleFullscreen = () => {
-    if (videoContainerRef.current) {
-      if (document.fullscreenElement) {
+    const container = videoContainerRef.current;
+    if (!container) return;
+
+    const fsElement =
+      document.fullscreenElement ||
+      (document as any).webkitFullscreenElement ||
+      (document as any).mozFullScreenElement;
+
+    if (fsElement) {
+      if (document.exitFullscreen) {
         document.exitFullscreen();
-      } else {
-        videoContainerRef.current.requestFullscreen();
+      } else if ((document as any).webkitExitFullscreen) {
+        (document as any).webkitExitFullscreen();
+      } else if ((document as any).mozCancelFullScreen) {
+        (document as any).mozCancelFullScreen();
+      }
+    } else {
+      if (container.requestFullscreen) {
+        container.requestFullscreen().catch(() => {
+          if (videoRef.current && (videoRef.current as any).webkitEnterFullscreen) {
+            (videoRef.current as any).webkitEnterFullscreen();
+          }
+        });
+      } else if ((container as any).webkitRequestFullscreen) {
+        (container as any).webkitRequestFullscreen();
+      } else if ((container as any).mozRequestFullScreen) {
+        (container as any).mozRequestFullScreen();
+      } else if ((container as any).msRequestFullscreen) {
+        (container as any).msRequestFullscreen();
+      } else if (videoRef.current && (videoRef.current as any).webkitEnterFullscreen) {
+        (videoRef.current as any).webkitEnterFullscreen();
       }
     }
   };
@@ -268,6 +690,85 @@ export const QuietModeSection: React.FC = () => {
 
   return (
     <section id="achievements" className="py-6">
+      <style>{`
+        .quiet-mode-video {
+          width: 100% !important;
+          height: 100% !important;
+          object-fit: contain !important;
+          background: #000 !important;
+        }
+
+        video.quiet-mode-video:fullscreen,
+        video:fullscreen {
+          width: 100vw !important;
+          height: 100vh !important;
+          max-width: 100vw !important;
+          max-height: 100vh !important;
+          object-fit: contain !important;
+          background: #000 !important;
+        }
+
+        video.quiet-mode-video:-webkit-full-screen,
+        video:-webkit-full-screen {
+          width: 100vw !important;
+          height: 100vh !important;
+          max-width: 100vw !important;
+          max-height: 100vh !important;
+          object-fit: contain !important;
+          background: #000 !important;
+        }
+
+        video.quiet-mode-video:-moz-full-screen,
+        video:-moz-full-screen {
+          width: 100vw !important;
+          height: 100vh !important;
+          max-width: 100vw !important;
+          max-height: 100vh !important;
+          object-fit: contain !important;
+          background: #000 !important;
+        }
+
+        .quiet-mode-video-container:fullscreen,
+        .quiet-mode-video-container:-webkit-full-screen,
+        .quiet-mode-video-container:-moz-full-screen {
+          display: flex !important;
+          align-items: center !important;
+          justify-content: center !important;
+          width: 100vw !important;
+          height: 100vh !important;
+          max-width: 100vw !important;
+          max-height: 100vh !important;
+          background: #000 !important;
+          padding: 0 !important;
+          border: none !important;
+          border-radius: 0 !important;
+        }
+
+        .quiet-mode-video-container:fullscreen video,
+        .quiet-mode-video-container:-webkit-full-screen video,
+        .quiet-mode-video-container:-moz-full-screen video {
+          width: 100% !important;
+          height: 100% !important;
+          max-width: 100vw !important;
+          max-height: 100vh !important;
+          object-fit: contain !important;
+          background: #000 !important;
+        }
+
+        .quiet-mode-video-container:fullscreen .video-aspect-frame,
+        .quiet-mode-video-container:-webkit-full-screen .video-aspect-frame,
+        .quiet-mode-video-container:-moz-full-screen .video-aspect-frame {
+          height: 100vh !important;
+          max-height: 100vh !important;
+          max-width: 100vw !important;
+          aspect-ratio: 9 / 16 !important;
+          border-radius: 0 !important;
+          background: #000 !important;
+          display: flex !important;
+          align-items: center !important;
+          justify-content: center !important;
+        }
+      `}</style>
       <div className="purple-interactive-card rounded-3xl p-6 sm:p-8 shadow-lg relative overflow-hidden">
         
         {/* Header Section: Title, Concept Subtitle & View Demo Action */}
@@ -403,9 +904,19 @@ export const QuietModeSection: React.FC = () => {
 
             <div
               ref={videoContainerRef}
-              className="relative w-full max-w-[340px] rounded-[24px] overflow-hidden bg-slate-950 border border-slate-800 shadow-2xl group p-1.5"
+              className={`quiet-mode-video-container relative w-full max-w-[340px] rounded-[24px] overflow-hidden bg-slate-950 border border-slate-800 shadow-2xl group p-1.5 transition-all ${
+                isFullscreen
+                  ? '!max-w-none !w-screen !h-screen !rounded-none !border-none !p-0 !bg-black flex items-center justify-center'
+                  : ''
+              }`}
             >
-              <div className="relative aspect-[9/16] w-full bg-slate-950 rounded-[18px] overflow-hidden flex items-center justify-center">
+              <div
+                className={`video-aspect-frame relative aspect-[9/16] w-full bg-slate-950 rounded-[18px] overflow-hidden flex items-center justify-center ${
+                  isFullscreen
+                    ? '!h-screen !max-h-screen !w-auto !aspect-[9/16] !rounded-none !bg-black'
+                    : ''
+                }`}
+              >
                 <video
                   ref={videoRef}
                   preload="metadata"
@@ -450,7 +961,7 @@ export const QuietModeSection: React.FC = () => {
                     setIsLoading(false);
                     setHasError(true);
                   }}
-                  className="w-full h-full object-contain cursor-pointer"
+                  className="quiet-mode-video w-full h-full object-contain bg-black cursor-pointer"
                   aria-label="Play Quiet Mode WhatsApp concept demonstration"
                 >
                   <source src={QUIET_MODE_VIDEO_URL} type="video/mp4" />
@@ -635,34 +1146,12 @@ export const QuietModeSection: React.FC = () => {
             </div>
 
             <div className="grid grid-cols-1 gap-3">
-              {QUIET_MODE_SCREENSHOTS.map((screen) => (
-                <div
+              {QUIET_MODE_SCREENSHOTS.map((screen, idx) => (
+                <GalleryImageCard
                   key={screen.id}
-                  onClick={() => setSelectedImage(screen)}
-                  className="group relative rounded-2xl overflow-hidden bg-slate-950 border border-slate-200 shadow-sm hover:shadow-xl transition-all duration-300 cursor-pointer"
-                >
-                  <picture>
-                    <source srcSet={screen.thumbUrl} type="image/webp" />
-                    <img
-                      src={screen.fullUrl}
-                      alt={screen.title}
-                      loading="lazy"
-                      className="w-full h-40 object-cover object-top group-hover:scale-105 transition-transform duration-500"
-                    />
-                  </picture>
-
-                  <div className="absolute inset-0 bg-gradient-to-t from-slate-950/90 via-slate-950/30 to-transparent opacity-80 group-hover:opacity-95 transition-opacity flex flex-col justify-end p-3 text-white">
-                    <div className="flex items-center justify-between">
-                      <span className="text-xs font-bold truncate pr-2">{screen.title}</span>
-                      <span className="p-1.5 rounded-lg bg-white/20 backdrop-blur-md group-hover:bg-purple-600 transition-colors">
-                        <Eye className="w-3.5 h-3.5" />
-                      </span>
-                    </div>
-                    <span className="text-[10px] text-slate-300 font-medium truncate mt-0.5">
-                      {screen.subtitle}
-                    </span>
-                  </div>
-                </div>
+                  screen={screen}
+                  onOpen={() => setSelectedImageIndex(idx)}
+                />
               ))}
             </div>
           </div>
@@ -671,69 +1160,42 @@ export const QuietModeSection: React.FC = () => {
       </div>
 
       {/* Screenshot Lightbox Modal */}
-      {selectedImage && (
-        <div
-          className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/80 backdrop-blur-md animate-in fade-in duration-200"
-          role="dialog"
-          aria-modal="true"
-          onClick={() => setSelectedImage(null)}
-        >
-          <div
-            className="relative max-w-4xl w-full bg-slate-900 rounded-2xl overflow-hidden border border-slate-700 shadow-2xl p-2 sm:p-4"
-            onClick={(e) => e.stopPropagation()}
-          >
-            <div className="flex items-center justify-between pb-3 px-2 border-b border-slate-800">
-              <div>
-                <h4 className="text-sm font-bold text-white">{selectedImage.title}</h4>
-                <p className="text-xs text-slate-400">{selectedImage.subtitle}</p>
-              </div>
-              <button
-                onClick={() => setSelectedImage(null)}
-                className="p-1.5 rounded-full bg-slate-800 text-slate-300 hover:text-white hover:bg-slate-700 transition-colors"
-                aria-label="Close screenshot modal"
-              >
-                <X className="w-5 h-5" />
-              </button>
-            </div>
-
-            <div className="p-2 flex justify-center max-h-[80vh] overflow-auto">
-              <img
-                src={selectedImage.fullUrl}
-                alt={selectedImage.title}
-                className="max-w-full h-auto rounded-lg object-contain"
-              />
-            </div>
-          </div>
-        </div>
+      {selectedImageIndex !== null && (
+        <ImageLightboxModal
+          screenshots={QUIET_MODE_SCREENSHOTS}
+          currentIndex={selectedImageIndex}
+          onClose={() => setSelectedImageIndex(null)}
+          onSelectIndex={(idx) => setSelectedImageIndex(idx)}
+        />
       )}
 
       {/* Premium Video Demo Modal (Triggered by 'Watch Product Demo' Button) */}
       {isDemoModalOpen && (
         <div
-          className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/90 backdrop-blur-xl animate-in fade-in duration-200"
+          className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-[#0f172a]/60 backdrop-blur-md animate-in fade-in duration-200"
           role="dialog"
           aria-modal="true"
           onClick={() => setIsDemoModalOpen(false)}
         >
           <div
-            className="relative max-w-[360px] w-full bg-slate-950 rounded-[28px] border border-slate-800 shadow-2xl p-4 sm:p-5 flex flex-col items-center"
+            className="relative max-w-[360px] w-full aurora-glass-modal rounded-[28px] sm:rounded-[32px] border border-white/75 dark:border-slate-700/80 shadow-2xl p-4 sm:p-5 flex flex-col items-center"
             onClick={(e) => e.stopPropagation()}
           >
             {/* Modal Header */}
-            <div className="flex items-center justify-between w-full pb-3 mb-3 border-b border-slate-800">
+            <div className="flex items-center justify-between w-full pb-3 mb-3 border-b border-purple-200/50 dark:border-purple-900/50">
               <div className="flex items-center gap-2">
-                <div className="p-2 rounded-xl bg-purple-600/20 text-purple-400 border border-purple-500/30">
+                <div className="p-2 rounded-xl bg-purple-600/20 text-purple-600 dark:text-purple-400 border border-purple-500/30">
                   <Video className="w-4 h-4" />
                 </div>
                 <div>
-                  <h3 className="text-sm font-bold text-white">Quiet Mode Product Demo</h3>
-                  <p className="text-[11px] text-slate-400">WhatsApp Digital Wellbeing UX Concept</p>
+                  <h3 className="text-sm font-bold text-slate-900 dark:text-white">Quiet Mode Product Demo</h3>
+                  <p className="text-[11px] text-slate-600 dark:text-slate-400">WhatsApp Digital Wellbeing UX Concept</p>
                 </div>
               </div>
 
               <button
                 onClick={() => setIsDemoModalOpen(false)}
-                className="p-1.5 rounded-full bg-slate-800/80 text-slate-300 hover:text-white hover:bg-slate-700 transition-colors cursor-pointer focus-visible:ring-2 focus-visible:ring-indigo-400 focus-visible:outline-none"
+                className="p-2 rounded-full modal-close-btn cursor-pointer focus-visible:ring-2 focus-visible:ring-purple-500 focus-visible:outline-none"
                 aria-label="Close video demo modal"
               >
                 <X className="w-4 h-4" />
@@ -785,7 +1247,7 @@ export const QuietModeSection: React.FC = () => {
                   setModalIsLoading(false);
                   setModalHasError(true);
                 }}
-                className="w-full h-full object-contain cursor-pointer"
+                className="quiet-mode-video w-full h-full object-contain bg-black cursor-pointer"
                 onClick={toggleModalPlay}
                 aria-label="Play Quiet Mode WhatsApp concept demonstration"
               >

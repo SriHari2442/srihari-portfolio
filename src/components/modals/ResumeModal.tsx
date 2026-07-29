@@ -38,7 +38,7 @@ export const ResumeModal: React.FC<ResumeModalProps> = ({ isOpen, onClose, onDow
 
   return (
     <div
-      className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-6 bg-slate-900/70 backdrop-blur-md animate-in fade-in duration-200"
+      className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-6 bg-[#0f172a]/60 backdrop-blur-md animate-in fade-in duration-200"
       role="dialog"
       aria-modal="true"
       aria-labelledby="resume-modal-title"
@@ -46,33 +46,33 @@ export const ResumeModal: React.FC<ResumeModalProps> = ({ isOpen, onClose, onDow
         if (e.target === e.currentTarget) onClose();
       }}
     >
-      <div className="relative w-full max-w-3xl bg-white rounded-3xl p-6 sm:p-10 shadow-2xl border border-slate-200 max-h-[92vh] overflow-y-auto print:max-h-none print:p-0 print:shadow-none print:border-none">
+      <div className="relative w-full max-w-3xl aurora-glass-modal rounded-[28px] sm:rounded-[32px] p-6 sm:p-10 shadow-2xl border border-white/75 dark:border-slate-700/80 max-h-[92vh] overflow-y-auto print:max-h-none print:p-0 print:shadow-none print:border-none">
         {/* Top Control Bar */}
-        <div className="flex items-center justify-between pb-6 border-b border-slate-200 mb-6 print:hidden">
+        <div className="flex items-center justify-between pb-6 border-b border-purple-200/60 dark:border-purple-900/50 mb-6 print:hidden">
           <div className="flex items-center gap-2">
-            <span className="w-3 h-3 rounded-full bg-emerald-500" />
-            <span className="text-xs font-bold text-slate-500">Verified Resume Document</span>
+            <span className="w-3 h-3 rounded-full bg-emerald-500 animate-pulse" />
+            <span className="text-xs font-bold text-slate-700 dark:text-slate-300">Verified Resume Document</span>
           </div>
 
           <div className="flex items-center gap-2">
             <button
               onClick={handlePrint}
-              className="p-2 rounded-xl text-slate-600 hover:bg-slate-100 transition-colors cursor-pointer focus-visible:ring-2 focus-visible:ring-indigo-500 focus-visible:outline-none"
+              className="p-2.5 rounded-xl modal-close-btn transition-colors cursor-pointer focus-visible:ring-2 focus-visible:ring-purple-500 focus-visible:outline-none"
               title="Print Resume"
               aria-label="Print resume"
             >
-              <Printer className="w-5 h-5" />
+              <Printer className="w-4 h-4" />
             </button>
             <button
               onClick={handleDownload}
-              className="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl text-xs font-bold text-white primary-btn-glow shadow-md shadow-indigo-500/25 transition-all cursor-pointer focus-visible:ring-2 focus-visible:ring-indigo-500 focus-visible:outline-none"
+              className="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl text-xs font-bold text-white primary-btn-glow shadow-md transition-all cursor-pointer focus-visible:ring-2 focus-visible:ring-purple-500 focus-visible:outline-none active:scale-95"
             >
               <Download className="w-4 h-4" />
               <span>Download Resume PDF</span>
             </button>
             <button
               onClick={onClose}
-              className="p-2 rounded-full text-slate-400 hover:text-slate-800 hover:bg-slate-100 transition-colors cursor-pointer focus-visible:ring-2 focus-visible:ring-indigo-500 focus-visible:outline-none"
+              className="p-2.5 rounded-full modal-close-btn cursor-pointer focus-visible:ring-2 focus-visible:ring-purple-500 focus-visible:outline-none"
               aria-label="Close resume modal"
             >
               <X className="w-5 h-5" />
