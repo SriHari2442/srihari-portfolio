@@ -90,8 +90,8 @@ export const ResumeModal: React.FC<ResumeModalProps> = ({ isOpen, onClose, onDow
               <span>📍 {PERSONAL_INFO.location}</span>
               <span>📞 {PERSONAL_INFO.phone}</span>
               <span>✉️ {PERSONAL_INFO.email}</span>
-              <span>💼 {PERSONAL_INFO.linkedinHandle}</span>
-              <span>🐙 {PERSONAL_INFO.githubHandle}</span>
+              <span>💼 <a href={PERSONAL_INFO.linkedin} target="_blank" rel="noopener noreferrer" className="hover:underline hover:text-indigo-600 transition-colors">{PERSONAL_INFO.linkedinHandle}</a></span>
+              <span>🐙 <a href={PERSONAL_INFO.github} target="_blank" rel="noopener noreferrer" className="hover:underline hover:text-indigo-600 transition-colors">{PERSONAL_INFO.githubHandle}</a></span>
             </div>
           </div>
 

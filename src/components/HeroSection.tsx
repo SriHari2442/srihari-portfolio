@@ -1,5 +1,5 @@
 import React from 'react';
-import { ArrowRight, Download, MapPin } from 'lucide-react';
+import { ArrowRight, Download, MapPin, Linkedin, Github } from 'lucide-react';
 import { motion, useReducedMotion } from 'motion/react';
 import { PERSONAL_INFO } from '../data/portfolioData';
 import { VideoPlayer } from './VideoPlayer';
@@ -93,14 +93,36 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ onOpenResume, onDownlo
             
             {/* 1. Header, Name & Role Block */}
             <div className="order-1 space-y-3.5 sm:space-y-4 w-full">
-              {/* Location Pill */}
-              <motion.div variants={itemVariants} className="inline-block">
+              {/* Location Pill & Social Profiles */}
+              <motion.div variants={itemVariants} className="inline-flex flex-wrap items-center justify-center lg:justify-start gap-2">
                 <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full aurora-glass border border-indigo-200/60 shadow-xs">
                   <MapPin className="w-4 h-4 text-indigo-600" />
                   <span className="text-xs sm:text-sm font-semibold text-slate-700 tracking-wide">
                     {PERSONAL_INFO.location}
                   </span>
                 </div>
+
+                <a
+                  href={PERSONAL_INFO.linkedin}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="p-2 rounded-full aurora-glass border border-indigo-200/60 text-slate-700 hover:text-indigo-600 hover:border-indigo-400 hover:scale-110 transition-all shadow-xs"
+                  aria-label="LinkedIn Profile"
+                  title="Connect on LinkedIn"
+                >
+                  <Linkedin className="w-4 h-4 text-indigo-600" />
+                </a>
+
+                <a
+                  href={PERSONAL_INFO.github}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="p-2 rounded-full aurora-glass border border-indigo-200/60 text-slate-700 hover:text-purple-600 hover:border-purple-400 hover:scale-110 transition-all shadow-xs"
+                  aria-label="GitHub Profile"
+                  title="Explore GitHub Profile"
+                >
+                  <Github className="w-4 h-4 text-purple-600" />
+                </a>
               </motion.div>
 
               {/* Headline */}

@@ -28,6 +28,8 @@ export const ContactSection: React.FC<ContactSectionProps> = ({ onDownloadResume
       color: 'from-emerald-500/10 via-teal-500/5 to-transparent',
       borderColor: 'border-emerald-500/30 dark:border-emerald-500/40',
       iconBg: 'bg-emerald-500/10 text-emerald-600 dark:text-emerald-400',
+      href: `tel:${PERSONAL_INFO.phone.replace(/\s+/g, '')}`,
+      isExternal: false,
       action: () => window.open(`tel:${PERSONAL_INFO.phone.replace(/\s+/g, '')}`),
       actionText: 'Call Phone',
     },
@@ -40,6 +42,8 @@ export const ContactSection: React.FC<ContactSectionProps> = ({ onDownloadResume
       color: 'from-blue-500/10 via-indigo-500/5 to-transparent',
       borderColor: 'border-blue-500/30 dark:border-blue-500/40',
       iconBg: 'bg-blue-500/10 text-blue-600 dark:text-blue-400',
+      href: `mailto:${PERSONAL_INFO.email}`,
+      isExternal: false,
       action: () => window.open(`mailto:${PERSONAL_INFO.email}`),
       actionText: 'Send Email',
       copyable: true,
@@ -48,11 +52,13 @@ export const ContactSection: React.FC<ContactSectionProps> = ({ onDownloadResume
       id: 'linkedin',
       label: 'LinkedIn',
       value: PERSONAL_INFO.linkedinHandle,
-      subtext: 'linkedin.com/in/srihari2442',
+      subtext: 'linkedin.com/in/sri-hari-mada-6091a0411/',
       icon: Linkedin,
       color: 'from-indigo-500/10 via-purple-500/5 to-transparent',
       borderColor: 'border-indigo-500/30 dark:border-indigo-500/40',
       iconBg: 'bg-indigo-500/10 text-indigo-600 dark:text-indigo-400',
+      href: PERSONAL_INFO.linkedin,
+      isExternal: true,
       action: () => window.open(PERSONAL_INFO.linkedin, '_blank', 'noopener,noreferrer'),
       actionText: 'Connect',
     },
@@ -65,6 +71,8 @@ export const ContactSection: React.FC<ContactSectionProps> = ({ onDownloadResume
       color: 'from-purple-500/10 via-pink-500/5 to-transparent',
       borderColor: 'border-purple-500/30 dark:border-purple-500/40',
       iconBg: 'bg-purple-500/10 text-purple-600 dark:text-purple-400',
+      href: PERSONAL_INFO.github,
+      isExternal: true,
       action: () => window.open(PERSONAL_INFO.github, '_blank', 'noopener,noreferrer'),
       actionText: 'Explore Code',
     },
@@ -270,17 +278,21 @@ export const ContactSection: React.FC<ContactSectionProps> = ({ onDownloadResume
             >
               {contactCards.map((card) => {
                 const IconComponent = card.icon;
+                const Component = card.href ? motion.a : motion.div;
                 return (
-                  <motion.div
+                  <Component
                     key={card.id}
                     variants={cardVariants}
+                    href={card.href}
+                    target={card.isExternal ? '_blank' : undefined}
+                    rel={card.isExternal ? 'noopener noreferrer' : undefined}
                     whileHover={
                       shouldReduceMotion
                         ? {}
                         : { y: -4, scale: 1.02 }
                     }
                     transition={{ duration: 0.25, ease: 'easeOut' }}
-                    onClick={card.action}
+                    onClick={!card.href ? card.action : undefined}
                     className={`group/card p-4 rounded-2xl bg-white/90 dark:bg-slate-900/90 border border-purple-200/80 dark:border-purple-800/80 hover:border-purple-400 dark:hover:border-purple-400 shadow-sm hover:shadow-[0_0_25px_rgba(168,85,247,0.25)] hover:shadow-purple-500/20 transition-all duration-300 flex items-center justify-between gap-3 ${
                       card.id !== 'location' ? 'cursor-pointer' : 'cursor-default'
                     } relative overflow-hidden`}
@@ -329,7 +341,7 @@ export const ContactSection: React.FC<ContactSectionProps> = ({ onDownloadResume
                         </span>
                       )}
                     </div>
-                  </motion.div>
+                  </Component>
                 );
               })}
             </motion.div>

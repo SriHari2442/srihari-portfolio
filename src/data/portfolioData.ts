@@ -13,9 +13,9 @@ export const PERSONAL_INFO = {
   location: 'Hyderabad, Telangana, India',
   phone: '+91 9014628432',
   email: 'srihari24software@gmail.com',
-  linkedin: 'https://www.linkedin.com/in/Sri_Hari_Mada',
+  linkedin: 'https://www.linkedin.com/in/sri-hari-mada-6091a0411/',
   github: 'https://github.com/SriHari2442',
-  linkedinHandle: 'Sri_Hari_Mada',
+  linkedinHandle: 'sri-hari-mada-6091a0411',
   githubHandle: 'SriHari2442',
   heroDescription: 'I build scalable, responsive, accessible, and user-focused web applications using React.js and TypeScript.',
   professionalSummary:
