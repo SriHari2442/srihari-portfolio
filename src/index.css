@@ -285,3 +285,177 @@
 ::-webkit-scrollbar-thumb:hover {
   background: #94a3b8;
 }
+
+/* ==========================================================================
+   MOBILE CONTRAST & READABILITY OVERRIDES (< 768px)
+   ========================================================================== */
+@media (max-width: 767px) {
+  /* ------------------------------------------------------------------------
+     1. CONTACT SECTION MOBILE CONTRAST FIX
+     ------------------------------------------------------------------------ */
+  #contact h2,
+  #contact h2 * {
+    color: #0F172A !important;
+    -webkit-text-fill-color: #0F172A !important;
+    background: none !important;
+    background-image: none !important;
+    opacity: 1 !important;
+    filter: none !important;
+    mix-blend-mode: normal !important;
+  }
+
+  #contact p,
+  #contact p * {
+    color: #475569 !important;
+    -webkit-text-fill-color: #475569 !important;
+    opacity: 1 !important;
+    filter: none !important;
+    mix-blend-mode: normal !important;
+  }
+
+  #contact .inline-flex span,
+  #contact .inline-flex svg {
+    color: #FFFFFF !important;
+    -webkit-text-fill-color: #FFFFFF !important;
+    opacity: 1 !important;
+  }
+
+  /* ------------------------------------------------------------------------
+     2. ALL POPUPS & MODALS MOBILE CONTRAST FIX
+     ------------------------------------------------------------------------ */
+  /* Modal Outer Background (Linear Gradient White/Soft White) */
+  .aurora-glass-modal,
+  .dark .aurora-glass-modal {
+    background: #FFFFFF !important;
+    background-image: linear-gradient(
+      145deg,
+      #FFFFFF 0%,
+      #F7F7FF 100%
+    ) !important;
+    opacity: 1 !important;
+    filter: none !important;
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+  }
+
+  /* Main Popup Title (Dark Navy) */
+  .aurora-glass-modal h1,
+  .aurora-glass-modal h2,
+  .aurora-glass-modal h3,
+  .aurora-glass-modal [id$="-modal-title"],
+  .aurora-glass-modal #about-modal-title,
+  .aurora-glass-modal #career-modal-title,
+  .aurora-glass-modal #experience-modal-title,
+  .aurora-glass-modal #casestudy-modal-title,
+  .aurora-glass-modal #resume-modal-title,
+  .dark .aurora-glass-modal h1,
+  .dark .aurora-glass-modal h2,
+  .dark .aurora-glass-modal h3,
+  .dark .aurora-glass-modal [id$="-modal-title"] {
+    color: #0F172A !important;
+    -webkit-text-fill-color: #0F172A !important;
+    background: none !important;
+    background-image: none !important;
+    opacity: 1 !important;
+    filter: none !important;
+    mix-blend-mode: normal !important;
+  }
+
+  /* Role, Subtitle, Location & Accent Text (Purple Accent) */
+  .aurora-glass-modal .text-\[\#6D28D9\],
+  .aurora-glass-modal .text-purple-600,
+  .aurora-glass-modal .text-purple-700,
+  .aurora-glass-modal .text-purple-800,
+  .aurora-glass-modal .text-purple-900,
+  .aurora-glass-modal .text-indigo-600,
+  .aurora-glass-modal .text-indigo-700,
+  .dark .aurora-glass-modal .text-\[\#6D28D9\],
+  .dark .aurora-glass-modal .text-purple-400,
+  .dark .aurora-glass-modal .text-purple-300,
+  .dark .aurora-glass-modal .text-indigo-400 {
+    color: #7C3AED !important;
+    -webkit-text-fill-color: #7C3AED !important;
+    opacity: 1 !important;
+    filter: none !important;
+  }
+
+  /* Section Headings inside Popups (Dark Navy/Slate) */
+  .aurora-glass-modal h4,
+  .aurora-glass-modal h5,
+  .aurora-glass-modal h6,
+  .aurora-glass-modal .text-\[\#0F172A\],
+  .aurora-glass-modal .text-\[\#1E293B\],
+  .dark .aurora-glass-modal h4,
+  .dark .aurora-glass-modal h5,
+  .dark .aurora-glass-modal h6,
+  .dark .aurora-glass-modal .text-white {
+    color: #1E293B !important;
+    -webkit-text-fill-color: #1E293B !important;
+    opacity: 1 !important;
+    filter: none !important;
+  }
+
+  /* Popup Body Paragraphs & List Items (Dark Slate) */
+  .aurora-glass-modal p,
+  .aurora-glass-modal li,
+  .aurora-glass-modal .text-\[\#334155\],
+  .dark .aurora-glass-modal p,
+  .dark .aurora-glass-modal li,
+  .dark .aurora-glass-modal .text-slate-200,
+  .dark .aurora-glass-modal .text-slate-300 {
+    color: #334155 !important;
+    -webkit-text-fill-color: #334155 !important;
+    opacity: 1 !important;
+    filter: none !important;
+    mix-blend-mode: normal !important;
+  }
+
+  /* Muted Metadata inside Popups */
+  .aurora-glass-modal .text-\[\#64748B\],
+  .aurora-glass-modal .text-slate-500,
+  .aurora-glass-modal .text-slate-400,
+  .dark .aurora-glass-modal .text-\[\#64748B\],
+  .dark .aurora-glass-modal .text-slate-400,
+  .dark .aurora-glass-modal .text-slate-300 {
+    color: #64748B !important;
+    -webkit-text-fill-color: #64748B !important;
+    opacity: 1 !important;
+    filter: none !important;
+  }
+
+  /* Inner Popup Cards */
+  .aurora-glass-modal .aurora-glass-card,
+  .dark .aurora-glass-modal .aurora-glass-card,
+  .aurora-glass-modal [class*="bg-white"],
+  .aurora-glass-modal [class*="bg-slate"] {
+    background: #FFFFFF !important;
+    border: 1px solid rgba(124, 58, 237, 0.14) !important;
+    color: #334155 !important;
+    opacity: 1 !important;
+  }
+
+  /* Ensure text inside inner popup cards stays dark and readable */
+  .aurora-glass-modal .aurora-glass-card *,
+  .dark .aurora-glass-modal .aurora-glass-card * {
+    opacity: 1 !important;
+  }
+
+  /* Remove gradient clip text & text transparent on mobile popups */
+  .aurora-glass-modal .bg-clip-text,
+  .aurora-glass-modal .text-transparent,
+  #contact .bg-clip-text,
+  #contact .text-transparent {
+    -webkit-background-clip: unset !important;
+    background-clip: unset !important;
+  }
+
+  /* Mobile Close Button styling */
+  .modal-close-btn,
+  .dark .modal-close-btn {
+    background: #FFFFFF !important;
+    border: 1px solid rgba(226, 232, 240, 0.9) !important;
+    color: #0F172A !important;
+    opacity: 1 !important;
+  }
+}
+
