@@ -20,7 +20,7 @@ export const ExperienceSection: React.FC = () => {
   const [isFullDetailsOpen, setIsFullDetailsOpen] = useState(false);
   const shouldReduceMotion = useReducedMotion();
 
-  // Close modal on Escape key
+  // Lock body scroll and close modal on Escape key
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.key === 'Escape') {
@@ -29,8 +29,14 @@ export const ExperienceSection: React.FC = () => {
     };
     if (isFullDetailsOpen) {
       window.addEventListener('keydown', handleKeyDown);
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = '';
     }
-    return () => window.removeEventListener('keydown', handleKeyDown);
+    return () => {
+      window.removeEventListener('keydown', handleKeyDown);
+      document.body.style.overflow = '';
+    };
   }, [isFullDetailsOpen]);
 
   const encoreExp = EXPERIENCES.find((e) => e.id === 'encore') || EXPERIENCES[0];
@@ -243,7 +249,7 @@ export const ExperienceSection: React.FC = () => {
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             transition={{ duration: 0.2 }}
-            className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-6 bg-[#0f172a]/60 backdrop-blur-md"
+            className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-6 modal-backdrop"
             role="dialog"
             aria-modal="true"
             aria-labelledby="career-modal-title"
@@ -256,19 +262,19 @@ export const ExperienceSection: React.FC = () => {
               animate={{ opacity: 1, scale: 1, y: 0 }}
               exit={shouldReduceMotion ? { opacity: 0 } : { opacity: 0, scale: 0.94, y: 10 }}
               transition={{ duration: 0.25, ease: 'easeOut' }}
-              className="relative w-full max-w-3xl aurora-glass-modal rounded-[28px] sm:rounded-[32px] p-5 sm:p-8 shadow-2xl border border-white/75 dark:border-slate-700/80 max-h-[90vh] flex flex-col overflow-hidden"
+              className="relative w-[calc(100vw-24px)] max-w-3xl aurora-glass-modal rounded-[24px] sm:rounded-[32px] p-5 sm:p-8 shadow-2xl border border-white/90 dark:border-slate-700/80 max-h-[calc(100dvh-24px)] sm:max-h-[90vh] flex flex-col overflow-hidden"
             >
               {/* Header */}
-              <div className="flex items-center justify-between pb-4 border-b border-purple-200/60 dark:border-purple-900/50 mb-4 shrink-0 pr-8">
+              <div className="flex items-center justify-between pb-4 border-b border-purple-200/60 dark:border-purple-900/50 mb-4 shrink-0 pr-14 sm:pr-16">
                 <div className="flex items-center gap-2.5">
-                  <div className="p-2.5 rounded-2xl bg-purple-500/10 text-purple-600 dark:text-purple-400 border border-purple-200/50 dark:border-purple-800/50 shadow-xs">
-                    <Sparkles className="w-5 h-5" />
+                  <div className="p-2.5 rounded-2xl bg-purple-500/10 text-purple-600 dark:text-purple-400 border border-purple-200/50 dark:border-purple-800/50 shadow-xs shrink-0">
+                    <Sparkles className="w-5 h-5 text-[#6D28D9] dark:text-purple-400" />
                   </div>
                   <div>
-                    <h3 id="career-modal-title" className="text-lg sm:text-xl font-extrabold text-slate-900 dark:text-white tracking-tight">
+                    <h3 id="career-modal-title" className="text-xl sm:text-2xl font-black text-[#0F172A] dark:text-white tracking-tight leading-tight">
                       Full Professional Experience
                     </h3>
-                    <p className="text-xs text-slate-600 dark:text-slate-400 font-medium">
+                    <p className="text-xs sm:text-sm font-bold text-[#6D28D9] dark:text-purple-400 mt-0.5">
                       Chronological career history & enterprise engineering responsibilities
                     </p>
                   </div>
@@ -278,14 +284,14 @@ export const ExperienceSection: React.FC = () => {
               {/* Top-Right Close Button */}
               <button
                 onClick={() => setIsFullDetailsOpen(false)}
-                className="absolute top-5 right-5 p-2.5 rounded-full modal-close-btn cursor-pointer focus-visible:ring-2 focus-visible:ring-purple-500 focus-visible:outline-none"
-                aria-label="Close career timeline modal"
+                className="absolute top-4 sm:top-5 right-4 sm:right-5 modal-close-btn cursor-pointer focus-visible:ring-2 focus-visible:ring-purple-500 focus-visible:outline-none z-20"
+                aria-label="Close popup"
               >
                 <X className="w-5 h-5" />
               </button>
 
               {/* Scrollable Timeline Body */}
-              <div className="flex-1 overflow-y-auto pr-1 sm:pr-2 space-y-8 my-2">
+              <div className="flex-1 overflow-y-auto overscroll-contain pr-1 sm:pr-2 space-y-8 my-2">
                 <div className="relative pl-6 sm:pl-8 before:absolute before:left-2 sm:before:left-3 before:top-4 before:bottom-6 before:w-1 before:bg-gradient-to-b before:from-purple-500 before:via-indigo-500 before:to-emerald-500 before:rounded-full">
                   {chronologicalExperiences.map((exp, idx) => {
                     const isCurrent = exp.id === 'virtusa';
@@ -304,56 +310,56 @@ export const ExperienceSection: React.FC = () => {
                           {/* Company Experience Card */}
                           <div className="p-5 sm:p-6 rounded-2xl aurora-glass-card shadow-sm hover:shadow-md transition-all">
                             {/* Company & Role Banner */}
-                            <div className="flex flex-wrap items-start justify-between gap-2 mb-3 border-b border-slate-200/60 dark:border-slate-800 pb-3">
+                            <div className="flex flex-wrap items-start justify-between gap-2 mb-3 border-b border-slate-200/80 dark:border-slate-800 pb-3">
                               <div>
                                 <div className="flex items-center gap-2 flex-wrap mb-1">
                                   <span className={`px-2.5 py-0.5 rounded-full text-[11px] font-bold border ${exp.tagColor}`}>
                                     {exp.domain}
                                   </span>
                                   {isCurrent && (
-                                    <span className="px-2.5 py-0.5 rounded-full text-[10px] font-extrabold uppercase bg-emerald-500/15 text-emerald-700 dark:text-emerald-400 border border-emerald-500/30 flex items-center gap-1">
+                                    <span className="px-2.5 py-0.5 rounded-full text-[10px] font-extrabold uppercase bg-emerald-500/15 text-emerald-800 dark:text-emerald-300 border border-emerald-500/30 flex items-center gap-1">
                                       <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
                                       Current Role
                                     </span>
                                   )}
                                 </div>
-                                <h4 className="text-base sm:text-lg font-extrabold text-slate-900 dark:text-white">
+                                <h4 className="text-lg sm:text-xl font-extrabold text-[#0F172A] dark:text-white">
                                   {exp.role}
                                 </h4>
-                                <p className="text-xs sm:text-sm font-bold text-purple-700 dark:text-purple-400 mt-0.5">
+                                <p className="text-xs sm:text-sm font-bold text-[#6D28D9] dark:text-purple-400 mt-0.5">
                                   {exp.company}
                                 </p>
                               </div>
 
                               <div className="text-right">
-                                <span className="inline-flex items-center gap-1 text-xs font-extrabold text-slate-700 dark:text-slate-300 bg-slate-100/80 dark:bg-slate-800/80 px-3 py-1 rounded-lg border border-slate-200/80 dark:border-slate-700">
-                                  <Calendar className="w-3.5 h-3.5 text-indigo-500" />
+                                <span className="inline-flex items-center gap-1 text-xs font-extrabold text-[#1E293B] dark:text-slate-200 bg-slate-100 dark:bg-slate-800 px-3 py-1 rounded-lg border border-slate-200 dark:border-slate-700">
+                                  <Calendar className="w-3.5 h-3.5 text-indigo-600 dark:text-indigo-400" />
                                   <span>{exp.period}</span>
                                 </span>
                               </div>
                             </div>
 
                             {/* Location & Project details */}
-                            <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 mb-4 text-xs font-semibold text-slate-700 dark:text-slate-300 bg-purple-50/70 dark:bg-purple-950/50 p-3.5 rounded-xl border border-purple-100/80 dark:border-purple-900/40">
+                            <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 mb-4 text-xs sm:text-sm font-semibold text-[#334155] dark:text-slate-200 bg-purple-50/80 dark:bg-purple-950/60 p-4 rounded-xl border border-purple-200/80 dark:border-purple-900/40">
                               <div className="flex items-center gap-1.5">
-                                <MapPin className="w-3.5 h-3.5 text-indigo-500 shrink-0" />
+                                <MapPin className="w-4 h-4 text-indigo-600 dark:text-indigo-400 shrink-0" />
                                 <span><strong>Location:</strong> {exp.location}</span>
                               </div>
                               <div className="flex items-center gap-1.5">
-                                <Briefcase className="w-3.5 h-3.5 text-purple-500 shrink-0" />
+                                <Briefcase className="w-4 h-4 text-[#6D28D9] dark:text-purple-400 shrink-0" />
                                 <span><strong>Project:</strong> {exp.project}</span>
                               </div>
                             </div>
 
                             {/* Responsibilities */}
                             <div className="space-y-2 mb-4">
-                              <h5 className="text-xs font-extrabold text-slate-900 dark:text-white uppercase tracking-wider">
+                              <h5 className="text-xs font-extrabold text-[#1E293B] dark:text-white uppercase tracking-wider">
                                 Key Responsibilities:
                               </h5>
                               <div className="space-y-2">
                                 {exp.responsibilities.map((resp, rIdx) => (
-                                  <div key={rIdx} className="flex items-start gap-2 text-xs sm:text-sm text-slate-700 dark:text-slate-300 leading-relaxed font-medium">
-                                    <CheckCircle className="w-4 h-4 text-emerald-500 shrink-0 mt-0.5" />
+                                  <div key={rIdx} className="flex items-start gap-2 text-[15px] sm:text-[16px] text-[#334155] dark:text-slate-200 leading-[1.7] font-medium">
+                                    <CheckCircle className="w-4 h-4 text-emerald-600 dark:text-emerald-400 shrink-0 mt-1" />
                                     <span>{resp}</span>
                                   </div>
                                 ))}
@@ -362,14 +368,14 @@ export const ExperienceSection: React.FC = () => {
 
                             {/* Core Technologies */}
                             <div>
-                              <span className="text-[10px] font-extrabold uppercase tracking-wider text-slate-500 dark:text-slate-400 block mb-1.5">
+                              <span className="text-[10px] font-extrabold uppercase tracking-wider text-[#64748B] dark:text-slate-400 block mb-1.5">
                                 Core Technologies
                               </span>
                               <div className="flex flex-wrap gap-1.5">
                                 {exp.technologies.map((tech) => (
                                   <span
                                     key={tech}
-                                    className="px-2 py-0.5 rounded-md text-[11px] font-semibold bg-indigo-50 dark:bg-indigo-950/60 text-indigo-700 dark:text-indigo-300 border border-indigo-200/60 dark:border-indigo-800/60"
+                                    className="px-2.5 py-1 rounded-md text-[11px] font-extrabold bg-indigo-50 dark:bg-indigo-950/80 text-indigo-950 dark:text-indigo-200 border border-indigo-200/80 dark:border-indigo-800/80"
                                   >
                                     {tech}
                                   </span>
@@ -382,10 +388,10 @@ export const ExperienceSection: React.FC = () => {
                         {/* Chronological Arrow Down between roles */}
                         {idx < chronologicalExperiences.length - 1 && (
                           <div className="my-4 ml-2 sm:ml-4 flex items-center justify-start gap-2">
-                            <div className="w-7 h-7 rounded-full bg-purple-100 dark:bg-purple-950/80 border border-purple-300 dark:border-purple-700 text-purple-600 dark:text-purple-300 flex items-center justify-center font-black text-xs shadow-xs animate-bounce">
+                            <div className="w-7 h-7 rounded-full bg-purple-100 dark:bg-purple-950/80 border border-purple-300 dark:border-purple-700 text-purple-700 dark:text-purple-300 flex items-center justify-center font-black text-xs shadow-xs animate-bounce">
                               <ArrowDown className="w-3.5 h-3.5" />
                             </div>
-                            <span className="text-xs font-bold text-purple-600 dark:text-purple-400 tracking-wide uppercase">
+                            <span className="text-xs font-bold text-[#6D28D9] dark:text-purple-400 tracking-wide uppercase">
                               Career Advancement
                             </span>
                           </div>

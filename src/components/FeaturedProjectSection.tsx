@@ -118,7 +118,7 @@ export const FeaturedProjectSection: React.FC = () => {
     setLightboxIndex((prev) => (prev - 1 + showcaseViews.length) % showcaseViews.length);
   };
 
-  // Close case study modal on Escape key
+  // Lock body scroll and close case study modal on Escape key
   React.useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.key === 'Escape') {
@@ -127,8 +127,14 @@ export const FeaturedProjectSection: React.FC = () => {
     };
     if (showCaseStudyModal) {
       window.addEventListener('keydown', handleKeyDown);
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = '';
     }
-    return () => window.removeEventListener('keydown', handleKeyDown);
+    return () => {
+      window.removeEventListener('keydown', handleKeyDown);
+      document.body.style.overflow = '';
+    };
   }, [showCaseStudyModal]);
 
   // Lightbox keyboard navigation (ArrowLeft, ArrowRight, Escape)
@@ -932,7 +938,7 @@ export const FeaturedProjectSection: React.FC = () => {
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             transition={{ duration: 0.2 }}
-            className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-[#0f172a]/60 backdrop-blur-md"
+            className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-6 modal-backdrop"
             role="dialog"
             aria-modal="true"
             aria-labelledby="casestudy-modal-title"
@@ -945,132 +951,136 @@ export const FeaturedProjectSection: React.FC = () => {
               animate={{ opacity: 1, scale: 1, y: 0 }}
               exit={shouldReduceMotion ? { opacity: 0 } : { opacity: 0, scale: 0.94, y: 10 }}
               transition={{ duration: 0.25, ease: 'easeOut' }}
-              className="relative w-full max-w-3xl aurora-glass-modal rounded-[28px] sm:rounded-[32px] p-6 sm:p-8 shadow-2xl border border-white/75 dark:border-slate-700/80 max-h-[90vh] overflow-y-auto space-y-6"
+              className="relative w-[calc(100vw-24px)] max-w-3xl aurora-glass-modal rounded-[24px] sm:rounded-[32px] p-5 sm:p-8 shadow-2xl border border-white/90 dark:border-slate-700/80 max-h-[calc(100dvh-24px)] sm:max-h-[90vh] flex flex-col overflow-hidden"
             >
+              {/* Close Button */}
               <button
                 onClick={() => setShowCaseStudyModal(false)}
-                className="absolute top-5 right-5 p-2.5 rounded-full modal-close-btn cursor-pointer focus-visible:ring-2 focus-visible:ring-purple-500 focus-visible:outline-none"
-                aria-label="Close case study modal"
+                className="absolute top-4 sm:top-5 right-4 sm:right-5 modal-close-btn cursor-pointer focus-visible:ring-2 focus-visible:ring-purple-500 focus-visible:outline-none z-20"
+                aria-label="Close popup"
               >
                 <X className="w-5 h-5" />
               </button>
 
-              {/* Modal Header */}
-              <div className="pr-8">
-                <span className="px-3.5 py-1 rounded-full bg-purple-100 dark:bg-purple-900/60 text-purple-800 dark:text-purple-300 text-xs font-extrabold border border-purple-200 dark:border-purple-800">
-                  Product Case Study Breakdown
-                </span>
-                <h3 id="casestudy-modal-title" className="text-2xl sm:text-3xl font-black text-slate-900 dark:text-white mt-2.5">
-                  PG Adda — Product Case Study
-                </h3>
-                <p className="text-sm font-bold text-purple-700 dark:text-purple-400 mt-1">
-                  Frontend Product Prototype for PG & Co-Living Discovery
-                </p>
-              </div>
-
-              {/* The Challenge & My Solution Cards */}
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div className="p-4 rounded-2xl aurora-glass-card space-y-1.5 border-amber-200/80 dark:border-amber-900/40">
-                  <h4 className="font-extrabold text-amber-800 dark:text-amber-400 text-xs uppercase tracking-wider flex items-center gap-1.5">
-                    <span className="w-2 h-2 rounded-full bg-amber-500" /> The Challenge
-                  </h4>
-                  <p className="text-xs text-slate-700 dark:text-slate-300 leading-relaxed font-medium">{FEATURED_PROJECT.challenge}</p>
+              {/* Scrollable Modal Content */}
+              <div className="overflow-y-auto overscroll-contain flex-1 pr-1 space-y-6">
+                {/* Modal Header */}
+                <div className="pr-14 sm:pr-16 pb-2 border-b border-purple-200/60 dark:border-purple-900/50">
+                  <span className="px-3.5 py-1 rounded-full bg-purple-100 dark:bg-purple-900/60 text-purple-900 dark:text-purple-300 text-xs font-extrabold border border-purple-200 dark:border-purple-800 inline-block">
+                    Product Case Study Breakdown
+                  </span>
+                  <h3 id="casestudy-modal-title" className="text-2xl sm:text-3xl font-black text-[#0F172A] dark:text-white mt-2.5 leading-tight">
+                    PG Adda — Product Case Study
+                  </h3>
+                  <p className="text-sm font-bold text-[#6D28D9] dark:text-purple-400 mt-1">
+                    Frontend Product Prototype for PG & Co-Living Discovery
+                  </p>
                 </div>
-                <div className="p-4 rounded-2xl aurora-glass-card space-y-1.5 border-purple-200/80 dark:border-purple-900/40">
-                  <h4 className="font-extrabold text-purple-800 dark:text-purple-400 text-xs uppercase tracking-wider flex items-center gap-1.5">
-                    <span className="w-2 h-2 rounded-full bg-purple-500" /> My Solution
-                  </h4>
-                  <p className="text-xs text-slate-700 dark:text-slate-300 leading-relaxed font-medium">{FEATURED_PROJECT.solution}</p>
-                </div>
-              </div>
 
-              {/* Key Contributions & Engineering Highlights */}
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div className="space-y-2">
-                  <h4 className="font-bold text-slate-900 dark:text-white text-sm flex items-center gap-1.5">
-                    <CheckCircle2 className="w-4 h-4 text-purple-600 dark:text-purple-400" />
-                    <span>Key Contributions</span>
-                  </h4>
-                  <div className="space-y-2 text-xs text-slate-700 dark:text-slate-300">
-                    {FEATURED_PROJECT.keyContributions?.map((item) => (
-                      <div key={item} className="p-3 rounded-2xl aurora-glass-card flex items-center gap-2 font-medium shadow-2xs">
-                        <span className="w-1.5 h-1.5 rounded-full bg-purple-600 dark:bg-purple-400 shrink-0" />
-                        <span>{item}</span>
-                      </div>
-                    ))}
+                {/* The Challenge & My Solution Cards */}
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div className="p-5 rounded-2xl aurora-glass-card space-y-2 border-amber-300/80 dark:border-amber-900/50">
+                    <h4 className="font-extrabold text-amber-900 dark:text-amber-400 text-xs uppercase tracking-wider flex items-center gap-1.5">
+                      <span className="w-2 h-2 rounded-full bg-amber-500" /> The Challenge
+                    </h4>
+                    <p className="text-xs sm:text-sm text-[#334155] dark:text-slate-200 leading-[1.65] font-medium">{FEATURED_PROJECT.challenge}</p>
+                  </div>
+                  <div className="p-5 rounded-2xl aurora-glass-card space-y-2 border-purple-300/80 dark:border-purple-900/50">
+                    <h4 className="font-extrabold text-[#6D28D9] dark:text-purple-400 text-xs uppercase tracking-wider flex items-center gap-1.5">
+                      <span className="w-2 h-2 rounded-full bg-purple-500" /> My Solution
+                    </h4>
+                    <p className="text-xs sm:text-sm text-[#334155] dark:text-slate-200 leading-[1.65] font-medium">{FEATURED_PROJECT.solution}</p>
                   </div>
                 </div>
 
-                <div className="space-y-2">
-                  <h4 className="font-bold text-slate-900 dark:text-white text-sm flex items-center gap-1.5">
-                    <Zap className="w-4 h-4 text-purple-600 dark:text-purple-400" />
-                    <span>Engineering Highlights</span>
-                  </h4>
-                  <div className="space-y-2 text-xs text-slate-700 dark:text-slate-300">
-                    {FEATURED_PROJECT.engineeringHighlights?.map((item) => (
-                      <div key={item} className="p-3 rounded-2xl aurora-glass-card flex items-center gap-2 font-semibold text-purple-900 dark:text-purple-200 shadow-2xs">
-                        <Zap className="w-3.5 h-3.5 text-purple-600 dark:text-purple-400 shrink-0" />
-                        <span>{item}</span>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              </div>
-
-              {/* Features Implemented */}
-              <div className="space-y-2">
-                <h4 className="font-bold text-slate-900 dark:text-white text-sm">Features Implemented:</h4>
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs text-slate-700 dark:text-slate-300">
-                  {FEATURED_PROJECT.features.map((feat) => (
-                    <div key={feat} className="p-3 rounded-2xl aurora-glass-card flex items-center gap-2 shadow-2xs">
-                      <CheckCircle2 className="w-3.5 h-3.5 text-emerald-500 shrink-0" />
-                      <span className="font-semibold">{feat}</span>
+                {/* Key Contributions & Engineering Highlights */}
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div className="space-y-2">
+                    <h4 className="font-extrabold text-[#1E293B] dark:text-white text-sm sm:text-base flex items-center gap-1.5">
+                      <CheckCircle2 className="w-4 h-4 text-[#6D28D9] dark:text-purple-400" />
+                      <span>Key Contributions</span>
+                    </h4>
+                    <div className="space-y-2 text-xs sm:text-sm text-[#334155] dark:text-slate-200">
+                      {FEATURED_PROJECT.keyContributions?.map((item) => (
+                        <div key={item} className="p-3.5 rounded-2xl aurora-glass-card flex items-center gap-2.5 font-medium shadow-2xs">
+                          <span className="w-2 h-2 rounded-full bg-[#6D28D9] dark:bg-purple-400 shrink-0" />
+                          <span>{item}</span>
+                        </div>
+                      ))}
                     </div>
-                  ))}
-                </div>
-              </div>
+                  </div>
 
-              {/* Tech Stack Breakdown */}
-              <div className="space-y-2">
-                <h4 className="font-bold text-slate-900 dark:text-white text-sm">Tech Stack & Development Tools:</h4>
-                <div className="flex flex-wrap gap-2">
-                  {FEATURED_PROJECT.technologies.map((tech) => (
-                    <span key={tech} className="px-3 py-1.5 rounded-xl bg-purple-100/80 dark:bg-purple-900/50 border border-purple-200 dark:border-purple-800 text-purple-900 dark:text-purple-200 text-xs font-bold">
-                      {tech}
-                    </span>
-                  ))}
+                  <div className="space-y-2">
+                    <h4 className="font-extrabold text-[#1E293B] dark:text-white text-sm sm:text-base flex items-center gap-1.5">
+                      <Zap className="w-4 h-4 text-[#6D28D9] dark:text-purple-400" />
+                      <span>Engineering Highlights</span>
+                    </h4>
+                    <div className="space-y-2 text-xs sm:text-sm text-[#334155] dark:text-slate-200">
+                      {FEATURED_PROJECT.engineeringHighlights?.map((item) => (
+                        <div key={item} className="p-3.5 rounded-2xl aurora-glass-card flex items-center gap-2.5 font-semibold text-purple-950 dark:text-purple-200 shadow-2xs">
+                          <Zap className="w-4 h-4 text-[#6D28D9] dark:text-purple-400 shrink-0" />
+                          <span>{item}</span>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
                 </div>
-              </div>
 
-              {/* Footer buttons */}
-              <div className="pt-4 border-t border-purple-100/80 dark:border-purple-900/50 flex flex-wrap items-center justify-between gap-3">
-                <div className="flex gap-2">
-                  <a
-                    href={FEATURED_PROJECT.liveUrl}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="px-4 py-2.5 rounded-xl text-xs font-bold bg-purple-600 text-white flex items-center gap-1.5 shadow-md hover:bg-purple-700 transition-colors"
+                {/* Features Implemented */}
+                <div className="space-y-2">
+                  <h4 className="font-extrabold text-[#1E293B] dark:text-white text-sm sm:text-base">Features Implemented:</h4>
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs sm:text-sm text-[#334155] dark:text-slate-200">
+                    {FEATURED_PROJECT.features.map((feat) => (
+                      <div key={feat} className="p-3.5 rounded-2xl aurora-glass-card flex items-center gap-2.5 shadow-2xs">
+                        <CheckCircle2 className="w-4 h-4 text-emerald-600 dark:text-emerald-400 shrink-0" />
+                        <span className="font-semibold">{feat}</span>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+
+                {/* Tech Stack Breakdown */}
+                <div className="space-y-2">
+                  <h4 className="font-extrabold text-[#1E293B] dark:text-white text-sm sm:text-base">Tech Stack & Development Tools:</h4>
+                  <div className="flex flex-wrap gap-2">
+                    {FEATURED_PROJECT.technologies.map((tech) => (
+                      <span key={tech} className="px-3.5 py-1.5 rounded-xl bg-purple-100 dark:bg-purple-900/60 border border-purple-200 dark:border-purple-800 text-purple-950 dark:text-purple-200 text-xs font-bold">
+                        {tech}
+                      </span>
+                    ))}
+                  </div>
+                </div>
+
+                {/* Footer buttons */}
+                <div className="pt-4 border-t border-purple-200/60 dark:border-purple-900/50 flex flex-wrap items-center justify-between gap-3">
+                  <div className="flex gap-2">
+                    <a
+                      href={FEATURED_PROJECT.liveUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="px-4 py-2.5 rounded-xl text-xs font-bold bg-purple-600 text-white flex items-center gap-1.5 shadow-md hover:bg-purple-700 transition-colors"
+                    >
+                      <span>Open Live Demo</span>
+                      <ExternalLink className="w-3.5 h-3.5" />
+                    </a>
+                    <a
+                      href={FEATURED_PROJECT.githubUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="px-4 py-2.5 rounded-xl text-xs font-bold bg-slate-100 dark:bg-slate-800 text-slate-900 dark:text-slate-200 border border-slate-200 dark:border-slate-700 flex items-center gap-1.5 hover:bg-slate-200 dark:hover:bg-slate-700 transition-colors"
+                    >
+                      <span>View GitHub Code</span>
+                      <ExternalLink className="w-3.5 h-3.5" />
+                    </a>
+                  </div>
+
+                  <button
+                    onClick={() => setShowCaseStudyModal(false)}
+                    className="px-6 py-2.5 rounded-xl text-xs sm:text-sm font-bold modal-purple-btn cursor-pointer"
                   >
-                    <span>Open Live Demo</span>
-                    <ExternalLink className="w-3.5 h-3.5" />
-                  </a>
-                  <a
-                    href={FEATURED_PROJECT.githubUrl}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="px-4 py-2.5 rounded-xl text-xs font-bold bg-slate-100 dark:bg-slate-800 text-slate-800 dark:text-slate-200 border border-slate-200 dark:border-slate-700 flex items-center gap-1.5 hover:bg-slate-200 dark:hover:bg-slate-700 transition-colors"
-                  >
-                    <span>View GitHub Code</span>
-                    <ExternalLink className="w-3.5 h-3.5" />
-                  </a>
+                    Close
+                  </button>
                 </div>
-
-                <button
-                  onClick={() => setShowCaseStudyModal(false)}
-                  className="px-5 py-2.5 rounded-xl text-xs font-bold modal-purple-btn cursor-pointer"
-                >
-                  Close
-                </button>
               </div>
             </motion.div>
           </motion.div>

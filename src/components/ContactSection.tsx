@@ -112,45 +112,52 @@ export const ContactSection: React.FC<ContactSectionProps> = ({ onDownloadResume
   return (
     <motion.section
       id="contact"
-      className="py-6 sm:py-10"
+      className="pt-2 sm:pt-6 pb-6 sm:pb-10"
       initial={shouldReduceMotion ? { opacity: 0 } : { opacity: 0, y: 24 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, margin: '-50px' }}
       transition={{ duration: 0.5, ease: 'easeOut' }}
     >
-      <div className="aurora-glass rounded-3xl p-6 sm:p-10 border border-purple-200/80 dark:border-purple-900/60 shadow-xl relative overflow-hidden">
-        {/* Background Ambient Glows */}
-        <div className="absolute top-0 right-0 w-96 h-96 bg-gradient-to-bl from-purple-500/15 via-indigo-500/10 to-transparent rounded-bl-full pointer-events-none blur-2xl" />
-        <div className="absolute bottom-0 left-0 w-80 h-80 bg-gradient-to-tr from-pink-500/10 via-purple-500/10 to-transparent rounded-tr-full pointer-events-none blur-2xl" />
+      <div
+        className="rounded-3xl p-5 sm:p-8 md:p-10 border border-purple-200/80 dark:border-purple-900/60 shadow-xl relative overflow-hidden dark:!bg-slate-900/95 dark:!border-purple-900/60"
+        style={{
+          background: 'linear-gradient(145deg, rgba(255, 255, 255, 0.99), rgba(247, 247, 255, 0.98))',
+          border: '1px solid rgba(124, 58, 237, 0.12)',
+          boxShadow: '0 16px 40px rgba(15, 23, 42, 0.10), 0 6px 18px rgba(124, 58, 237, 0.08)',
+        }}
+      >
+        {/* Background Subtle Ambient Glows */}
+        <div className="absolute top-0 right-0 w-80 h-80 bg-gradient-to-bl from-purple-500/10 via-indigo-500/5 to-transparent rounded-bl-full pointer-events-none blur-3xl" />
+        <div className="absolute bottom-0 left-0 w-72 h-72 bg-gradient-to-tr from-blue-500/10 via-purple-500/5 to-transparent rounded-tr-full pointer-events-none blur-3xl" />
 
-        <div className="relative z-10 space-y-8 sm:space-y-10">
+        <div className="relative z-10 space-y-6 sm:space-y-10">
           
           {/* Main Title Banner */}
           <div className="text-center max-w-3xl mx-auto space-y-3">
-            <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-purple-500/10 dark:bg-purple-950/60 border border-purple-300/60 dark:border-purple-700/60 text-purple-700 dark:text-purple-300 text-xs font-extrabold tracking-wider uppercase shadow-xs">
-              <Sparkles className="w-3.5 h-3.5 text-purple-500 animate-pulse" />
+            <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-purple-100 dark:bg-purple-950/80 border border-purple-300/80 dark:border-purple-700/80 text-[#6D28D9] dark:text-purple-300 text-xs font-black tracking-wider uppercase shadow-2xs">
+              <Sparkles className="w-3.5 h-3.5 text-[#6D28D9] dark:text-purple-400 animate-pulse" />
               <span>Get In Touch</span>
             </div>
-            <h2 className="text-2xl sm:text-4xl font-black text-slate-900 dark:text-white tracking-tight leading-tight">
+            <h2 className="text-[32px] sm:text-4xl font-bold text-[#0F172A] dark:text-white tracking-tight leading-[1.2]">
               Let's Build Something Amazing Together
             </h2>
-            <p className="text-xs sm:text-sm text-slate-600 dark:text-slate-300 font-medium leading-relaxed max-w-2xl mx-auto">
+            <p className="text-[16px] text-[#475569] dark:text-slate-300 font-medium leading-[1.65] max-w-full sm:max-w-2xl mx-auto">
               Looking for an experienced Frontend Engineer specialized in React.js, TypeScript, enterprise architecture, and WCAG accessibility? Reach out directly via email, phone, or LinkedIn.
             </p>
           </div>
 
           {/* Quick Action Buttons Row */}
-          <div className="flex flex-wrap items-center justify-center gap-3 sm:gap-4 max-w-2xl mx-auto">
+          <div className="flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-4 max-w-2xl mx-auto w-full">
             {/* Email Me Button */}
             <motion.a
               href={`mailto:${PERSONAL_INFO.email}`}
-              whileHover={shouldReduceMotion ? {} : { scale: 1.04, y: -2 }}
+              whileHover={shouldReduceMotion ? {} : { scale: 1.03, y: -2 }}
               whileTap={shouldReduceMotion ? {} : { scale: 0.97 }}
-              className="flex-1 min-w-[170px] max-w-[220px] px-5 py-3.5 rounded-2xl bg-gradient-to-r from-purple-600 via-indigo-600 to-purple-700 text-white font-extrabold text-xs sm:text-sm shadow-md hover:shadow-[0_0_25px_rgba(168,85,247,0.4)] flex items-center justify-center gap-2 transition-all cursor-pointer border border-purple-400/40"
+              className="w-full sm:w-auto sm:flex-1 min-w-[170px] max-w-none sm:max-w-[220px] min-h-[56px] px-5 py-3.5 rounded-2xl bg-gradient-to-r from-purple-700 via-indigo-700 to-purple-800 text-white font-extrabold text-sm shadow-md hover:shadow-[0_0_25px_rgba(124,58,237,0.35)] flex items-center justify-center gap-2 transition-all cursor-pointer border border-purple-500/40"
             >
               <Mail className="w-4 h-4 text-white shrink-0" />
               <span>Email Me</span>
-              <ArrowUpRight className="w-3.5 h-3.5 text-purple-200 shrink-0" />
+              <ArrowUpRight className="w-4 h-4 text-purple-200 shrink-0" />
             </motion.a>
 
             {/* Connect on LinkedIn Button */}
@@ -158,13 +165,13 @@ export const ContactSection: React.FC<ContactSectionProps> = ({ onDownloadResume
               href={PERSONAL_INFO.linkedin}
               target="_blank"
               rel="noopener noreferrer"
-              whileHover={shouldReduceMotion ? {} : { scale: 1.04, y: -2 }}
+              whileHover={shouldReduceMotion ? {} : { scale: 1.03, y: -2 }}
               whileTap={shouldReduceMotion ? {} : { scale: 0.97 }}
-              className="flex-1 min-w-[170px] max-w-[220px] px-5 py-3.5 rounded-2xl bg-slate-900 dark:bg-slate-800 hover:bg-slate-800 dark:hover:bg-slate-700 text-white font-extrabold text-xs sm:text-sm shadow-md hover:shadow-[0_0_20px_rgba(99,102,241,0.3)] flex items-center justify-center gap-2 transition-all cursor-pointer border border-slate-700"
+              className="w-full sm:w-auto sm:flex-1 min-w-[170px] max-w-none sm:max-w-[220px] min-h-[56px] px-5 py-3.5 rounded-2xl bg-slate-900 dark:bg-slate-800 hover:bg-slate-800 dark:hover:bg-slate-700 text-white font-extrabold text-sm shadow-md hover:shadow-[0_0_20px_rgba(15,23,42,0.25)] flex items-center justify-center gap-2 transition-all cursor-pointer border border-slate-700"
             >
               <Linkedin className="w-4 h-4 text-blue-400 shrink-0" />
               <span>Connect on LinkedIn</span>
-              <ArrowUpRight className="w-3.5 h-3.5 text-slate-400 shrink-0" />
+              <ArrowUpRight className="w-4 h-4 text-slate-400 shrink-0" />
             </motion.a>
 
             {/* Download Resume Button */}
@@ -172,18 +179,18 @@ export const ContactSection: React.FC<ContactSectionProps> = ({ onDownloadResume
               <motion.button
                 type="button"
                 onClick={onDownloadResume}
-                whileHover={shouldReduceMotion ? {} : { scale: 1.04, y: -2 }}
+                whileHover={shouldReduceMotion ? {} : { scale: 1.03, y: -2 }}
                 whileTap={shouldReduceMotion ? {} : { scale: 0.97 }}
-                className="flex-1 min-w-[170px] max-w-[220px] px-5 py-3.5 rounded-2xl bg-white dark:bg-slate-900 hover:bg-purple-50 dark:hover:bg-slate-800 text-purple-900 dark:text-purple-300 font-extrabold text-xs sm:text-sm shadow-md hover:shadow-[0_0_20px_rgba(168,85,247,0.3)] flex items-center justify-center gap-2 transition-all cursor-pointer border border-purple-300 dark:border-purple-800"
+                className="w-full sm:w-auto sm:flex-1 min-w-[170px] max-w-none sm:max-w-[220px] min-h-[56px] px-5 py-3.5 rounded-2xl bg-white dark:bg-slate-900 hover:bg-purple-50 dark:hover:bg-slate-800 text-[#5B21B6] dark:text-purple-300 font-extrabold text-sm shadow-md hover:shadow-[0_0_20px_rgba(124,58,237,0.2)] flex items-center justify-center gap-2 transition-all cursor-pointer border border-purple-300 dark:border-purple-800"
               >
-                <Download className="w-4 h-4 text-purple-600 dark:text-purple-400 shrink-0" />
+                <Download className="w-4 h-4 text-[#6D28D9] dark:text-purple-400 shrink-0" />
                 <span>Download Resume</span>
               </motion.button>
             )}
           </div>
 
           {/* Grid Layout: Modern Illustration Left + Animated Contact Cards Right */}
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center pt-2">
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 sm:gap-8 items-center pt-2">
             
             {/* Left: Modern Vector Illustration Card */}
             <motion.div
@@ -193,9 +200,9 @@ export const ContactSection: React.FC<ContactSectionProps> = ({ onDownloadResume
               transition={{ duration: 0.5, ease: 'easeOut' }}
               className="lg:col-span-5 relative group"
             >
-              <div className="p-6 sm:p-8 rounded-3xl bg-gradient-to-br from-slate-900 via-slate-950 to-purple-950 text-white border border-purple-500/30 shadow-2xl relative overflow-hidden flex flex-col items-center justify-center text-center">
+              <div className="p-5 sm:p-8 rounded-3xl bg-gradient-to-br from-slate-900 via-slate-950 to-purple-950 text-white border border-purple-500/30 shadow-xl relative overflow-hidden flex flex-col items-center justify-center text-center">
                 {/* SVG Modern Illustration */}
-                <div className="relative w-full max-w-[280px] h-[220px] sm:h-[240px] flex items-center justify-center my-2">
+                <div className="relative w-full max-w-[280px] h-[200px] sm:h-[240px] flex items-center justify-center my-1">
                   <svg
                     viewBox="0 0 300 240"
                     fill="none"
@@ -261,7 +268,7 @@ export const ContactSection: React.FC<ContactSectionProps> = ({ onDownloadResume
                     <Code2 className="w-4 h-4 text-purple-400" />
                     <span>Enterprise Frontend Excellence</span>
                   </div>
-                  <p className="text-[11px] text-slate-400 leading-relaxed max-w-xs">
+                  <p className="text-[11px] text-slate-300 leading-relaxed max-w-xs font-medium">
                     React.js • TypeScript • WCAG Accessibility • Component Architecture
                   </p>
                 </div>
@@ -289,11 +296,11 @@ export const ContactSection: React.FC<ContactSectionProps> = ({ onDownloadResume
                     whileHover={
                       shouldReduceMotion
                         ? {}
-                        : { y: -4, scale: 1.02 }
+                        : { y: -3, scale: 1.01 }
                     }
                     transition={{ duration: 0.25, ease: 'easeOut' }}
                     onClick={!card.href ? card.action : undefined}
-                    className={`group/card p-4 rounded-2xl bg-white/90 dark:bg-slate-900/90 border border-purple-200/80 dark:border-purple-800/80 hover:border-purple-400 dark:hover:border-purple-400 shadow-sm hover:shadow-[0_0_25px_rgba(168,85,247,0.25)] hover:shadow-purple-500/20 transition-all duration-300 flex items-center justify-between gap-3 ${
+                    className={`group/card p-4 rounded-2xl bg-white dark:bg-slate-900 border border-purple-200/90 dark:border-purple-800/80 hover:border-purple-400 dark:hover:border-purple-400 shadow-xs hover:shadow-[0_4px_20px_rgba(124,58,237,0.15)] transition-all duration-300 flex items-center justify-between gap-3 ${
                       card.id !== 'location' ? 'cursor-pointer' : 'cursor-default'
                     } relative overflow-hidden`}
                   >
@@ -306,14 +313,14 @@ export const ContactSection: React.FC<ContactSectionProps> = ({ onDownloadResume
                       </div>
 
                       <div className="min-w-0">
-                        <div className="text-[10px] font-black uppercase tracking-wider text-slate-400 dark:text-slate-500">
+                        <div className="text-[10px] font-black uppercase tracking-wider text-[#64748B] dark:text-slate-400">
                           {card.label}
                         </div>
-                        <div className="text-xs sm:text-sm font-extrabold text-slate-900 dark:text-white group-hover/card:text-purple-700 dark:group-hover/card:text-purple-300 transition-colors truncate">
+                        <div className="text-xs sm:text-sm font-black text-[#0F172A] dark:text-white group-hover/card:text-[#6D28D9] dark:group-hover/card:text-purple-300 transition-colors truncate">
                           {card.value}
                         </div>
                         {card.subtext && (
-                          <div className="text-[11px] font-medium text-slate-500 dark:text-slate-400 truncate">
+                          <div className="text-[11px] font-medium text-[#475569] dark:text-slate-300 truncate">
                             {card.subtext}
                           </div>
                         )}
@@ -326,16 +333,16 @@ export const ContactSection: React.FC<ContactSectionProps> = ({ onDownloadResume
                         <button
                           type="button"
                           onClick={handleCopyEmail}
-                          className="p-2 rounded-xl text-slate-400 hover:text-purple-700 dark:hover:text-purple-300 hover:bg-purple-100 dark:hover:bg-purple-950 transition-colors cursor-pointer"
+                          className="p-2 rounded-xl text-slate-500 hover:text-[#6D28D9] dark:hover:text-purple-300 hover:bg-purple-100 dark:hover:bg-purple-950 transition-colors cursor-pointer"
                           title="Copy Email"
                           aria-label="Copy Email Address"
                         >
-                          {copiedEmail ? <Check className="w-4 h-4 text-emerald-500" /> : <Copy className="w-4 h-4" />}
+                          {copiedEmail ? <Check className="w-4 h-4 text-emerald-600" /> : <Copy className="w-4 h-4" />}
                         </button>
                       )}
 
                       {card.id !== 'location' && (
-                        <span className="px-3 py-1.5 rounded-xl bg-purple-50 dark:bg-purple-950/60 text-purple-700 dark:text-purple-300 border border-purple-200 dark:border-purple-800 text-xs font-bold flex items-center gap-1 group-hover/card:bg-purple-600 group-hover/card:text-white group-hover/card:border-purple-500 transition-all shadow-2xs">
+                        <span className="px-3 py-1.5 rounded-xl bg-purple-50 dark:bg-purple-950/60 text-[#6D28D9] dark:text-purple-300 border border-purple-200 dark:border-purple-800 text-xs font-bold flex items-center gap-1 group-hover/card:bg-purple-600 group-hover/card:text-white group-hover/card:border-purple-500 transition-all shadow-2xs">
                           <span>{card.actionText}</span>
                           <ArrowUpRight className="w-3.5 h-3.5" />
                         </span>

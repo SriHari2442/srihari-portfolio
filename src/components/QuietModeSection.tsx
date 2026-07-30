@@ -257,21 +257,21 @@ const ImageLightboxModal: React.FC<ImageLightboxModalProps> = ({
 
   return (
     <div
-      className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-6 bg-[#0f172a]/60 backdrop-blur-md animate-in fade-in duration-200"
+      className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-6 modal-backdrop animate-in fade-in duration-200"
       role="dialog"
       aria-modal="true"
       aria-label="Image gallery viewer"
       onClick={onClose}
     >
       <div
-        className="relative max-w-5xl w-full aurora-glass-modal rounded-[28px] overflow-hidden border border-white/75 dark:border-slate-700/80 shadow-2xl flex flex-col max-h-[90vh]"
+        className="relative w-[calc(100vw-24px)] max-w-5xl aurora-glass-modal rounded-[24px] sm:rounded-[32px] overflow-hidden border border-white/90 dark:border-slate-700/80 shadow-2xl flex flex-col max-h-[calc(100dvh-24px)] sm:max-h-[90vh]"
         onClick={(e) => e.stopPropagation()}
       >
         {/* Header */}
         <div className="flex items-center justify-between py-3 px-4 sm:px-6 bg-slate-900/90 border-b border-slate-800 z-10">
           <div className="pr-4">
-            <h4 className="text-sm font-bold text-white tracking-wide">{current.title}</h4>
-            <p className="text-xs text-slate-400 mt-0.5">{current.subtitle}</p>
+            <h4 className="text-sm sm:text-base font-black text-white tracking-wide">{current.title}</h4>
+            <p className="text-xs text-purple-300 font-medium mt-0.5">{current.subtitle}</p>
           </div>
 
           <div className="flex items-center gap-2 shrink-0">
@@ -314,7 +314,7 @@ const ImageLightboxModal: React.FC<ImageLightboxModalProps> = ({
             <button
               onClick={onClose}
               className="p-2.5 rounded-full modal-close-btn cursor-pointer focus-visible:ring-2 focus-visible:ring-purple-500 focus-visible:outline-none"
-              aria-label="Close screenshot modal"
+              aria-label="Close popup"
             >
               <X className="w-5 h-5" />
             </button>
@@ -471,6 +471,18 @@ export const QuietModeSection: React.FC = () => {
       document.removeEventListener('mozfullscreenchange', handleFsChange);
     };
   }, []);
+
+  // Lock body scroll when gallery lightbox or video demo modal is open
+  useEffect(() => {
+    if (selectedImageIndex !== null || isDemoModalOpen) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = '';
+    }
+    return () => {
+      document.body.style.overflow = '';
+    };
+  }, [selectedImageIndex, isDemoModalOpen]);
 
   const videoRef = useRef<HTMLVideoElement | null>(null);
   const videoContainerRef = useRef<HTMLDivElement | null>(null);
@@ -1172,31 +1184,31 @@ export const QuietModeSection: React.FC = () => {
       {/* Premium Video Demo Modal (Triggered by 'Watch Product Demo' Button) */}
       {isDemoModalOpen && (
         <div
-          className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-[#0f172a]/60 backdrop-blur-md animate-in fade-in duration-200"
+          className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-6 modal-backdrop animate-in fade-in duration-200"
           role="dialog"
           aria-modal="true"
           onClick={() => setIsDemoModalOpen(false)}
         >
           <div
-            className="relative max-w-[360px] w-full aurora-glass-modal rounded-[28px] sm:rounded-[32px] border border-white/75 dark:border-slate-700/80 shadow-2xl p-4 sm:p-5 flex flex-col items-center"
+            className="relative w-[calc(100vw-24px)] max-w-[360px] aurora-glass-modal rounded-[24px] sm:rounded-[32px] border border-white/90 dark:border-slate-700/80 shadow-2xl p-4 sm:p-5 flex flex-col items-center max-h-[calc(100dvh-24px)] sm:max-h-[90vh] overflow-hidden"
             onClick={(e) => e.stopPropagation()}
           >
             {/* Modal Header */}
-            <div className="flex items-center justify-between w-full pb-3 mb-3 border-b border-purple-200/50 dark:border-purple-900/50">
-              <div className="flex items-center gap-2">
-                <div className="p-2 rounded-xl bg-purple-600/20 text-purple-600 dark:text-purple-400 border border-purple-500/30">
+            <div className="flex items-center justify-between w-full pb-3 mb-3 border-b border-purple-200/60 dark:border-purple-900/50">
+              <div className="flex items-center gap-2 pr-2">
+                <div className="p-2 rounded-xl bg-purple-600/20 text-[#6D28D9] dark:text-purple-400 border border-purple-500/30 shrink-0">
                   <Video className="w-4 h-4" />
                 </div>
                 <div>
-                  <h3 className="text-sm font-bold text-slate-900 dark:text-white">Quiet Mode Product Demo</h3>
-                  <p className="text-[11px] text-slate-600 dark:text-slate-400">WhatsApp Digital Wellbeing UX Concept</p>
+                  <h3 className="text-sm font-black text-[#0F172A] dark:text-white leading-tight">Quiet Mode Product Demo</h3>
+                  <p className="text-[11px] font-bold text-[#6D28D9] dark:text-purple-400 mt-0.5">WhatsApp Digital Wellbeing UX Concept</p>
                 </div>
               </div>
 
               <button
                 onClick={() => setIsDemoModalOpen(false)}
-                className="p-2 rounded-full modal-close-btn cursor-pointer focus-visible:ring-2 focus-visible:ring-purple-500 focus-visible:outline-none"
-                aria-label="Close video demo modal"
+                className="p-2 rounded-full modal-close-btn cursor-pointer focus-visible:ring-2 focus-visible:ring-purple-500 focus-visible:outline-none shrink-0"
+                aria-label="Close popup"
               >
                 <X className="w-4 h-4" />
               </button>
