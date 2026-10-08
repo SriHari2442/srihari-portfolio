@@ -61,13 +61,13 @@ export const ExperienceSection: React.FC = () => {
     {
       id: '2024-virtusa',
       year: '2024 – Present',
-      company: 'Virtusa Consulting Services Pvt. Ltd.',
-      role: 'Software Engineer – Frontend',
+      company: 'Virtusa Consulting Services Pvt Ltd',
+      role: 'Senior Software Engineer',
       duration: 'August 2024 – Present',
       isCurrent: true,
       impactSummary:
-        'Developed enterprise banking applications for Huntington Bank using React.js and TypeScript across Manage Alerts, Alert History, Messages, Positive Pay, and Navigation modules.',
-      technologies: ['React.js', 'TypeScript', 'Honeycomb UI', 'Material UI', 'REST APIs', 'WCAG / ADA', 'Adobe Analytics', 'Contentsquare'],
+        'Engineered enterprise banking applications for Huntington Bank using React.js and TypeScript across Manage Alerts, Alert History, Messages, Positive Pay, and Navigation modules.',
+      technologies: ['React.js', 'TypeScript', 'Material UI', 'Tailwind CSS', 'Redux Toolkit', 'REST APIs', 'WCAG / ADA', 'Performance Optimization'],
       experienceRef: virtusaExp,
     },
   ];

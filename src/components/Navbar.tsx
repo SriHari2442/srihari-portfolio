@@ -97,8 +97,8 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenResume, onDownloadResume, 
               <span className="font-extrabold text-slate-900 text-sm sm:text-base tracking-tight leading-none group-hover:text-indigo-600 transition-colors truncate">
                 {PERSONAL_INFO.name}
               </span>
-              <span className="text-[10px] sm:text-xs text-slate-500 font-medium tracking-wide mt-0.5 truncate">
-                {PERSONAL_INFO.role}
+              <span className="text-[10px] sm:text-xs text-slate-500 font-semibold tracking-wide mt-0.5 truncate">
+                {PERSONAL_INFO.designation}
               </span>
             </div>
           </a>
@@ -191,7 +191,7 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenResume, onDownloadResume, 
                   </div>
                   <div>
                     <div className="font-extrabold text-slate-900 text-sm leading-tight">{PERSONAL_INFO.name}</div>
-                    <div className="text-[11px] font-semibold text-indigo-600">{PERSONAL_INFO.role}</div>
+                    <div className="text-[11px] font-semibold text-indigo-600">{PERSONAL_INFO.designation}</div>
                   </div>
                 </div>
                 <button

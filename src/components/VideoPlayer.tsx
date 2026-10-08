@@ -114,7 +114,7 @@ export const VideoPlayer: React.FC<VideoPlayerProps> = ({ shouldReduceMotion = f
   };
 
   const trustHighlights = [
-    { label: '3+ Years Experience', icon: Briefcase, color: 'text-indigo-600 bg-indigo-50/80 border-indigo-200/60' },
+    { label: '4+ Years Experience', icon: Briefcase, color: 'text-indigo-600 bg-indigo-50/80 border-indigo-200/60' },
     { label: 'Enterprise Banking', icon: Building2, color: 'text-blue-600 bg-blue-50/80 border-blue-200/60' },
     { label: 'React & TS Specialist', icon: Code2, color: 'text-purple-600 bg-purple-50/80 border-purple-200/60' },
     { label: 'Product Builder', icon: Layers, color: 'text-pink-600 bg-pink-50/80 border-pink-200/60' },

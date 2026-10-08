@@ -14,8 +14,9 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ onOpenResume, onDownlo
   const shouldReduceMotion = useReducedMotion();
 
   const techBadges = [
-    { name: 'React', bg: 'bg-sky-500/10 text-sky-700 border-sky-200/80' },
+    { name: 'React.js', bg: 'bg-sky-500/10 text-sky-700 border-sky-200/80' },
     { name: 'TypeScript', bg: 'bg-blue-500/10 text-blue-700 border-blue-200/80' },
+    { name: 'Angular', bg: 'bg-rose-500/10 text-rose-700 border-rose-200/80' },
     { name: 'Accessibility', bg: 'bg-emerald-500/10 text-emerald-700 border-emerald-200/80' },
     { name: 'Enterprise UI', bg: 'bg-purple-500/10 text-purple-700 border-purple-200/80' },
   ];

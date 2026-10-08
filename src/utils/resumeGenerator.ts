@@ -8,7 +8,7 @@ export const generateAndDownloadResumePDF = (): string => {
     format: 'a4',
   });
 
-  const filename = 'Sri-Hari-Mada-Frontend-Engineer-Resume.pdf';
+  const filename = 'Sri-Hari-Mada-Senior-Software-Engineer-Resume.pdf';
 
   // Colors
   const primaryColor = '#2563EB'; // Indigo / Blue
@@ -33,9 +33,9 @@ export const generateAndDownloadResumePDF = (): string => {
   doc.text(PERSONAL_INFO.name.toUpperCase(), leftMargin, y + 4);
 
   // Subtitle / Role
-  doc.setFontSize(11);
+  doc.setFontSize(10.5);
   doc.setTextColor(37, 99, 235); // Blue
-  doc.text(`${PERSONAL_INFO.role}  |  Frontend & Web Architecture Specialist`, leftMargin, y + 11);
+  doc.text(`${PERSONAL_INFO.role}  |  4 Years Experience`, leftMargin, y + 11);
 
   // Contact Info Line
   doc.setFont('helvetica', 'normal');

@@ -49,7 +49,7 @@ export const Toast: React.FC<ToastProps> = ({ message, onClose, duration = 4000 
                   {message}
                 </p>
                 <p className="text-[11px] text-slate-400 font-medium">
-                  Sri-Hari-Mada-Frontend-Engineer-Resume.pdf
+                  Sri-Hari-Mada-Senior-Software-Engineer-Resume.pdf
                 </p>
               </div>
               <button

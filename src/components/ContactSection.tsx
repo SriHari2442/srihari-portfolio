@@ -142,7 +142,7 @@ export const ContactSection: React.FC<ContactSectionProps> = ({ onDownloadResume
               Let's Build Something Amazing Together
             </h2>
             <p className="text-[16px] text-[#475569] dark:text-slate-300 font-medium leading-[1.65] max-w-full sm:max-w-2xl mx-auto">
-              Looking for an experienced Frontend Engineer specialized in React.js, TypeScript, enterprise architecture, and WCAG accessibility? Reach out directly via email, phone, or LinkedIn.
+              Looking for an experienced Senior Software Engineer | Frontend Developer with 4 years of experience specialized in React.js, TypeScript, Angular, enterprise architecture, and WCAG accessibility? Reach out directly via email, phone, or LinkedIn.
             </p>
           </div>
 
@@ -269,7 +269,7 @@ export const ContactSection: React.FC<ContactSectionProps> = ({ onDownloadResume
                     <span>Enterprise Frontend Excellence</span>
                   </div>
                   <p className="text-[11px] text-slate-300 leading-relaxed max-w-xs font-medium">
-                    React.js • TypeScript • WCAG Accessibility • Component Architecture
+                    React.js • TypeScript • Angular • WCAG Accessibility • Component Architecture
                   </p>
                 </div>
               </div>
