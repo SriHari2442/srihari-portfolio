@@ -142,7 +142,7 @@ export const ContactSection: React.FC<ContactSectionProps> = ({ onDownloadResume
               Let's Build Something Amazing Together
             </h2>
             <p className="text-[16px] text-[#475569] dark:text-slate-300 font-medium leading-[1.65] max-w-full sm:max-w-2xl mx-auto">
-              Looking for an experienced Senior Software Engineer | Frontend Developer with 4 years of experience specialized in React.js, TypeScript, Angular, enterprise architecture, and WCAG accessibility? Reach out directly via email, phone, or LinkedIn.
+              Looking for a Senior Software Engineer or Full Stack Developer with experience in React.js, TypeScript, JavaScript, Python, FastAPI, SQL, and enterprise application development? Let's connect and build scalable software solutions together.
             </p>
           </div>
 
@@ -266,10 +266,10 @@ export const ContactSection: React.FC<ContactSectionProps> = ({ onDownloadResume
                 <div className="space-y-1.5 mt-2">
                   <div className="flex items-center justify-center gap-1.5 text-xs font-bold text-purple-300">
                     <Code2 className="w-4 h-4 text-purple-400" />
-                    <span>Enterprise Frontend Excellence</span>
+                    <span>Enterprise Full Stack Excellence</span>
                   </div>
                   <p className="text-[11px] text-slate-300 leading-relaxed max-w-xs font-medium">
-                    React.js • TypeScript • Angular • WCAG Accessibility • Component Architecture
+                    React.js • TypeScript • JavaScript • Python • FastAPI • SQL
                   </p>
                 </div>
               </div>

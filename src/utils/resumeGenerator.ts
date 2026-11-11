@@ -28,24 +28,28 @@ export const generateAndDownloadResumePDF = (): string => {
 
   // Header Title
   doc.setFont('helvetica', 'bold');
-  doc.setFontSize(20);
+  doc.setFontSize(18);
   doc.setTextColor(15, 23, 42); // dark
-  doc.text(PERSONAL_INFO.name.toUpperCase(), leftMargin, y + 4);
+  doc.text(PERSONAL_INFO.name.toUpperCase(), leftMargin, y + 3);
 
-  // Subtitle / Role
-  doc.setFontSize(10.5);
+  // Subtitle / Role & Headline
+  doc.setFontSize(9.5);
   doc.setTextColor(37, 99, 235); // Blue
-  doc.text(`${PERSONAL_INFO.role}  |  4 Years Experience`, leftMargin, y + 11);
+  doc.text(`${PERSONAL_INFO.role}  •  ~4 Years Experience`, leftMargin, y + 9);
+  doc.setFont('helvetica', 'normal');
+  doc.setFontSize(8);
+  doc.setTextColor(100, 116, 139);
+  doc.text(PERSONAL_INFO.headline, leftMargin, y + 14);
 
   // Contact Info Line
   doc.setFont('helvetica', 'normal');
-  doc.setFontSize(8.5);
+  doc.setFontSize(8);
   doc.setTextColor(51, 65, 85);
   const contactText = `Location: ${PERSONAL_INFO.location}   |   Phone: ${PERSONAL_INFO.phone}   |   Email: ${PERSONAL_INFO.email}`;
-  doc.text(contactText, leftMargin, y + 17);
+  doc.text(contactText, leftMargin, y + 19);
 
   const linksText = `LinkedIn: ${PERSONAL_INFO.linkedin}   |   GitHub: ${PERSONAL_INFO.github}`;
-  doc.text(linksText, leftMargin, y + 22);
+  doc.text(linksText, leftMargin, y + 23);
 
   y = 48;
 

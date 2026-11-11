@@ -3,6 +3,7 @@ import { Briefcase, Calendar, ChevronRight, CheckCircle, X, MapPin, ArrowDown, S
 import { motion, AnimatePresence, useReducedMotion } from 'motion/react';
 import { EXPERIENCES } from '../data/portfolioData';
 import { Experience } from '../types';
+import { useIntersectionObserver } from '../hooks/useIntersectionObserver';
 
 interface TimelineNode {
   id: string;
@@ -15,6 +16,134 @@ interface TimelineNode {
   technologies: string[];
   experienceRef?: Experience;
 }
+
+const TimelineNodeItem: React.FC<{
+  node: TimelineNode;
+  index: number;
+  isLast: boolean;
+  onOpenDetails: () => void;
+  shouldReduceMotion: boolean | null;
+}> = ({ node, index, isLast, onOpenDetails, shouldReduceMotion }) => {
+  const [ref, isVisible] = useIntersectionObserver<HTMLDivElement>({
+    threshold: 0.15,
+    rootMargin: '0px 0px -40px 0px',
+  });
+
+  return (
+    <div
+      ref={ref}
+      style={{
+        animationDelay: isVisible && !shouldReduceMotion ? `${index * 120}ms` : undefined,
+      }}
+      className={`relative group/card transition-all ${
+        isVisible ? 'animate-fade-in-up fade-in-up' : 'fade-in-up-init opacity-0'
+      }`}
+    >
+      {/* Glowing Node Circle Indicator */}
+      <div
+        className={`absolute -left-[1.85rem] sm:-left-[2.85rem] top-6 -translate-y-1/2 w-6 h-6 rounded-full bg-white dark:bg-slate-900 border-2 border-purple-500 dark:border-purple-400 shadow-[0_0_14px_rgba(168,85,247,0.6)] flex items-center justify-center z-10 group-hover/card:scale-125 transition-all duration-300 ${
+          isVisible ? 'scale-100 opacity-100' : 'scale-50 opacity-0'
+        }`}
+      >
+        <div
+          className={`w-2.5 h-2.5 rounded-full ${
+            node.isCurrent ? 'bg-emerald-500 animate-ping' : 'bg-purple-600'
+          }`}
+        />
+      </div>
+
+      {/* Premium Glass Timeline Card */}
+      <motion.div
+        whileHover={shouldReduceMotion ? {} : { y: -4, scale: 1.01 }}
+        transition={{ duration: 0.25, ease: 'easeOut' }}
+        className="p-5 sm:p-6 rounded-2xl bg-white/80 dark:bg-slate-900/80 backdrop-blur-xl border border-purple-200/70 dark:border-purple-900/60 hover:border-purple-400/80 dark:hover:border-purple-500/80 shadow-md hover:shadow-2xl transition-all duration-300 relative overflow-hidden group/inner"
+      >
+        {/* Glass Overlay Light Reflection */}
+        <div className="absolute inset-0 bg-gradient-to-r from-purple-500/5 via-indigo-500/5 to-emerald-500/5 opacity-0 group-hover/inner:opacity-100 transition-opacity duration-300 pointer-events-none" />
+
+        {/* Timeline Card Header: Year Pill & Duration */}
+        <div className="flex flex-wrap items-center justify-between gap-2 mb-3">
+          <span className="px-3 py-1 rounded-full text-xs font-black tracking-wider uppercase flex items-center gap-1.5 shadow-sm bg-gradient-to-r from-purple-600 via-indigo-600 to-purple-700 text-white">
+            <Calendar className="w-3.5 h-3.5" />
+            <span>{node.year}</span>
+          </span>
+
+          <div className="flex flex-wrap items-center gap-2">
+            {node.duration && (
+              <div className="flex items-center gap-1 text-xs font-bold text-slate-500 dark:text-slate-400 bg-slate-100 dark:bg-slate-800/80 px-2.5 py-1 rounded-lg border border-slate-200 dark:border-slate-700">
+                <Calendar className="w-3 h-3 text-indigo-500" />
+                <span>{node.duration}</span>
+              </div>
+            )}
+            {node.isCurrent && (
+              <span className="px-2.5 py-1 rounded-full text-[10px] font-black tracking-wider uppercase bg-emerald-500/15 text-emerald-700 dark:text-emerald-400 border border-emerald-500/30 flex items-center gap-1 shadow-2xs">
+                <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse inline-block" />
+                <span>Current</span>
+              </span>
+            )}
+          </div>
+        </div>
+
+        {/* Role & Company */}
+        <div className="mb-3.5 space-y-1">
+          <h3 className="text-base sm:text-lg font-extrabold text-slate-900 dark:text-white tracking-tight group-hover/inner:text-purple-700 dark:group-hover/inner:text-purple-300 transition-colors">
+            {node.role}
+          </h3>
+          <p className="text-xs sm:text-sm font-bold text-purple-700 dark:text-purple-400">
+            {node.company}
+          </p>
+        </div>
+
+        {/* Impact Summary */}
+        <p className="text-xs sm:text-sm text-slate-600 dark:text-slate-300 leading-relaxed mb-4 font-medium">
+          {node.impactSummary}
+        </p>
+
+        {/* Technologies Badges */}
+        <div className="mt-5 space-y-2">
+          <span className="text-[10px] font-extrabold uppercase tracking-wider text-slate-400 dark:text-slate-500">
+            CORE TECHNOLOGIES
+          </span>
+          <div className="flex flex-wrap gap-1.5">
+            {node.technologies.map((tech) => (
+              <span
+                key={tech}
+                className="px-2.5 py-1 rounded-lg text-xs font-semibold bg-purple-50 dark:bg-purple-950/60 text-purple-700 dark:text-purple-300 border border-purple-200/60 dark:border-purple-800/60 shadow-2xs"
+              >
+                {tech}
+              </span>
+            ))}
+          </div>
+        </div>
+
+        {/* Action Button for Full Responsibilities Modal */}
+        <div className="mt-4 pt-3 border-t border-purple-100/80 dark:border-purple-900/40 flex justify-end">
+          <button
+            type="button"
+            onClick={onOpenDetails}
+            className="text-xs font-bold text-indigo-600 hover:text-purple-700 dark:text-indigo-400 dark:hover:text-purple-300 flex items-center gap-1 cursor-pointer transition-colors"
+          >
+            <span>View Experience Details</span>
+            <ChevronRight className="w-3.5 h-3.5" />
+          </button>
+        </div>
+      </motion.div>
+
+      {/* Downward Arrow Indicator Between Timeline Nodes (↓) */}
+      {!isLast && (
+        <div
+          className={`py-2.5 flex items-center justify-start pl-2 sm:pl-4 transition-all duration-500 ${
+            isVisible ? 'opacity-100 translate-y-0 scale-100' : 'opacity-0 -translate-y-2 scale-90'
+          }`}
+        >
+          <div className="w-7 h-7 rounded-full bg-purple-100 dark:bg-purple-950/80 border border-purple-300 dark:border-purple-700 text-purple-600 dark:text-purple-300 flex items-center justify-center font-black text-xs shadow-xs animate-bounce">
+            <ArrowDown className="w-3.5 h-3.5" />
+          </div>
+        </div>
+      )}
+    </div>
+  );
+};
 
 export const ExperienceSection: React.FC = () => {
   const [isFullDetailsOpen, setIsFullDetailsOpen] = useState(false);
@@ -52,22 +181,22 @@ export const ExperienceSection: React.FC = () => {
       year: '2022 – 2024',
       company: 'Encore IT Services Pvt. Ltd.',
       role: 'Frontend Developer',
-      duration: 'November 2022 – April 2024',
+      duration: 'November 2022 – May 2024',
       impactSummary:
-        'Developed and maintained logistics web applications using React.js for Span Alaska / Matson Logistics.',
-      technologies: ['React.js', 'JavaScript ES6+', 'React Hooks', 'Context API', 'HTML5', 'CSS3', 'Bootstrap', 'REST APIs'],
+        'Developed reusable React.js interfaces for logistics management and contributed to Python and FastAPI backend application workflows for Span Alaska Matson.',
+      technologies: ['React.js', 'JavaScript (ES6+)', 'Python', 'FastAPI', 'SQL', 'MySQL', 'REST APIs', 'Bootstrap'],
       experienceRef: encoreExp,
     },
     {
       id: '2024-virtusa',
       year: '2024 – Present',
-      company: 'Virtusa Consulting Services Pvt Ltd',
+      company: 'Virtusa Consulting Services Pvt. Ltd.',
       role: 'Senior Software Engineer',
       duration: 'August 2024 – Present',
       isCurrent: true,
       impactSummary:
-        'Engineered enterprise banking applications for Huntington Bank using React.js and TypeScript across Manage Alerts, Alert History, Messages, Positive Pay, and Navigation modules.',
-      technologies: ['React.js', 'TypeScript', 'Material UI', 'Tailwind CSS', 'Redux Toolkit', 'REST APIs', 'WCAG / ADA', 'Performance Optimization'],
+        'Engineered enterprise banking modules for Huntington Bank using React.js and TypeScript, integrating REST APIs, structured data handling, and Angular navigation features.',
+      technologies: ['React.js', 'Angular', 'TypeScript', 'JavaScript', 'REST APIs', 'Adobe Analytics', 'Contentsquare', 'GCP'],
       experienceRef: virtusaExp,
     },
   ];
@@ -114,7 +243,7 @@ export const ExperienceSection: React.FC = () => {
                     Career Timeline
                   </h2>
                   <p className="text-xs text-slate-500 dark:text-slate-400 font-medium">
-                    Enterprise Frontend Engineering Milestones
+                    Enterprise Full Stack & Frontend Engineering Milestones
                   </p>
                 </div>
               </div>
@@ -129,114 +258,20 @@ export const ExperienceSection: React.FC = () => {
             </div>
 
             {/* Premium Career Timeline Container */}
-            <motion.div
-              variants={containerVariants}
-              initial="hidden"
-              whileInView="visible"
-              viewport={{ once: true, margin: '-40px' }}
+            <div
               className="relative pl-6 sm:pl-10 space-y-2 before:absolute before:left-2 sm:before:left-3.5 before:top-4 before:bottom-6 before:w-1 before:bg-gradient-to-b before:from-purple-500 before:via-indigo-500 before:to-emerald-500 before:rounded-full before:shadow-[0_0_10px_rgba(168,85,247,0.3)]"
             >
               {timelineNodes.map((node, index) => (
-                <React.Fragment key={node.id}>
-                  <motion.div variants={itemVariants} className="relative group/card">
-                    {/* Glowing Node Circle Indicator */}
-                    <div className="absolute -left-[1.85rem] sm:-left-[2.85rem] top-6 -translate-y-1/2 w-6 h-6 rounded-full bg-white dark:bg-slate-900 border-2 border-purple-500 dark:border-purple-400 shadow-[0_0_14px_rgba(168,85,247,0.6)] flex items-center justify-center z-10 group-hover/card:scale-125 transition-transform duration-300">
-                      <div
-                        className={`w-2.5 h-2.5 rounded-full ${
-                          node.isCurrent ? 'bg-emerald-500 animate-ping' : 'bg-purple-600'
-                        }`}
-                      />
-                    </div>
-
-                    {/* Premium Glass Timeline Card */}
-                    <motion.div
-                      whileHover={shouldReduceMotion ? {} : { y: -4, scale: 1.01 }}
-                      transition={{ duration: 0.25, ease: 'easeOut' }}
-                      className="p-5 sm:p-6 rounded-2xl bg-white/80 dark:bg-slate-900/80 backdrop-blur-xl border border-purple-200/70 dark:border-purple-900/60 hover:border-purple-400/80 dark:hover:border-purple-500/80 shadow-md hover:shadow-2xl transition-all duration-300 relative overflow-hidden group/inner"
-                    >
-                      {/* Glass Overlay Light Reflection */}
-                      <div className="absolute inset-0 bg-gradient-to-r from-purple-500/5 via-indigo-500/5 to-emerald-500/5 opacity-0 group-hover/inner:opacity-100 transition-opacity duration-300 pointer-events-none" />
-
-                      {/* Timeline Card Header: Year Pill & Duration */}
-                      <div className="flex flex-wrap items-center justify-between gap-2 mb-3">
-                        <span className="px-3 py-1 rounded-full text-xs font-black tracking-wider uppercase flex items-center gap-1.5 shadow-sm bg-gradient-to-r from-purple-600 via-indigo-600 to-purple-700 text-white">
-                          <Calendar className="w-3.5 h-3.5" />
-                          <span>{node.year}</span>
-                        </span>
-
-                        <div className="flex flex-wrap items-center gap-2">
-                          {node.duration && (
-                            <div className="flex items-center gap-1 text-xs font-bold text-slate-500 dark:text-slate-400 bg-slate-100 dark:bg-slate-800/80 px-2.5 py-1 rounded-lg border border-slate-200 dark:border-slate-700">
-                              <Calendar className="w-3 h-3 text-indigo-500" />
-                              <span>{node.duration}</span>
-                            </div>
-                          )}
-                          {node.isCurrent && (
-                            <span className="px-2.5 py-1 rounded-full text-[10px] font-black tracking-wider uppercase bg-emerald-500/15 text-emerald-700 dark:text-emerald-400 border border-emerald-500/30 flex items-center gap-1 shadow-2xs">
-                              <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse inline-block" />
-                              <span>Current</span>
-                            </span>
-                          )}
-                        </div>
-                      </div>
-
-                      {/* Role & Company */}
-                      <div className="mb-3.5 space-y-1">
-                        <h3 className="text-base sm:text-lg font-extrabold text-slate-900 dark:text-white tracking-tight group-hover/inner:text-purple-700 dark:group-hover/inner:text-purple-300 transition-colors">
-                          {node.role}
-                        </h3>
-                        <p className="text-xs sm:text-sm font-bold text-purple-700 dark:text-purple-400">
-                          {node.company}
-                        </p>
-                      </div>
-
-                      {/* Impact Summary */}
-                      <p className="text-xs sm:text-sm text-slate-600 dark:text-slate-300 leading-relaxed mb-4 font-medium">
-                        {node.impactSummary}
-                      </p>
-
-                      {/* Technologies Badges */}
-                      <div className="mt-5 space-y-2">
-                        <span className="text-[10px] font-extrabold uppercase tracking-wider text-slate-400 dark:text-slate-500">
-                          CORE TECHNOLOGIES
-                        </span>
-                        <div className="flex flex-wrap gap-1.5">
-                          {node.technologies.map((tech) => (
-                            <span
-                              key={tech}
-                              className="px-2.5 py-1 rounded-lg text-xs font-semibold bg-purple-50 dark:bg-purple-950/60 text-purple-700 dark:text-purple-300 border border-purple-200/60 dark:border-purple-800/60 shadow-2xs"
-                            >
-                              {tech}
-                            </span>
-                          ))}
-                        </div>
-                      </div>
-
-                      {/* Action Button for Full Responsibilities Modal */}
-                      <div className="mt-4 pt-3 border-t border-purple-100/80 dark:border-purple-900/40 flex justify-end">
-                        <button
-                          type="button"
-                          onClick={() => setIsFullDetailsOpen(true)}
-                          className="text-xs font-bold text-indigo-600 hover:text-purple-700 dark:text-indigo-400 dark:hover:text-purple-300 flex items-center gap-1 cursor-pointer transition-colors"
-                        >
-                          <span>View Experience Details</span>
-                          <ChevronRight className="w-3.5 h-3.5" />
-                        </button>
-                      </div>
-                    </motion.div>
-                  </motion.div>
-
-                  {/* Downward Arrow Indicator Between Timeline Nodes (↓) */}
-                  {index < timelineNodes.length - 1 && (
-                    <div className="py-2.5 flex items-center justify-start pl-2 sm:pl-4">
-                      <div className="w-7 h-7 rounded-full bg-purple-100 dark:bg-purple-950/80 border border-purple-300 dark:border-purple-700 text-purple-600 dark:text-purple-300 flex items-center justify-center font-black text-xs shadow-xs animate-bounce">
-                        <ArrowDown className="w-3.5 h-3.5" />
-                      </div>
-                    </div>
-                  )}
-                </React.Fragment>
+                <TimelineNodeItem
+                  key={node.id}
+                  node={node}
+                  index={index}
+                  isLast={index === timelineNodes.length - 1}
+                  onOpenDetails={() => setIsFullDetailsOpen(true)}
+                  shouldReduceMotion={shouldReduceMotion}
+                />
               ))}
-            </motion.div>
+            </div>
           </div>
         </div>
       </motion.section>

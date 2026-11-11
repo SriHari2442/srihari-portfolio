@@ -94,6 +94,7 @@ export const ResumeModal: React.FC<ResumeModalProps> = ({ isOpen, onClose, onDow
             <div className="border-b border-purple-200/80 dark:border-purple-900/50 pb-4">
               <h2 id="resume-modal-title" className="text-2xl sm:text-3xl font-black text-[#0F172A] dark:text-white tracking-tight leading-tight">{PERSONAL_INFO.name}</h2>
               <p className="text-sm sm:text-base font-extrabold text-[#6D28D9] dark:text-purple-400 mt-0.5">{PERSONAL_INFO.role}</p>
+              <p className="text-xs font-bold text-slate-500 dark:text-slate-400 mt-0.5">{PERSONAL_INFO.headline}</p>
               <div className="flex flex-wrap items-center gap-x-4 gap-y-1.5 text-xs font-semibold text-[#64748B] dark:text-slate-300 mt-2.5">
                 <span>📍 {PERSONAL_INFO.location}</span>
                 <span>📞 {PERSONAL_INFO.phone}</span>
@@ -108,9 +109,11 @@ export const ResumeModal: React.FC<ResumeModalProps> = ({ isOpen, onClose, onDow
               <h2 className="text-xs font-extrabold text-[#0F172A] dark:text-white uppercase tracking-wider mb-2 border-b border-purple-200/80 dark:border-purple-900/50 pb-1">
                 Professional Summary
               </h2>
-              <p className="text-xs sm:text-sm text-[#334155] dark:text-slate-200 leading-[1.65] font-medium">
-                {PERSONAL_INFO.professionalSummary}
-              </p>
+              <div className="space-y-2 text-xs sm:text-sm text-[#334155] dark:text-slate-200 leading-[1.65] font-medium">
+                {PERSONAL_INFO.summaryParagraphs.map((para, idx) => (
+                  <p key={idx}>{para}</p>
+                ))}
+              </div>
             </div>
 
             {/* Professional Experience */}

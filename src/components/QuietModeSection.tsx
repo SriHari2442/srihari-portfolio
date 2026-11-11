@@ -1,4 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
+import { motion, useReducedMotion } from 'motion/react';
 import {
   Sparkles,
   CheckCircle,
@@ -26,6 +27,7 @@ import {
   ZoomOut,
 } from 'lucide-react';
 import { PRODUCT_CONCEPT } from '../data/portfolioData';
+import { useIntersectionObserver } from '../hooks/useIntersectionObserver';
 
 interface AssetScreenshot {
   id: string;
@@ -61,7 +63,13 @@ const QUIET_MODE_VIDEO_URL =
 const GalleryImageCard: React.FC<{
   screen: AssetScreenshot;
   onOpen: () => void;
-}> = ({ screen, onOpen }) => {
+  index?: number;
+}> = ({ screen, onOpen, index = 0 }) => {
+  const shouldReduceMotion = useReducedMotion();
+  const [ref, isVisible] = useIntersectionObserver<HTMLDivElement>({
+    threshold: 0.15,
+    rootMargin: '0px 0px -40px 0px',
+  });
   const [isLoading, setIsLoading] = useState(true);
   const [hasError, setHasError] = useState(false);
   const [retryCount, setRetryCount] = useState(0);
@@ -76,9 +84,16 @@ const GalleryImageCard: React.FC<{
   };
 
   return (
-    <div
+    <motion.div
+      ref={ref}
+      style={{
+        animationDelay: isVisible && !shouldReduceMotion ? `${index * 120}ms` : undefined,
+      }}
+      whileHover={shouldReduceMotion ? {} : { scale: 1.015, y: -2 }}
       onClick={onOpen}
-      className="group relative rounded-2xl overflow-hidden bg-slate-950 border border-slate-200 shadow-sm hover:shadow-xl transition-all duration-300 cursor-pointer h-40"
+      className={`group relative rounded-2xl overflow-hidden bg-slate-950 border border-slate-200 shadow-sm hover:shadow-xl transition-all duration-300 cursor-pointer h-40 ${
+        isVisible ? 'animate-fade-in-up fade-in-up' : 'fade-in-up-init opacity-0'
+      }`}
     >
       {/* Skeleton Placeholder */}
       {isLoading && !hasError && (
@@ -135,7 +150,7 @@ const GalleryImageCard: React.FC<{
           {screen.subtitle}
         </span>
       </div>
-    </div>
+    </motion.div>
   );
 };
 
@@ -421,6 +436,22 @@ const ImageLightboxModal: React.FC<ImageLightboxModalProps> = ({
 };
 
 export const QuietModeSection: React.FC = () => {
+  const shouldReduceMotion = useReducedMotion();
+
+  // Intersection Observer triggers for Quiet Mode project cards
+  const [projectCardRef, isProjectCardVisible] = useIntersectionObserver<HTMLDivElement>({
+    threshold: 0.08,
+    rootMargin: '0px 0px -50px 0px',
+  });
+  const [problemSolutionRef, isProblemSolutionVisible] = useIntersectionObserver<HTMLDivElement>({
+    threshold: 0.12,
+    rootMargin: '0px 0px -40px 0px',
+  });
+  const [featuresRef, isFeaturesVisible] = useIntersectionObserver<HTMLDivElement>({
+    threshold: 0.12,
+    rootMargin: '0px 0px -40px 0px',
+  });
+
   // Inline Video Player States
   const [isPlaying, setIsPlaying] = useState(false);
   const [hasStarted, setHasStarted] = useState(false);
@@ -701,7 +732,14 @@ export const QuietModeSection: React.FC = () => {
   };
 
   return (
-    <section id="achievements" className="py-6">
+    <motion.section
+      id="achievements"
+      className="py-6"
+      initial={shouldReduceMotion ? { opacity: 0 } : { opacity: 0, y: 32 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, margin: '-50px', amount: 0.08 }}
+      transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
+    >
       <style>{`
         .quiet-mode-video {
           width: 100% !important;
@@ -781,7 +819,12 @@ export const QuietModeSection: React.FC = () => {
           justify-content: center !important;
         }
       `}</style>
-      <div className="purple-interactive-card rounded-3xl p-6 sm:p-8 shadow-lg relative overflow-hidden">
+      <div
+        ref={projectCardRef}
+        className={`purple-interactive-card rounded-3xl p-6 sm:p-8 shadow-lg relative overflow-hidden transition-all ${
+          isProjectCardVisible ? 'animate-fade-in-up fade-in-up' : 'fade-in-up-init opacity-0'
+        }`}
+      >
         
         {/* Header Section: Title, Concept Subtitle & View Demo Action */}
         <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 pb-6 border-b border-slate-200/80 mb-6">
@@ -817,9 +860,21 @@ export const QuietModeSection: React.FC = () => {
         </div>
 
         {/* Problem & Proposed Experience Cards */}
-        <div id="quiet-mode-details" className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+        <div
+          ref={problemSolutionRef}
+          id="quiet-mode-details"
+          className={`grid grid-cols-1 md:grid-cols-2 gap-4 mb-6 transition-all ${
+            isProblemSolutionVisible ? 'animate-fade-in-up fade-in-up' : 'fade-in-up-init opacity-0'
+          }`}
+        >
           {/* Problem Card */}
-          <div className="p-4 sm:p-5 rounded-2xl bg-amber-50/70 border border-amber-200/80 flex items-start gap-3.5 shadow-xs">
+          <motion.div
+            initial={shouldReduceMotion ? { opacity: 0 } : { opacity: 0, y: 24 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: '-40px' }}
+            transition={{ duration: 0.5, delay: 0.05, ease: [0.16, 1, 0.3, 1] }}
+            className="p-4 sm:p-5 rounded-2xl bg-amber-50/70 border border-amber-200/80 flex items-start gap-3.5 shadow-xs"
+          >
             <div className="p-2 rounded-xl bg-amber-100 text-amber-700 shrink-0 mt-0.5">
               <AlertCircle className="w-4 h-4" />
             </div>
@@ -831,10 +886,16 @@ export const QuietModeSection: React.FC = () => {
                 Constant messaging notifications, read-receipt anxiety, and a lack of explicit focus boundaries cause digital fatigue and continuous communication pressure.
               </p>
             </div>
-          </div>
+          </motion.div>
 
           {/* Proposed Experience Card */}
-          <div className="p-4 sm:p-5 rounded-2xl bg-indigo-50/70 border border-indigo-200/80 flex items-start gap-3.5 shadow-xs">
+          <motion.div
+            initial={shouldReduceMotion ? { opacity: 0 } : { opacity: 0, y: 24 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: '-40px' }}
+            transition={{ duration: 0.5, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
+            className="p-4 sm:p-5 rounded-2xl bg-indigo-50/70 border border-indigo-200/80 flex items-start gap-3.5 shadow-xs"
+          >
             <div className="p-2 rounded-xl bg-indigo-100 text-indigo-700 shrink-0 mt-0.5">
               <ShieldCheck className="w-4 h-4" />
             </div>
@@ -846,18 +907,30 @@ export const QuietModeSection: React.FC = () => {
                 Quiet Mode empowers users with automated focus schedules, quiet status indicators for senders, and silent notifications to maintain digital wellbeing without breaking conversation context.
               </p>
             </div>
-          </div>
+          </motion.div>
         </div>
 
         {/* Key Features Grid */}
-        <div id="quiet-mode-features" className="mb-8">
+        <div
+          ref={featuresRef}
+          id="quiet-mode-features"
+          className={`mb-8 transition-all ${
+            isFeaturesVisible ? 'animate-fade-in-up fade-in-up' : 'fade-in-up-init opacity-0'
+          }`}
+        >
           <h3 className="text-sm font-bold text-slate-900 tracking-wide uppercase mb-3 flex items-center gap-2">
             <CheckCircle className="w-4 h-4 text-purple-600" />
             <span>Key Features</span>
           </h3>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
-            <div className="p-3.5 rounded-2xl bg-white/80 border border-slate-200 shadow-xs flex items-center gap-3">
+            <motion.div
+              initial={shouldReduceMotion ? { opacity: 0 } : { opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: '-40px' }}
+              transition={{ duration: 0.45, delay: 0.05, ease: [0.16, 1, 0.3, 1] }}
+              className="p-3.5 rounded-2xl bg-white/80 border border-slate-200 shadow-xs flex items-center gap-3"
+            >
               <div className="p-2 rounded-xl bg-indigo-50 text-indigo-600 shrink-0">
                 <BellOff className="w-4 h-4" />
               </div>
@@ -865,9 +938,15 @@ export const QuietModeSection: React.FC = () => {
                 <h4 className="text-xs font-bold text-slate-900">Silent Notifications</h4>
                 <p className="text-[11px] text-slate-500 font-normal">Mutes non-urgent message alerts</p>
               </div>
-            </div>
+            </motion.div>
 
-            <div className="p-3.5 rounded-2xl bg-white/80 border border-slate-200 shadow-xs flex items-center gap-3">
+            <motion.div
+              initial={shouldReduceMotion ? { opacity: 0 } : { opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: '-40px' }}
+              transition={{ duration: 0.45, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
+              className="p-3.5 rounded-2xl bg-white/80 border border-slate-200 shadow-xs flex items-center gap-3"
+            >
               <div className="p-2 rounded-xl bg-purple-50 text-purple-600 shrink-0">
                 <MessageSquare className="w-4 h-4" />
               </div>
@@ -875,9 +954,15 @@ export const QuietModeSection: React.FC = () => {
                 <h4 className="text-xs font-bold text-slate-900">Automatic Replies</h4>
                 <p className="text-[11px] text-slate-500 font-normal">Sends predefined quiet status notices</p>
               </div>
-            </div>
+            </motion.div>
 
-            <div className="p-3.5 rounded-2xl bg-white/80 border border-slate-200 shadow-xs flex items-center gap-3">
+            <motion.div
+              initial={shouldReduceMotion ? { opacity: 0 } : { opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: '-40px' }}
+              transition={{ duration: 0.45, delay: 0.15, ease: [0.16, 1, 0.3, 1] }}
+              className="p-3.5 rounded-2xl bg-white/80 border border-slate-200 shadow-xs flex items-center gap-3"
+            >
               <div className="p-2 rounded-xl bg-emerald-50 text-emerald-600 shrink-0">
                 <Eye className="w-4 h-4" />
               </div>
@@ -885,9 +970,15 @@ export const QuietModeSection: React.FC = () => {
                 <h4 className="text-xs font-bold text-slate-900">Sender Visibility</h4>
                 <p className="text-[11px] text-slate-500 font-normal">Displays quiet badge before typing</p>
               </div>
-            </div>
+            </motion.div>
 
-            <div className="p-3.5 rounded-2xl bg-white/80 border border-slate-200 shadow-xs flex items-center gap-3">
+            <motion.div
+              initial={shouldReduceMotion ? { opacity: 0 } : { opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: '-40px' }}
+              transition={{ duration: 0.45, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
+              className="p-3.5 rounded-2xl bg-white/80 border border-slate-200 shadow-xs flex items-center gap-3"
+            >
               <div className="p-2 rounded-xl bg-blue-50 text-blue-600 shrink-0">
                 <Clock className="w-4 h-4" />
               </div>
@@ -895,7 +986,7 @@ export const QuietModeSection: React.FC = () => {
                 <h4 className="text-xs font-bold text-slate-900">Scheduled Quiet Periods</h4>
                 <p className="text-[11px] text-slate-500 font-normal">Automates focus hours & calendars</p>
               </div>
-            </div>
+            </motion.div>
           </div>
         </div>
 
@@ -903,7 +994,13 @@ export const QuietModeSection: React.FC = () => {
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
           
           {/* Demo Video Container */}
-          <div className="lg:col-span-7 flex flex-col items-center">
+          <motion.div
+            initial={shouldReduceMotion ? { opacity: 0 } : { opacity: 0, y: 24 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: '-40px' }}
+            transition={{ duration: 0.55, ease: [0.16, 1, 0.3, 1] }}
+            className="lg:col-span-7 flex flex-col items-center animate-fade-in-up fade-in-up"
+          >
             <div className="w-full max-w-[340px] flex items-center justify-between gap-2 mb-3">
               <div className="flex items-center gap-2">
                 <Video className="w-4 h-4 text-purple-600" />
@@ -1146,10 +1243,16 @@ export const QuietModeSection: React.FC = () => {
                 </div>
               </div>
             </div>
-          </div>
+          </motion.div>
 
           {/* Project Gallery Container */}
-          <div className="lg:col-span-5">
+          <motion.div
+            initial={shouldReduceMotion ? { opacity: 0 } : { opacity: 0, y: 24 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: '-40px' }}
+            transition={{ duration: 0.55, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
+            className="lg:col-span-5 animate-fade-in-up fade-in-up"
+          >
             <div className="flex items-center gap-2 mb-3">
               <ImageIcon className="w-4 h-4 text-purple-600" />
               <h3 className="text-sm font-bold text-slate-900 tracking-wide uppercase">
@@ -1162,11 +1265,12 @@ export const QuietModeSection: React.FC = () => {
                 <GalleryImageCard
                   key={screen.id}
                   screen={screen}
+                  index={idx}
                   onOpen={() => setSelectedImageIndex(idx)}
                 />
               ))}
             </div>
-          </div>
+          </motion.div>
 
         </div>
       </div>
@@ -1427,7 +1531,7 @@ export const QuietModeSection: React.FC = () => {
           </div>
         </div>
       )}
-    </section>
+    </motion.section>
   );
 };
 

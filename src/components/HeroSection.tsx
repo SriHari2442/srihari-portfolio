@@ -16,9 +16,10 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ onOpenResume, onDownlo
   const techBadges = [
     { name: 'React.js', bg: 'bg-sky-500/10 text-sky-700 border-sky-200/80' },
     { name: 'TypeScript', bg: 'bg-blue-500/10 text-blue-700 border-blue-200/80' },
-    { name: 'Angular', bg: 'bg-rose-500/10 text-rose-700 border-rose-200/80' },
-    { name: 'Accessibility', bg: 'bg-emerald-500/10 text-emerald-700 border-emerald-200/80' },
-    { name: 'Enterprise UI', bg: 'bg-purple-500/10 text-purple-700 border-purple-200/80' },
+    { name: 'JavaScript', bg: 'bg-amber-500/10 text-amber-800 border-amber-200/80' },
+    { name: 'Python', bg: 'bg-emerald-500/10 text-emerald-700 border-emerald-200/80' },
+    { name: 'FastAPI', bg: 'bg-teal-500/10 text-teal-700 border-teal-200/80' },
+    { name: 'SQL', bg: 'bg-indigo-500/10 text-indigo-700 border-indigo-200/80' },
   ];
 
   // Motion Variants
@@ -141,6 +142,10 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ onOpenResume, onDownlo
                 <motion.h2 variants={itemVariants} className="text-2xl sm:text-3xl lg:text-4xl font-extrabold text-slate-900 tracking-tight">
                   {PERSONAL_INFO.role}
                 </motion.h2>
+
+                <motion.p variants={itemVariants} className="text-sm sm:text-base font-bold text-indigo-700 dark:text-purple-400 tracking-wide">
+                  {PERSONAL_INFO.headline}
+                </motion.p>
               </div>
             </div>
 

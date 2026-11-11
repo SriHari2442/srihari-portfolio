@@ -30,6 +30,7 @@ import {
 } from 'lucide-react';
 import { motion, AnimatePresence, useReducedMotion } from 'motion/react';
 import { FEATURED_PROJECT } from '../data/portfolioData';
+import { useIntersectionObserver } from '../hooks/useIntersectionObserver';
 
 export const FeaturedProjectSection: React.FC = () => {
   const [activeSlideIndex, setActiveSlideIndex] = useState(0);
@@ -42,6 +43,24 @@ export const FeaturedProjectSection: React.FC = () => {
   const [enquirySent, setEnquirySent] = useState(false);
   const [actionFeedback, setActionFeedback] = useState<string | null>(null);
   const shouldReduceMotion = useReducedMotion();
+
+  // Intersection Observer triggers for project cards and showcases
+  const [projectCardRef, isProjectCardVisible] = useIntersectionObserver<HTMLDivElement>({
+    threshold: 0.08,
+    rootMargin: '0px 0px -50px 0px',
+  });
+  const [browserMockupRef, isBrowserMockupVisible] = useIntersectionObserver<HTMLDivElement>({
+    threshold: 0.12,
+    rootMargin: '0px 0px -40px 0px',
+  });
+  const [productStatementRef, isProductStatementVisible] = useIntersectionObserver<HTMLDivElement>({
+    threshold: 0.12,
+    rootMargin: '0px 0px -40px 0px',
+  });
+  const [detailsColumnRef, isDetailsColumnVisible] = useIntersectionObserver<HTMLDivElement>({
+    threshold: 0.12,
+    rootMargin: '0px 0px -40px 0px',
+  });
 
   // 6 Product Showcase Views for PG Adda Prototype Gallery
   const showcaseViews = [
@@ -528,34 +547,51 @@ export const FeaturedProjectSection: React.FC = () => {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         
         {/* TOP SECTION HEADER (Label & Badge) */}
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-6 lg:mb-8">
+        <motion.div
+          initial={shouldReduceMotion ? { opacity: 0 } : { opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: '-40px' }}
+          transition={{ duration: 0.45, ease: 'easeOut' }}
+          className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-6 lg:mb-8"
+        >
           <div className="flex items-center gap-2">
             <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-purple-50 border border-purple-200/80 text-purple-700 text-xs font-bold shadow-2xs">
               <Sparkles className="w-4 h-4 text-amber-500 fill-amber-400" />
               <span>Featured Project</span>
             </div>
             <span className="text-xs font-semibold text-slate-400">•</span>
-            <span className="text-xs font-bold text-slate-600">Personal Project</span>
+            <span className="text-xs font-bold text-slate-600">Personal Product Development</span>
           </div>
 
           <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-amber-500/10 border border-amber-300/80 text-amber-900 text-xs font-bold self-start sm:self-auto">
             <span className="w-2 h-2 rounded-full bg-amber-500 animate-pulse" />
-            <span>Frontend Product Prototype</span>
+            <span>Full Stack Product Development</span>
           </div>
-        </div>
+        </motion.div>
 
         {/* MOBILE HEADING BLOCK (Order 1 & 2 on Mobile: Label -> Title) */}
-        <div className="block lg:hidden mb-6 space-y-1">
+        <motion.div
+          initial={shouldReduceMotion ? { opacity: 0 } : { opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: '-40px' }}
+          transition={{ duration: 0.45, ease: 'easeOut' }}
+          className="block lg:hidden mb-6 space-y-1"
+        >
           <h2 className="text-3xl sm:text-4xl font-black text-slate-900 tracking-tight">
             {FEATURED_PROJECT.name}
           </h2>
           <p className="text-xs sm:text-sm font-bold text-purple-700">
             {FEATURED_PROJECT.subtitle}
           </p>
-        </div>
+        </motion.div>
 
         {/* MASTER CASE STUDY CONTAINER: 2-COLUMN ON DESKTOP (58% Visual / 42% Content) */}
-        <div className="purple-interactive-card rounded-3xl sm:rounded-[2.5rem] p-5 sm:p-8 lg:p-10 shadow-2xl overflow-hidden border border-white/80 relative group/card">
+        <div
+          ref={projectCardRef}
+          className={`purple-interactive-card rounded-3xl sm:rounded-[2.5rem] p-5 sm:p-8 lg:p-10 shadow-2xl overflow-hidden border border-white/80 relative group/card transition-all ${
+            isProjectCardVisible ? 'animate-fade-in-up fade-in-up' : 'fade-in-up-init opacity-0'
+          }`}
+        >
           
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-10 items-stretch">
             
@@ -566,9 +602,12 @@ export const FeaturedProjectSection: React.FC = () => {
               
               {/* HERO SCREENSHOT SHOWCASE FRAME (Sleek Compact Browser Frame with Increased Height) */}
               <motion.div
+                ref={browserMockupRef}
                 whileHover={shouldReduceMotion ? {} : { scale: 1.015 }}
                 transition={{ duration: 0.25, ease: 'easeOut' }}
-                className="relative rounded-2xl sm:rounded-3xl overflow-hidden bg-slate-950 border border-slate-800 hover:border-purple-500/70 shadow-2xl group/mockup transition-all duration-300 hover:shadow-[0_0_40px_rgba(168,85,247,0.3)]"
+                className={`relative rounded-2xl sm:rounded-3xl overflow-hidden bg-slate-950 border border-slate-800 hover:border-purple-500/70 shadow-2xl group/mockup transition-all duration-300 hover:shadow-[0_0_40px_rgba(168,85,247,0.3)] ${
+                  isBrowserMockupVisible ? 'animate-fade-in-up fade-in-up' : 'fade-in-up-init opacity-0'
+                }`}
               >
                 <div className="absolute inset-0 bg-gradient-to-t from-slate-950/85 via-purple-950/20 to-transparent opacity-0 group-hover/mockup:opacity-100 focus-within:opacity-100 transition-opacity duration-300 pointer-events-none group-hover/mockup:pointer-events-auto focus-within:pointer-events-auto z-30 flex items-center justify-center gap-2.5">
                   <button
@@ -652,7 +691,13 @@ export const FeaturedProjectSection: React.FC = () => {
               </motion.div>
 
               {/* GALLERY OF 6 THUMBNAIL SCREENSHOT PREVIEWS */}
-              <div className="space-y-2">
+              <motion.div
+                initial={shouldReduceMotion ? { opacity: 0 } : { opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, margin: '-40px' }}
+                transition={{ duration: 0.5, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
+                className="space-y-2"
+              >
                 <div className="flex items-center justify-between text-[11px] font-bold text-slate-500 px-0.5">
                   <span className="uppercase tracking-wider">Product Showcase Gallery</span>
                   <span className="text-purple-600 font-semibold">Click thumbnail to expand lightbox</span>
@@ -752,7 +797,7 @@ export const FeaturedProjectSection: React.FC = () => {
                     );
                   })}
                 </div>
-              </div>
+              </motion.div>
 
               {/* ACTIVE VIEW CAPTION FOOTER */}
               <div className="px-3.5 py-2.5 rounded-2xl bg-slate-900/90 border border-slate-800 flex items-center justify-between text-xs text-slate-400 shadow-sm">
@@ -765,16 +810,21 @@ export const FeaturedProjectSection: React.FC = () => {
               </div>
 
               {/* PROTOTYPE STATEMENT CALLOUT BANNER (Elevated Frosted Glass Card with Soft Lavender Tint) */}
-              <div className="p-4 sm:p-4.5 rounded-2xl bg-gradient-to-r from-purple-50/85 via-indigo-50/70 to-purple-50/85 border border-purple-200/90 backdrop-blur-md shadow-md shadow-purple-900/5 hover:-translate-y-0.5 hover:shadow-lg hover:shadow-purple-500/15 hover:border-purple-300 transition-all duration-300 ease-out flex items-start gap-3">
+              <div
+                ref={productStatementRef}
+                className={`p-4 sm:p-4.5 rounded-2xl bg-gradient-to-r from-purple-50/85 via-indigo-50/70 to-purple-50/85 border border-purple-200/90 backdrop-blur-md shadow-md shadow-purple-900/5 hover:-translate-y-0.5 hover:shadow-lg hover:shadow-purple-500/15 hover:border-purple-300 transition-all duration-300 ease-out flex items-start gap-3 ${
+                  isProductStatementVisible ? 'animate-fade-in-up fade-in-up' : 'fade-in-up-init opacity-0'
+                }`}
+              >
                 <div className="p-2 rounded-xl bg-gradient-to-br from-purple-600 to-indigo-600 text-white shadow-md shadow-purple-500/25 shrink-0 mt-0.5">
                   <Sparkles className="w-4 h-4 text-purple-100 fill-purple-100/30" />
                 </div>
                 <div className="leading-relaxed text-xs sm:text-[13px]">
                   <strong className="text-slate-900 font-extrabold block sm:inline mr-1">
-                    Frontend Product Prototype Statement:
+                    Product Architecture Statement:
                   </strong>
                   <span className="text-slate-700 font-medium">
-                    PG Adda is designed and developed independently by Sri Hari Mada to demonstrate scalable React component architecture, user-centric discovery filters, and responsive UI design.
+                    PG Adda is designed and developed independently by Sri Hari Mada to demonstrate application architecture, product development, and end-to-end implementation using React.js and TypeScript.
                   </span>
                 </div>
               </div>
@@ -784,42 +834,71 @@ export const FeaturedProjectSection: React.FC = () => {
             {/* ========================================================= */}
             {/* RIGHT SIDE: PRODUCT DETAILS CONTENT AREA (~42% Area / lg:col-span-5) */}
             {/* ========================================================= */}
-            <div className="lg:col-span-5 flex flex-col justify-between space-y-6">
+            <div
+              ref={detailsColumnRef}
+              className={`lg:col-span-5 flex flex-col justify-between space-y-6 ${
+                isDetailsColumnVisible ? 'animate-fade-in-up fade-in-up' : 'fade-in-up-init opacity-0'
+              }`}
+            >
               
               <div className="space-y-4">
                 
                 {/* DESKTOP HEADING BLOCK (Hidden on mobile) */}
-                <div className="hidden lg:block space-y-1">
+                <motion.div
+                  initial={shouldReduceMotion ? { opacity: 0 } : { opacity: 0, y: 16 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true, margin: '-40px' }}
+                  transition={{ duration: 0.45, ease: 'easeOut' }}
+                  className="hidden lg:block space-y-1"
+                >
                   <h3 className="text-3xl sm:text-4xl font-black text-slate-900 tracking-tight">
                     {FEATURED_PROJECT.name}
                   </h3>
                   <p className="text-xs sm:text-sm font-bold text-purple-700">
                     {FEATURED_PROJECT.subtitle}
                   </p>
-                </div>
+                </motion.div>
 
                 {/* THE CHALLENGE SECTION */}
-                <div className="p-3.5 sm:p-4 rounded-2xl bg-amber-50/70 border border-amber-200/80 space-y-1 shadow-2xs">
+                <motion.div
+                  initial={shouldReduceMotion ? { opacity: 0 } : { opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true, margin: '-40px' }}
+                  transition={{ duration: 0.5, delay: 0.08, ease: [0.16, 1, 0.3, 1] }}
+                  className="p-3.5 sm:p-4 rounded-2xl bg-amber-50/70 border border-amber-200/80 space-y-1 shadow-2xs"
+                >
                   <h4 className="text-[11px] font-extrabold text-amber-900 uppercase tracking-wider flex items-center gap-1.5">
                     <span>The Challenge</span>
                   </h4>
                   <p className="text-xs sm:text-sm text-slate-700 leading-relaxed font-medium">
                     {FEATURED_PROJECT.challenge}
                   </p>
-                </div>
+                </motion.div>
 
                 {/* MY SOLUTION SECTION */}
-                <div className="p-3.5 sm:p-4 rounded-2xl bg-purple-50/70 border border-purple-200/80 space-y-1 shadow-2xs">
+                <motion.div
+                  initial={shouldReduceMotion ? { opacity: 0 } : { opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true, margin: '-40px' }}
+                  transition={{ duration: 0.5, delay: 0.12, ease: [0.16, 1, 0.3, 1] }}
+                  className="p-3.5 sm:p-4 rounded-2xl bg-purple-50/70 border border-purple-200/80 space-y-1 shadow-2xs"
+                >
                   <h4 className="text-[11px] font-extrabold text-purple-900 uppercase tracking-wider flex items-center gap-1.5">
                     <span>My Solution</span>
                   </h4>
                   <p className="text-xs sm:text-sm text-slate-700 leading-relaxed font-medium">
                     {FEATURED_PROJECT.solution}
                   </p>
-                </div>
+                </motion.div>
 
                 {/* KEY CONTRIBUTIONS */}
-                <div className="space-y-2 pt-1">
+                <motion.div
+                  initial={shouldReduceMotion ? { opacity: 0 } : { opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true, margin: '-40px' }}
+                  transition={{ duration: 0.5, delay: 0.16, ease: [0.16, 1, 0.3, 1] }}
+                  className="space-y-2 pt-1"
+                >
                   <h4 className="text-xs font-extrabold text-slate-900 uppercase tracking-wider flex items-center gap-1.5">
                     <CheckCircle2 className="w-4 h-4 text-purple-600" />
                     <span>Key Contributions</span>
@@ -836,10 +915,16 @@ export const FeaturedProjectSection: React.FC = () => {
                       </div>
                     ))}
                   </div>
-                </div>
+                </motion.div>
 
                 {/* ENGINEERING HIGHLIGHTS */}
-                <div className="space-y-2 pt-1">
+                <motion.div
+                  initial={shouldReduceMotion ? { opacity: 0 } : { opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true, margin: '-40px' }}
+                  transition={{ duration: 0.5, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
+                  className="space-y-2 pt-1"
+                >
                   <h4 className="text-xs font-extrabold text-slate-900 uppercase tracking-wider flex items-center gap-1.5">
                     <Zap className="w-4 h-4 text-purple-600" />
                     <span>Engineering Highlights</span>
@@ -855,10 +940,16 @@ export const FeaturedProjectSection: React.FC = () => {
                       </span>
                     ))}
                   </div>
-                </div>
+                </motion.div>
 
                 {/* TECHNOLOGY STACK */}
-                <div className="space-y-2 pt-1">
+                <motion.div
+                  initial={shouldReduceMotion ? { opacity: 0 } : { opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true, margin: '-40px' }}
+                  transition={{ duration: 0.5, delay: 0.24, ease: [0.16, 1, 0.3, 1] }}
+                  className="space-y-2 pt-1"
+                >
                   <h4 className="text-xs font-extrabold text-slate-900 uppercase tracking-wider flex items-center gap-1.5">
                     <Layers className="w-4 h-4 text-purple-600" />
                     <span>Technology Stack</span>
@@ -875,12 +966,18 @@ export const FeaturedProjectSection: React.FC = () => {
                       </motion.span>
                     ))}
                   </div>
-                </div>
+                </motion.div>
 
               </div>
 
               {/* ACTION BUTTONS ROW */}
-              <div className="pt-4 border-t border-slate-200/80 flex flex-wrap items-center justify-start gap-3">
+              <motion.div
+                initial={shouldReduceMotion ? { opacity: 0 } : { opacity: 0, y: 16 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, margin: '-30px' }}
+                transition={{ duration: 0.45, delay: 0.28, ease: [0.16, 1, 0.3, 1] }}
+                className="pt-4 border-t border-slate-200/80 flex flex-wrap items-center justify-start gap-3"
+              >
                 {/* 1. Primary: Live Demo Button */}
                 <motion.a
                   href={FEATURED_PROJECT.liveUrl}
@@ -920,7 +1017,7 @@ export const FeaturedProjectSection: React.FC = () => {
                   <span>Case Study</span>
                   <ChevronRight className="w-4 h-4 group-hover/cs:translate-x-1 transition-transform" />
                 </motion.button>
-              </div>
+              </motion.div>
 
             </div>
 
@@ -973,7 +1070,7 @@ export const FeaturedProjectSection: React.FC = () => {
                     PG Adda — Product Case Study
                   </h3>
                   <p className="text-sm font-bold text-[#6D28D9] dark:text-purple-400 mt-1">
-                    Frontend Product Prototype for PG & Co-Living Discovery
+                    {FEATURED_PROJECT.subtitle}
                   </p>
                 </div>
 

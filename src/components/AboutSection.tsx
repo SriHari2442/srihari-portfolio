@@ -9,6 +9,10 @@ import {
   GraduationCap,
   Globe,
   Award,
+  Code2,
+  Layers,
+  Briefcase,
+  Sparkles,
 } from 'lucide-react';
 import { motion, AnimatePresence, useReducedMotion } from 'motion/react';
 import { PERSONAL_INFO, EDUCATION } from '../data/portfolioData';
@@ -37,10 +41,13 @@ export const AboutSection: React.FC = () => {
   }, [showModal]);
 
   const highlights = [
-    { label: PERSONAL_INFO.location, icon: MapPin },
-    { label: 'Enterprise Banking & Logistics Domains', icon: Building2 },
+    { label: 'Around 4 Years of Software Development Experience', icon: Briefcase },
+    { label: '2 Business Domains: Banking & Logistics', icon: Building2 },
+    { label: 'React.js & TypeScript Engineering Expertise', icon: Code2 },
+    { label: 'Frontend & Backend Application Workflows (Python & FastAPI)', icon: Layers },
+    { label: 'WCAG & ADA Accessibility Focused', icon: CheckCircle2 },
+    { label: 'Independent Product Development (PG Adda)', icon: Sparkles },
     { label: `${EDUCATION.degree} – ${EDUCATION.institution} (${EDUCATION.year})`, icon: GraduationCap },
-    { label: 'WCAG & ADA Compliance Focused', icon: CheckCircle2 },
   ];
 
   return (
@@ -65,9 +72,11 @@ export const AboutSection: React.FC = () => {
           </div>
 
           {/* Description */}
-          <p className="text-slate-600 text-sm sm:text-base leading-relaxed mb-6 font-normal">
-            {PERSONAL_INFO.professionalSummary}
-          </p>
+          <div className="space-y-3.5 text-slate-600 text-sm sm:text-base leading-relaxed mb-6 font-normal">
+            {PERSONAL_INFO.summaryParagraphs.map((paragraph, index) => (
+              <p key={index}>{paragraph}</p>
+            ))}
+          </div>
 
           {/* Bullet Highlights Grid */}
           <div className="space-y-3">
@@ -157,8 +166,10 @@ export const AboutSection: React.FC = () => {
                 </div>
 
                 {/* Detailed Summary */}
-                <div className="space-y-5 text-[#334155] dark:text-slate-200 text-[15px] sm:text-[16px] leading-[1.7] font-medium">
-                  <p className="max-w-prose">{PERSONAL_INFO.professionalSummary}</p>
+                <div className="space-y-4 text-[#334155] dark:text-slate-200 text-[15px] sm:text-[16px] leading-[1.7] font-medium">
+                  {PERSONAL_INFO.summaryParagraphs.map((para, idx) => (
+                    <p key={idx} className="max-w-prose">{para}</p>
+                  ))}
 
                   <div className="p-5 rounded-2xl aurora-glass-card space-y-2">
                     <h4 className="font-extrabold text-[#1E293B] dark:text-white text-base flex items-center gap-2">
